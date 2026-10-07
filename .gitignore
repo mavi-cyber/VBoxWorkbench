@@ -3,3 +3,4 @@ dist/
 obj/
 .vs/
 *.user
+.claude/

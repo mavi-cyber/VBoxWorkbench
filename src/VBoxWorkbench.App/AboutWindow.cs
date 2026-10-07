@@ -11,7 +11,8 @@ namespace VBoxWorkbench.App;
 /// <summary>The About box: logo, version, project link, copyright and licence.</summary>
 internal sealed class AboutWindow : Window
 {
-    public const string Website = "https://github.com/mavi-cyber/VBoxWorkbench";
+    public const string Website = "https://mavi-cyber.github.io/VBoxWorkbench/";
+    public const string Repository = "https://github.com/mavi-cyber/VBoxWorkbench";
 
     /// <summary>Version and, when the build knows it, the short commit id: ("0.1.1", "fc7e283").</summary>
     public static (string Version, string Commit) BuildInfo()
@@ -28,7 +29,7 @@ internal sealed class AboutWindow : Window
         Owner = owner;
         Title = "About VBox Workbench";
         Icon = owner.Icon;
-        Width = 440;
+        Width = 480;
         SizeToContent = SizeToContent.Height;
         ResizeMode = ResizeMode.NoResize;
         ShowInTaskbar = false;
@@ -70,8 +71,9 @@ internal sealed class AboutWindow : Window
         Centered(Ui.Text("An independent project, not affiliated with Oracle. VirtualBox is a trademark of Oracle.", 12, "Muted", wrap: true), 4);
 
         var buttons = Ui.Row(
-            Ui.Button("License", () => Open(Website + "/blob/main/LICENSE"), tip: "Read the GPL-3.0 text"),
-            Ui.Button("Report a problem", () => Open(Website + "/issues")),
+            Ui.Button("License", () => Open(Repository + "/blob/main/LICENSE"), tip: "Read the GPL-3.0 text"),
+            Ui.Button("Source code", () => Open(Repository), tip: Repository),
+            Ui.Button("Report a problem", () => Open(Repository + "/issues")),
             Ui.Button("Close", Close, "PrimaryButton"));
         Centered(buttons, 18);
 

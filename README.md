@@ -7,7 +7,23 @@
 A graphical front end for `VBoxManage`, the VirtualBox command line. You open a virtual machine like a
 PC on a workbench, click or drop parts onto it, and the app writes the `VBoxManage` commands for you.
 
+**Website: https://mavi-cyber.github.io/VBoxWorkbench/** &nbsp;|&nbsp; **[Download the latest release](https://github.com/mavi-cyber/VBoxWorkbench/releases/latest)**
+
+![The workbench: a virtual machine shown as a circuit board, with the parts shelf on the right and the command queue at the bottom](docs/img/workbench-dark.png)
+
 VBox Workbench is an independent project. It is not made, endorsed or supported by Oracle.
+
+## Screenshots
+
+| Search in plain words | A generated form |
+| --- | --- |
+| ![Search results for "forward port"](docs/img/search.png) | ![The storageattach form with a row per option](docs/img/form-dark.png) |
+
+| Light theme | Rooms |
+| --- | --- |
+| ![The workbench in light theme](docs/img/workbench-light.png) | ![The network room listing every action](docs/img/rooms-light.png) |
+
+The machines in these screenshots are made-up demo data.
 
 ## Features
 
@@ -125,6 +141,9 @@ VBoxWorkbench.App.exe --search "forward port"
 VBoxWorkbench.App.exe --theme Dark
 ```
 
+Set the `VBW_VBOXMANAGE` environment variable to the full path of a `VBoxManage` to make the app use
+that one instead of the installed VirtualBox.
+
 The theme choice is saved in `%LOCALAPPDATA%\VBoxWorkbench\settings.json`.
 
 ## Project layout
@@ -137,6 +156,7 @@ The theme choice is saved in `%LOCALAPPDATA%\VBoxWorkbench\settings.json`.
 - `tests/VBoxWorkbench.Tests` - parser tests against saved help from 7.2.20, the 7.0 manual synopses
   and the 6.1 usage text, catalog coverage of manual sections 8.5 to 8.55, and the live tests.
 
+- `docs` - the project website, served by GitHub Pages, and the screenshots used here.
 - `assets` - the logo (`logo.svg`), the app icon (`app.ico`, 16 to 256 px) and `make-icon.py`, which
   regenerates `logo.png` and `app.ico` (needs Pillow).
 

@@ -15,8 +15,10 @@ public static class VBoxLocator
     public static string? Find()
     {
         string exe = OperatingSystem.IsWindows() ? "VBoxManage.exe" : "VBoxManage";
+        // VBW_VBOXMANAGE picks a specific VBoxManage, for example when several VirtualBox versions are unpacked side by side.
         var candidates = new List<string?>
         {
+            Environment.GetEnvironmentVariable("VBW_VBOXMANAGE"),
             Combine(Environment.GetEnvironmentVariable("VBOX_MSI_INSTALL_PATH"), exe),
             Combine(Environment.GetEnvironmentVariable("VBOX_INSTALL_PATH"), exe),
         };
