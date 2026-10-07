@@ -10,6 +10,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <Version>0.1.0</Version>
+    <Product>VBox Workbench</Product>
+    <Description>A graphical front end for VBoxManage</Description>
+    <Copyright>Copyright (C) 2026 mavi-cyber. Licensed under GPL-3.0.</Copyright>
     <ApplicationIcon>..\..\assets\app.ico</ApplicationIcon>
   </PropertyGroup>
 

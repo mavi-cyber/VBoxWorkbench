@@ -68,7 +68,54 @@ dotnet test
 The live tests create a throwaway VM in the temp folder, exercise the generated commands against the
 real `VBoxManage`, then unregister and delete it. They do nothing when VirtualBox is not installed.
 
-Deep links for shortcuts and testing:
+## Build a standalone .exe
+
+The quick way is the script, which runs the tests, builds both variants into `dist\` and writes their
+SHA-256 checksums:
+
+```
+powershell -ExecutionPolicy Bypass -File build-release.ps1
+```
+
+It produces:
+
+| File | Size | Needs |
+| --- | --- | --- |
+| `VBoxWorkbench-<version>-win-x64.exe` | about 65 MB | nothing, .NET is included |
+| `VBoxWorkbench-<version>-win-x64-needs-dotnet.exe` | under 1 MB | the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| `SHA256SUMS.txt` | | |
+
+To do it by hand, the self-contained build is:
+
+```
+dotnet publish src/VBoxWorkbench.App -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none -o dist
+```
+
+and the small one that relies on an installed .NET runtime is:
+
+```
+dotnet publish src/VBoxWorkbench.App -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:DebugType=none -o dist
+```
+
+Either way the result is `dist\VBoxWorkbench.App.exe`, a single file you can copy anywhere. The version
+number comes from `<Version>` in `src/VBoxWorkbench.App/VBoxWorkbench.App.csproj`.
+
+### Checking a download
+
+Compare the file's hash with the line for it in `SHA256SUMS.txt`:
+
+```
+Get-FileHash .\VBoxWorkbench-0.1.0-win-x64.exe -Algorithm SHA256
+```
+
+or, on Linux and macOS, `sha256sum -c SHA256SUMS.txt`.
+
+The executables are not code-signed, so Windows SmartScreen may show an "unknown publisher" warning
+the first time one is run.
+
+## Deep links
+
+For shortcuts and testing:
 
 ```
 VBoxWorkbench.App.exe --show "snapshot take"
