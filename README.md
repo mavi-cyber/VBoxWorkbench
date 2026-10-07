@@ -194,7 +194,7 @@ number comes from `<Version>` in `src/VBoxWorkbench.App/VBoxWorkbench.App.csproj
 Compare the file's hash with the line for it in `SHA256SUMS.txt`:
 
 ```
-Get-FileHash .\VBoxWorkbench-0.1.2-win-x64.exe -Algorithm SHA256
+Get-FileHash .\VBoxWorkbench-0.1.3-win-x64.exe -Algorithm SHA256
 ```
 
 or, on Linux and macOS, `sha256sum -c SHA256SUMS.txt`.
