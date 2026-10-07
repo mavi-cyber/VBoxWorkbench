@@ -1,0 +1,108 @@
+<Application x:Class="VBoxWorkbench.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml" Startup="OnStartup">
+    <Application.Resources>
+        <!-- Bench (app chrome) -->
+        <SolidColorBrush x:Key="Bench" Color="#EFE9DD"/>
+        <SolidColorBrush x:Key="Panel" Color="#FBF8F2"/>
+        <SolidColorBrush x:Key="Line" Color="#D8CFBF"/>
+        <SolidColorBrush x:Key="Ink" Color="#2A2622"/>
+        <SolidColorBrush x:Key="Muted" Color="#7A7166"/>
+        <SolidColorBrush x:Key="Copper" Color="#B5541C"/>
+        <SolidColorBrush x:Key="CopperSoft" Color="#F3DCCB"/>
+        <SolidColorBrush x:Key="OnCopper" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="Danger" Color="#B3261E"/>
+        <SolidColorBrush x:Key="Ok" Color="#2E7D32"/>
+        <!-- Circuit board (the opened machine) -->
+        <SolidColorBrush x:Key="Pcb" Color="#0F3B2E"/>
+        <SolidColorBrush x:Key="PcbRaised" Color="#17513F"/>
+        <SolidColorBrush x:Key="Trace" Color="#2E7D62"/>
+        <SolidColorBrush x:Key="Gold" Color="#E2B755"/>
+        <SolidColorBrush x:Key="PcbText" Color="#E8F3EC"/>
+        <SolidColorBrush x:Key="PcbMuted" Color="#9CC4B3"/>
+        <!-- Command strip -->
+        <SolidColorBrush x:Key="Term" Color="#1B1D1F"/>
+        <SolidColorBrush x:Key="TermText" Color="#D6E2D0"/>
+        <SolidColorBrush x:Key="TermMuted" Color="#8C958A"/>
+
+        <FontFamily x:Key="Mono">Cascadia Mono, Consolas, Courier New</FontFamily>
+        <FontFamily x:Key="Icons">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style x:Key="FlatButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource Panel}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12.5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource Copper}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="b" Property="BorderBrush" Value="{DynamicResource Copper}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="b" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="b" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource FlatButton}"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="{DynamicResource Copper}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Copper}"/>
+            <Setter Property="Foreground" Value="{DynamicResource OnCopper}"/>
+        </Style>
+
+        <Style x:Key="NavButton" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+            <Setter Property="Padding" Value="10,7"/>
+        </Style>
+
+        <!-- A component soldered on the board -->
+        <Style x:Key="Chip" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="{DynamicResource PcbRaised}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Gold}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PcbText}"/>
+            <Setter Property="Padding" Value="9,5"/>
+        </Style>
+        <!-- An empty socket -->
+        <Style x:Key="Socket" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Trace}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PcbMuted}"/>
+            <Setter Property="Padding" Value="9,5"/>
+        </Style>
+        <Style x:Key="TermButton" TargetType="Button" BasedOn="{StaticResource FlatButton}">
+            <Setter Property="Background" Value="#2A2D30"/>
+            <Setter Property="BorderBrush" Value="#3B3F43"/>
+            <Setter Property="Foreground" Value="{DynamicResource TermText}"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+        </Style>
+
+    </Application.Resources>
+</Application>

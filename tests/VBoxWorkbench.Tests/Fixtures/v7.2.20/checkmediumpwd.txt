@@ -1,0 +1,46 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage checkmediumpwd -- Check encryption password on a DEK-encrypted
+medium or a disk image.
+
+Usage
+=====
+
+  VBoxManage checkmediumpwd <uuid | filename> <password-file>
+
+Description
+===========
+
+  The VBoxManage checkmediumpwd command checks the current encryption password
+  on a DEK-encrypted medium or a disk image. See section "Encrypting Disk
+  Images" in chapter 1 of the user manual.
+
+  The command response indicates if the specified password is correct.
+
+  <uuid> | <filename>
+      Specifies the Universally Unique Identifier (UUID) or the absolute path
+      name of the medium or image.
+
+  <password-file>
+      Specifies the password to check. The password can be the absolute path
+      name of a password file on the host OS or the dash character (-) to
+      prompt you for the password on the command line.
+
+
+Examples
+========
+
+  The following example checks the encryption password for the ol7u4-1.vdi disk
+  image. The password is contained in a file called pwfile.
+
+  The command returns a message indicating that the specified password is
+  correct.
+$ VBoxManage checkmediumpwd "$HOME/VirtualBox VMs/ol7u4/ol7u4-1.vdi" /home/user/pwfile
+  The given password is correct
+
+
+See Also
+========
+
+  "VBoxManage encryptmedium"

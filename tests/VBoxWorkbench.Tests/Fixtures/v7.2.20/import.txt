@@ -1,0 +1,271 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage import -- Import a virtual appliance in OVF format or from a cloud
+service and create virtual machines.
+
+Usage
+=====
+
+  VBoxManage import <ovfname | ovaname> [--dry-run] [--options= keepallmacs |
+      keepnatmacs | importtovdi | keepextradata] [--vsys=n] [--ostype=ostype]
+      [--vmname=name] [--settingsfile=filename] [--basefolder=folder]
+      [--group=group] [--memory=MB] [--cpus=n] [--description=text] [--eula=
+      show | accept] [--unit=n] [--ignore] [--scsitype= BusLogic | LsiLogic]
+      [--disk=path] [--controller=index] [--port=n]
+  VBoxManage import OCI:// --cloud [--ostype=ostype] [--vmname=name]
+      [--basefolder=folder] [--memory=MB] [--cpus=n] [--description=text]
+      <--cloudprofile=profile> <--cloudinstanceid=id> [--cloudbucket=bucket]
+
+Description
+===========
+
+  The VBoxManage import command imports a virtual appliance either in OVF
+  format or from a cloud service such as Oracle Cloud Infrastructure (OCI). The
+  import is performed by copying virtual disk images (by default using the VMDK
+  image format) and by creating virtual machines (VMs) in Oracle VirtualBox.
+  See section "Importing and Exporting Virtual Machines" in chapter 1 of the
+  user manual.
+
+  You must specify the path name of an OVF file or OVA archive to use as input,
+  or a placeholder for the cloud case. For OVF appliances ensure that any disk
+  images are in the same directory as the OVF file.
+
+  Note that any options you specify to control the imported virtual appliance
+  or to modify the import parameters rely on the contents of the OVF file or
+  the information from the cloud service.
+
+  Before you use the import operation to create the VM, perform a dry run to
+  verify the correctness of your configuration. This is more useful with an OVF
+  or OVA appliance, because with a cloud service even a dry run needs to
+  perform most of the time consuming steps.
+
+  The import from a cloud service downloads a temporary file containing both
+  the boot image and some metadata describing the details of the VM instance.
+  The temporary file is deleted after successful import.
+
+    Common Options
+    --------------
+    <ovfname> | <ovaname>
+        Specifies the name of the OVF file or OVA archive that describes the
+        appliance. In the cloud case this is usually a fixed string such as
+        OCI://.
+
+    --dry-run
+        Performs a dry run of the VBoxManage import command instead of
+        performing the actual import operation. A dry run operation does the
+        following:
+
+          - Outputs a description of the appliance's contents based on the
+          specified OVF or OVA file.
+          - Shows how the appliance would be imported into Oracle VirtualBox.
+          In addition, the output shows any options that you can use to change
+          the import behavior.
+
+        The shortened form of this option is -n.
+
+    --options=keepallmacs | keepnatmacs | importtovdi | keepextradata
+        Enables you to fine-tune the import operation.
+
+        Valid arguments are as follows:
+
+          - keepallmacs: Specifies that the MAC addresses of every virtual
+          network card are left unchanged.
+          - keepnatmacs: Specifies that the MAC addresses of every virtual
+          network card are left unchanged if the network type is NAT.
+          - importtovdi: Specifies that all new disk images are to be created
+          using the VDI file format.
+          - keepextradata: Specifies whether extra data settings that may be
+          present in the .ovf file are imported.
+
+    --ostype=<ostype>
+        Specifies the guest operating system (OS) information for the VM. Use
+        the VBoxManage list ostypes command to view the OS type identifiers.
+
+    --vmname=<name>
+        Specifies the name for the imported VM to be used by Oracle VirtualBox.
+
+    --basefolder=<folder>
+        Specifies the folder where the files of the imported VM are stored.
+
+    --memory=<MB>
+        Specifies the memory size in Megabytes for the imported VM.
+
+    --cpus=<n>
+        Specifies the number of CPUs for the imported VM.
+
+    --description=<text>
+        Specifies the description text visible in the GUI and CLI when checking
+        the VM details.
+
+
+    OVF / OVA Import Options
+    ------------------------
+
+    The following options are specific to importing a virtual appliance in OVF
+    or OVA format. Such an appliance can contain one or more VMs, which
+    requires specifying which VM configuration should be adjusted in case you
+    want to change it. See section "Importing an Appliance in OVF Format" in
+    chapter 1 of the user manual.
+
+    VBoxManage import <ovfname | ovaname> [--dry-run] [--options= keepallmacs |
+        keepnatmacs | importtovdi | keepextradata] [--vsys=n] [--ostype=ostype]
+        [--vmname=name] [--settingsfile=filename] [--basefolder=folder]
+        [--group=group] [--memory=MB] [--cpus=n] [--description=text] [--eula=
+        show | accept] [--unit=n] [--ignore] [--scsitype= BusLogic | LsiLogic]
+        [--disk=path] [--controller=index] [--port=n]
+
+    --vsys=<n>
+        Specifies the index selecting a specific VM within the appliance.
+        Affects the following options.
+
+    --unit=<n>
+        Specifies the index selecting a specific unit of a VM within the
+        appliance. Affects the following options.
+
+    --settingsfile=<filename>
+        Specifies the filename (as a relative or absolute path) of the VM
+        config file which will be created as part of the import. The preferred
+        way to rename the settings file is to override the VM name using the
+        --vmname option and if necessary specify the folder in which to create
+        the VM with --basefolder.
+
+    --group=<group>
+        Specifies the primary group of the imported VM.
+
+    --eula=show | accept
+        Enables you to show or accept the license conditions of a VM within the
+        appliance,
+
+        Valid arguments are as follows:
+
+          - show: Shows the EULA of a VM.
+          - accepts: Accepts the EULA of a VM. Any VMs in an appliance which
+          have an EULA require accepting it, otherwise the import will fail.
+
+    --ignore
+        Ignores the hardware associated with the VM specified with the --unit
+        option when importing the VM, effectively removing all of its
+        associated hardware.
+
+    --scsitype=BusLogic | LsiLogic
+        Enables you to select the type of the SCSI controller for the current
+        unit of an imported VM.
+
+        Valid arguments are as follows:
+
+          - BusLogic: Uses the (very old) BusLogic SCSI controller type.
+          - LsiLogic: Uses the (more modern) LsiLogic SCSI controller type.
+
+
+    Cloud Import Options
+    --------------------
+
+    The following options are specific to importing a VM instance from a cloud
+    service provider. It always deals with a single VM. See section "Importing
+    an Instance from" in chapter 1 of the user manual.
+
+    VBoxManage import OCI:// --cloud [--ostype=ostype] [--vmname=name]
+        [--basefolder=folder] [--memory=MB] [--cpus=n] [--description=text]
+        <--cloudprofile=profile> <--cloudinstanceid=id> [--cloudbucket=bucket]
+
+    --cloud
+        Specifies that the import should be from the cloud.
+
+    --cloudprofile=<profile>
+        Specifies the cloud profile which is used to connect to the cloud
+        service provider. The cloud profile contains your Oracle Cloud
+        Infrastructure account details, such as your user OCID and the
+        fingerprint for your public key. To use a cloud profile, you must have
+        the required permissions on Oracle Cloud Infrastructure.
+
+    --cloudinstanceid=<id>
+        Specifies the ID of an existing instance in the cloud.
+
+    --cloudbucket=<bucket>
+        Specifies the bucket name in which to store the object created from the
+        instance. In Oracle Cloud Infrastructure, a bucket is a logical
+        container for storing objects. By default the first bucket available
+        with the cloud profile is used.
+
+
+Examples
+========
+
+  The following example performs the dry run of an OVF import operation for a
+  sample appliance that contains a Windows 10 guest:
+$ VBoxManage import Windows10.ovf --dry-run
+Interpreting Windows10.ovf...
+OK.
+Virtual system 0:
+ 0: Suggested OS type: "Windows10_64"
+    (change with "--vsys 0 --ostype <type>"; use "list ostypes" to list all)
+ 1: Suggested VM name "win10-appliance"
+    (change with "--vsys 0 --vmname <name>")
+ 2: Suggested VM group "/"
+    (change with "--vsys 0 --group <group>")
+ 3: Suggested VM settings file name "/home/user1/VirtualBox VMs/win10-appliance/win10-appliance.vbox"
+    (change with "--vsys 0 --settingsfile <filename>")
+ 4: Suggested VM base folder "/home/user1/VirtualBox VMs"
+    (change with "--vsys 0 --basefolder <path>")
+ 5: End-user license agreement
+    (display with "--vsys 0 --eula show";
+    accept with "--vsys 0 --eula accept")
+ 6: Number of CPUs: 1
+    (change with "--vsys 0 --cpus <n>")
+ 7: Guest memory: 2048 MB (change with "--vsys 0 --memory <MB>")
+ 8: Sound card (appliance expects "ensoniq1371", can change on import)
+    (disable with "--vsys 0 --unit 8 --ignore")
+ 9: USB controller
+    (disable with "--vsys 0 --unit 9 --ignore")
+10: Network adapter: orig bridged, config 2, extra type=bridged
+11: Floppy
+    (disable with "--vsys 0 --unit 11 --ignore")
+12: SCSI controller, type BusLogic
+    (change with "--vsys 0 --unit 12 --scsitype {BusLogic|LsiLogic}";
+    disable with "--vsys 0 --unit 12 --ignore")
+13: IDE controller, type PIIX4
+    (disable with "--vsys 0 --unit 13 --ignore")
+14: Hard disk image: source image=Windows10.vmdk,
+      target path=/home/user1/disks/Windows10.vmdk, controller=12;channel=0
+    (change target path with "--vsys 0 --unit 14 --disk <path>";
+    change controller with "--vsys 0 --unit 14 --controller <index>";
+    change controller port with "--vsys 0 --unit 14 --port <n>";
+    disable with "--vsys 0 --unit 14 --ignore")
+
+  The dry run output lists and numbers the individual configuration items that
+  are described in the Windows10.ovf file. Some of the items include
+  information about how to disable or change the configuration of the item.
+
+  You can disable many of the items by using the --vsys <X> --unit <Y> --ignore
+  options. <X> is the number of the virtual system. The value is 0 unless the
+  appliance includes several virtual system descriptions. <Y> is the
+  configuration item number.
+
+  Item 1 in the example command output specifies the name of the target
+  machine. Items 12 and 13 specify the IDE and SCSI hard disk controllers,
+  respectively.
+
+  Item 14 indicates the hard disk image and the --disk option specifies the
+  target path where the image will be stored, the --controller option specifies
+  which controller the disk will be attached to, and the --port option
+  specifies which port on the controller the disk will be attached to. The
+  default values are specified in the OVF file.
+
+  You can combine several items for the same virtual system by specifying the
+  same value for the --vsys option. For example use the following command to
+  import a machine as described in the OVF, exclude the sound card and USB
+  controller and specify that the disk image is stored with a different name.
+$ VBoxManage import Windows10.ovf --vsys 0 --unit 8 --ignore \
+  --unit 9 --ignore --unit 14 --disk Windows10_disk0.vmdk
+
+  The following example illustrates how to import a VM from Oracle Cloud
+  Infrastructure. To find the Oracle Cloud Infrastructure VM instances and its
+  ID you can list all available instances with:
+$ VBoxManage cloud --provider=OCI --profile= list instances
+
+  Once you know the ID the following command imports the instance from Oracle
+  Cloud Infrastructure:
+$ VBoxManage import OCI:// --cloud --vmname OCI_FreeBSD_VM --memory 4000 \
+  --cpus 3 --ostype FreeBSD_64 --cloudprofile "standard user" \
+  --cloudinstanceid ocid1.instance.oc1.iad.abuwc... --cloudbucket myBucket

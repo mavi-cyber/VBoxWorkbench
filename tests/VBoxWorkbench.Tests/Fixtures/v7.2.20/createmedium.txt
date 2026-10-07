@@ -1,0 +1,93 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage createmedium -- Create a new medium.
+
+Usage
+=====
+
+  VBoxManage createmedium [disk | dvd | floppy] <--filename=filename>
+      [--size=megabytes | --sizebyte=bytes] [--diffparent= UUID | filename]
+      [--format= VDI | VMDK | VHD]
+      [--variant=Standard|Fixed|Split2G|Stream|ESX|Formatted|RawDisk...]
+      [--property=name=value...]
+      [--property-file=name=/path/to/file/with/value...]
+
+Description
+===========
+
+  The VBoxManage createmedium command creates a new medium, such as a disk
+  image file.
+
+  For compatibility with earlier versions of Oracle VirtualBox, you can use the
+  createvdi and createhd commands instead of the createmedium command.
+
+  disk | dvd | floppy
+      Specifies the media type. The default value is disk.
+
+  --filename=<filename>
+      Specifies the absolute path name to a file on the host file system.
+
+  --size=<megabytes>
+      Specifies the image capacity in one megabyte units.
+
+  --sizebyte=<bytes>
+      Specifies the image capacity in one byte units.
+
+  --diffparent=<UUID> | <filename>
+      Specifies the Universally Unique Identifier (UUID) or absolute path name
+      of a differencing image parent file on the host file system.
+
+      Use this file to share a base box disk image among VMs.
+
+  --format=VDI | VMDK | VHD
+      Specifies the file format of the output file. Valid formats are VDI,
+      VMDK, and VHD. The default format is VDI.
+
+  --variant=Standard | Fixed | Split2G | Stream | ESX | Formatted | RawDisk [,...]
+      Specifies the file format variant for the target medium, which is a
+      comma-separated list of variants. Following are the valid values:
+
+        - Standard is the default disk image type, which has a dynamically
+        allocated file size.
+        - Fixed uses a disk image that has a fixed file size.
+        - Split2G indicates that the disk image is split into 2GB segments.
+        This value is valid for VMDK disk images only.
+        - Stream optimizes the disk image for downloading. This value is valid
+        for VMDK disk images only.
+        - ESX is used for some VMWare products. This value is valid for VMDK
+        disk images only.
+        - Formatted formats the medium automatically. This value is valid for
+        floppy images only.
+        - RawDisk is used for creating a VMDK image which provides direct
+        access to the hard disk on the host using its raw interface. This value
+        is valid for VMDK disk images only. For detailed information about raw
+        disk access, see section "Advanced Storage Configuration" in chapter 1
+        of the user manual.
+
+      Note that not all variant combinations are valid. Specifying incompatible
+      variant values in the list will produce an error message.
+
+  --property=<name>=<value>
+      Specifies any required file format dependent parameters in key=value
+      form. Optional.
+
+  --property-file=<name>=</path/to/file/with/value>
+      Specifies any required file format dependent parameters in
+      key=file/with/value form. The value is taken from the file. Optional.
+
+
+Examples
+========
+
+  The following command creates a new disk image file named disk01.vdi. The
+  file size is 1024 megabytes.
+$ VBoxManage createmedium --filename disk01.vdi --size 1024
+
+  The following command creates a new floppy disk image file named
+  floppy01.vdi. The file size is 1 megabyte.
+$ VBoxManage createmedium floppy --filename floppy01.img --size 1
+
+  The following command creates a raw disk image of an entire physical disk on
+  a Linux host.
+$ VBoxManage createmedium disk --filename=/path/to/rawdisk.vmdk --variant=RawDisk --format=VMDK --property RawDrive=/dev/sda

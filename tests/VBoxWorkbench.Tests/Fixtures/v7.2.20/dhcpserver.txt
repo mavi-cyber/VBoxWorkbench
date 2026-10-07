@@ -1,0 +1,633 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage dhcpserver -- DHCP server management.
+
+Usage
+=====
+
+  VBoxManage dhcpserver add <--network=netname | --interface=ifname>
+      <--server-ip=address> <--netmask=mask> <--lower-ip=address>
+      <--upper-ip=address> <--enable | --disable>
+       [[--global] [--set-opt=dhcp-opt-no value...] [--set-opt-hex=dhcp-opt-no
+           hexstring...] [--force-opt=dhcp-opt-no...]
+           [--suppress-opt=dhcp-opt-no...] [--min-lease-time=seconds]
+           [--default-lease-time=seconds] [--max-lease-time=seconds]...]
+       [<--group=name> [--set-opt=dhcp-opt-no value...]
+           [--set-opt-hex=dhcp-opt-no hexstring...]
+           [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+           [--incl-mac=address...] [--excl-mac=address...]
+           [--incl-mac-wild=pattern...] [--excl-mac-wild=pattern...]
+           [--incl-vendor=string...] [--excl-vendor=string...]
+           [--incl-vendor-wild=pattern...] [--excl-vendor-wild=pattern...]
+           [--incl-user=string...] [--excl-user=string...]
+           [--incl-user-wild=pattern...] [--excl-user-wild=pattern...]
+           [--min-lease-time=seconds] [--default-lease-time=seconds]
+           [--max-lease-time=seconds]...]
+       [<--vm=name|uuid> [--nic=1-N] [--set-opt=dhcp-opt-no value...]
+           [--set-opt-hex=dhcp-opt-no hexstring...]
+           [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+           [--min-lease-time=seconds] [--default-lease-time=seconds]
+           [--max-lease-time=seconds] [--fixed-address=address]...]
+       [<--mac-address=address> [--set-opt=dhcp-opt-no value...]
+           [--set-opt-hex=dhcp-opt-no hexstring...]
+           [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+           [--min-lease-time=seconds] [--default-lease-time=seconds]
+           [--max-lease-time=seconds] [--fixed-address=address]...]
+  VBoxManage dhcpserver modify <--network=netname | --interface=ifname>
+      [--server-ip=address] [--lower-ip=address] [--upper-ip=address]
+      [--netmask=mask] [--enable | --disable]
+       [[--global] [--del-opt=dhcp-opt-no...] [--set-opt=dhcp-opt-no value...]
+           [--set-opt-hex=dhcp-opt-no hexstring...]
+           [--force-opt=dhcp-opt-no...] [--unforce-opt=dhcp-opt-no...]
+           [--suppress-opt=dhcp-opt-no...] [--unsuppress-opt=dhcp-opt-no...]
+           [--min-lease-time=seconds] [--default-lease-time=seconds]
+           [--max-lease-time=seconds] [--remove-config]...]
+       [<--group=name> [--set-opt=dhcp-opt-no value...]
+           [--set-opt-hex=dhcp-opt-no hexstring...]
+           [--force-opt=dhcp-opt-no...] [--unforce-opt=dhcp-opt-no...]
+           [--suppress-opt=dhcp-opt-no...] [--unsuppress-opt=dhcp-opt-no...]
+           [--del-mac=address...] [--incl-mac=address...]
+           [--excl-mac=address...] [--del-mac-wild=pattern...]
+           [--incl-mac-wild=pattern...] [--excl-mac-wild=pattern...]
+           [--del-vendor=string...] [--incl-vendor=string...]
+           [--excl-vendor=string...] [--del-vendor-wild=pattern...]
+           [--incl-vendor-wild=pattern...] [--excl-vendor-wild=pattern...]
+           [--del-user=string...] [--incl-user=string...]
+           [--excl-user=string...] [--del-user-wild=pattern...]
+           [--incl-user-wild=pattern...] [--excl-user-wild=pattern...]
+           [--zap-conditions] [--min-lease-time=seconds]
+           [--default-lease-time=seconds] [--max-lease-time=seconds]
+           [--remove-config]...]
+       [<--vm=name|uuid> [--nic=1-N] [--del-opt=dhcp-opt-no...]
+           [--set-opt=dhcp-opt-no value...] [--set-opt-hex=dhcp-opt-no
+           hexstring...] [--force-opt=dhcp-opt-no...]
+           [--unforce-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+           [--unsuppress-opt=dhcp-opt-no...] [--min-lease-time=seconds]
+           [--default-lease-time=seconds] [--max-lease-time=seconds]
+           [--fixed-address=address] [--remove-config]...]
+       [<--mac-address=address> [--del-opt=dhcp-opt-no...]
+           [--set-opt=dhcp-opt-no value...] [--set-opt-hex=dhcp-opt-no
+           hexstring...] [--force-opt=dhcp-opt-no...]
+           [--unforce-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+           [--unsuppress-opt=dhcp-opt-no...] [--min-lease-time=seconds]
+           [--default-lease-time=seconds] [--max-lease-time=seconds]
+           [--fixed-address=address] [--remove-config]...]
+  VBoxManage dhcpserver remove <--network=netname | --interface=ifname>
+  VBoxManage dhcpserver start <--network=netname | --interface=ifname>
+  VBoxManage dhcpserver restart <--network=netname | --interface=ifname>
+  VBoxManage dhcpserver stop <--network=netname | --interface=ifname>
+  VBoxManage dhcpserver findlease <--network=netname | --interface=ifname>
+      <--mac-address=mac>
+
+Description
+===========
+
+  The dhcpserver commands enable you to control the DHCP server that is built
+  into Oracle VirtualBox. You may find this useful when using internal or
+  host-only networking. Theoretically, you can also enable it for a bridged
+  network, but that may cause conflicts with other DHCP servers in your
+  physical network.
+
+    Common options
+    --------------
+
+    The subcommands of dhcpserver all operate on an internal network that can
+    be identified via its name or in the host-only case via the host-only
+    interface name:
+
+    --network=<netname>
+        The internal network name. This is the same name you would supply to
+        the VBoxManage modifyvm --intnet option when configuring a VM for
+        internal networking. The internal network name can be found labelled as
+        VBoxNetworkName in the output of the following commands:
+        VBoxManage list intnets, VBoxManage list natnets, or
+        VBoxManage list hostonlyifs.
+
+    --interface=<ifname>
+        The host only interface name. This is the same value would supply to
+        the VBoxManage modifyvm --host-only-adapter option when configuring a
+        VM to use a host-only network. The value can also be found labelled as
+        Name in the output of the VBoxManage list hostonlyifs command.
+
+
+    dhcpserver add
+    --------------
+
+    VBoxManage dhcpserver add <--network=netname | --interface=ifname>
+        <--server-ip=address> <--netmask=mask> <--lower-ip=address>
+        <--upper-ip=address> <--enable | --disable>
+         [[--global] [--set-opt=dhcp-opt-no value...]
+             [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--min-lease-time=seconds] [--default-lease-time=seconds]
+             [--max-lease-time=seconds]...]
+         [<--group=name> [--set-opt=dhcp-opt-no value...]
+             [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--incl-mac=address...] [--excl-mac=address...]
+             [--incl-mac-wild=pattern...] [--excl-mac-wild=pattern...]
+             [--incl-vendor=string...] [--excl-vendor=string...]
+             [--incl-vendor-wild=pattern...] [--excl-vendor-wild=pattern...]
+             [--incl-user=string...] [--excl-user=string...]
+             [--incl-user-wild=pattern...] [--excl-user-wild=pattern...]
+             [--min-lease-time=seconds] [--default-lease-time=seconds]
+             [--max-lease-time=seconds]...]
+         [<--vm=name|uuid> [--nic=1-N] [--set-opt=dhcp-opt-no value...]
+             [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--min-lease-time=seconds] [--default-lease-time=seconds]
+             [--max-lease-time=seconds] [--fixed-address=address]...]
+         [<--mac-address=address> [--set-opt=dhcp-opt-no value...]
+             [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--min-lease-time=seconds] [--default-lease-time=seconds]
+             [--max-lease-time=seconds] [--fixed-address=address]...]
+
+    Adds a new DHCP server to a network or host-only interface.
+
+    Options configuring the DHCP server core:
+
+    --server-ip=<address>
+        The IP address the DHCP server should use.
+
+    --lower-ip=<address>, --upper-ip=<address>
+        The IP address range for the DHCP server to manage. This should not
+        include the address of the DHCP server itself, but it must be in the
+        same network. The boundaries are inclusive, so both the lower and upper
+        addresses will be handed out to clients.
+
+    --netmask=<mask>
+        The network mask. Typically 255.255.255.0.
+
+    --enable, --disable
+        Whether to enable the DHCP server or disable it. If not specified, the
+        server will be created in a disabled state and no IP addresses will be
+        handed out.
+
+    Options selecting the scope:
+
+    --global
+        Set the configuration scope to global. Any subsequent --set-opt options
+        will be applied to all the DHCP clients.
+
+    --vm=<vmname|uuid>
+        Set the configuration scope to the first NIC of the specified VM. Any
+        subsequent --set-opt options will apply just to that interface, nothing
+        else.
+
+    --nic=<1-N>
+        Set the configuration scope to a NIC other than the first NIC of the VM
+        specified in the --vm option.
+
+    --mac-address=<address>
+        Set the configuration scope to the specified MAC address.
+
+    --group=<name>
+        Set the configuration scope to the specified group.
+
+    Options configuring the currently selected scope:
+
+    --set-opt=<dhcp-opt-no value>
+        Adds the specified DHCP option number (0-255) and value. The value
+        format is option specific (typically human readable) and will be
+        validated by the API and the DHCP server.
+
+    --set-opt-hex=<dhcp-opt-no hexstring>
+        Adds the specified DHCP option number (0-255) and value. The option
+        value is specified as a raw series of hex bytes optionally separated by
+        colons. No validation is performed on these by the API or the DHCP
+        server, they will be passed as specified to the client.
+
+    --force-opt=<dhcp-opt-no>
+        Forces the specified DHCP option number (0-255) to be sent to the
+        client whether it requested it or not (provided the option is
+        configured with a value at some level).
+
+    --suppress-opt=<dhcp-opt-no>
+        Prevents the specified DHCP option number (0-255) from being sent to
+        the client when present in this or a higher configuration scope.
+
+    --min-lease-time=<seconds>
+        Sets the minimum lease time for the current scope in seconds. Zero
+        means taking the value from a higher option level or use the default
+        value.
+
+    --default-lease-time=<seconds>
+        Sets the default lease time for the current scope in seconds. Zero
+        means taking the value from a higher option level or use the default
+        value.
+
+    --max-lease-time=<seconds>
+        Sets the maximum lease time for the current scope in seconds. Zero
+        means taking the value from a higher option level or use default.
+
+    --fixed-address=<address>
+        Fixed address assignment for a --vm or --mac-address configuration
+        scope. Any empty <address> turns it back to dynamic address assignment.
+
+    Options configuring group membership conditions (excludes overrides
+    includes):
+
+    --incl-mac=<address>
+        Include the specific MAC address in the group.
+
+    --excl-mac=<address>
+        Exclude the specific MAC address from the group.
+
+    --incl-mac-wild=<pattern>
+        Include the specific MAC address pattern in the group.
+
+    --excl-mac-wild=<pattern>
+        Exclude the specific MAC address pattern from the group.
+
+    --incl-vendor=<string>
+        Include the specific vendor class ID in the group.
+
+    --excl-vendor=<string>
+        Exclude the specific vendor class ID from the group.
+
+    --incl-vendor-wild=<pattern>
+        Include the specific vendor class ID pattern in the group.
+
+    --excl-vendor-wild=<pattern>
+        Exclude the specific vendor class ID pattern from the group.
+
+    --incl-user=<string>
+        Include the specific user class ID in the group.
+
+    --excl-user=<string>
+        Exclude the specific user class ID from the group.
+
+    --incl-user-wild=<pattern>
+        Include the specific user class ID pattern in the group.
+
+    --excl-user-wild=<pattern>
+        Exclude the specific user class ID pattern from the group.
+
+
+    dhcpserver modify
+    -----------------
+
+    VBoxManage dhcpserver modify <--network=netname | --interface=ifname>
+        [--server-ip=address] [--lower-ip=address] [--upper-ip=address]
+        [--netmask=mask] [--enable | --disable]
+         [[--global] [--del-opt=dhcp-opt-no...] [--set-opt=dhcp-opt-no
+             value...] [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--unforce-opt=dhcp-opt-no...]
+             [--suppress-opt=dhcp-opt-no...] [--unsuppress-opt=dhcp-opt-no...]
+             [--min-lease-time=seconds] [--default-lease-time=seconds]
+             [--max-lease-time=seconds] [--remove-config]...]
+         [<--group=name> [--set-opt=dhcp-opt-no value...]
+             [--set-opt-hex=dhcp-opt-no hexstring...]
+             [--force-opt=dhcp-opt-no...] [--unforce-opt=dhcp-opt-no...]
+             [--suppress-opt=dhcp-opt-no...] [--unsuppress-opt=dhcp-opt-no...]
+             [--del-mac=address...] [--incl-mac=address...]
+             [--excl-mac=address...] [--del-mac-wild=pattern...]
+             [--incl-mac-wild=pattern...] [--excl-mac-wild=pattern...]
+             [--del-vendor=string...] [--incl-vendor=string...]
+             [--excl-vendor=string...] [--del-vendor-wild=pattern...]
+             [--incl-vendor-wild=pattern...] [--excl-vendor-wild=pattern...]
+             [--del-user=string...] [--incl-user=string...]
+             [--excl-user=string...] [--del-user-wild=pattern...]
+             [--incl-user-wild=pattern...] [--excl-user-wild=pattern...]
+             [--zap-conditions] [--min-lease-time=seconds]
+             [--default-lease-time=seconds] [--max-lease-time=seconds]
+             [--remove-config]...]
+         [<--vm=name|uuid> [--nic=1-N] [--del-opt=dhcp-opt-no...]
+             [--set-opt=dhcp-opt-no value...] [--set-opt-hex=dhcp-opt-no
+             hexstring...] [--force-opt=dhcp-opt-no...]
+             [--unforce-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--unsuppress-opt=dhcp-opt-no...] [--min-lease-time=seconds]
+             [--default-lease-time=seconds] [--max-lease-time=seconds]
+             [--fixed-address=address] [--remove-config]...]
+         [<--mac-address=address> [--del-opt=dhcp-opt-no...]
+             [--set-opt=dhcp-opt-no value...] [--set-opt-hex=dhcp-opt-no
+             hexstring...] [--force-opt=dhcp-opt-no...]
+             [--unforce-opt=dhcp-opt-no...] [--suppress-opt=dhcp-opt-no...]
+             [--unsuppress-opt=dhcp-opt-no...] [--min-lease-time=seconds]
+             [--default-lease-time=seconds] [--max-lease-time=seconds]
+             [--fixed-address=address] [--remove-config]...]
+
+    The dhcpserver modify command modifies an existing DHCP server
+    configuration. It takes the same options as the add command with the
+    addition of the following options which have variable configuration scope:
+
+    --del-opt=<dhcp-opt-no>
+        Counterpart to --set-opt that will cause the specified DHCP option
+        number (0-255) to be deleted from the server settings. Similar to
+        --set-opt the scope of the deletion is governed by the --global, --vm,
+        --mac-address and --group options.
+
+    --unforce-opt=<dhcp-opt-no>
+        Removes the specified DHCP option number (0-255) from the forced option
+        list (i.e. the reverse of --force-opt). Similar to --set-opt the scope
+        of the deletion is governed by the --global, --vm, --mac-address and
+        --group options.
+
+    --unsuppress-opt=<dhcp-opt-no>
+        Removes the specified DHCP option number (0-255) from the suppressed
+        option list (i.e. the reverse of --suppress-opt). Similar to --set-opt
+        the scope of the deletion is governed by the --global, --vm,
+        --mac-address and --group options.
+
+    --remove-config
+        Removes the configuration currently being scoped. The --global scope is
+        not removable. The configuration scope will change to --global after
+        this option.
+
+    And the addition of these group membership condition options:
+
+    --del-mac=<address>
+        Delete the specific MAC address from the group conditions.
+
+    --del-mac-wild=<pattern>
+        Delete the specific MAC address pattern from the group conditions.
+
+    --del-vendor=<string>
+        Delete the specific vendor class ID from the group conditions.
+
+    --del-vendor-wild=<pattern>
+        Delete the specific vendor class ID pattern from the group conditions.
+
+    --del-user=<string>
+        Delete the specific user class ID from the group conditions.
+
+    --del-user-wild=<pattern>
+        Delete the specific user class ID pattern from the group conditions.
+
+    --zap-conditions
+        Deletes all the group conditions.
+
+
+    dhcpserver remove
+    -----------------
+
+    VBoxManage dhcpserver remove <--network=netname | --interface=ifname>
+
+    Removes the specified DHCP server.
+
+
+    dhcpserver start
+    ----------------
+
+    VBoxManage dhcpserver start <--network=netname | --interface=ifname>
+
+    Start the specified DHCP server.
+
+
+    dhcpserver restart
+    ------------------
+
+    VBoxManage dhcpserver restart <--network=netname | --interface=ifname>
+
+    Restarts the specified DHCP server. The DHCP server must be running.
+
+
+    dhcpserver stop
+    ---------------
+
+    VBoxManage dhcpserver stop <--network=netname | --interface=ifname>
+
+    Stops the specified DHCP server.
+
+
+    dhcpserver findlease
+    --------------------
+
+    VBoxManage dhcpserver findlease <--network=netname | --interface=ifname>
+        <--mac-address=mac>
+
+    Performs a lease database lookup. This is mainly for getting the IP address
+    of a running VM.
+
+    --mac-address=<mac>
+        The MAC address to lookup in the lease database.
+
+
+    Common DHCP Options:
+    --------------------
+
+    1 - SubnetMask
+        IPv4 netmask. Set to the value of the --netmask option by default.
+
+    2 - TimeOffset
+        UTC offset in seconds (32-bit decimal value).
+
+    3 - Routers
+        Space separated list of IPv4 router addresses.
+
+    4 - TimeServers
+        Space separated list of IPv4 time server (RFC 868) addresses.
+
+    5 - NameServers
+        Space separated list of IPv4 name server (IEN 116) addresses.
+
+    6 - DomainNameServers
+        Space separated list of IPv4 DNS addresses.
+
+    7 - LogServers
+        Space separated list of IPv4 log server addresses.
+
+    8 - CookieServers
+        Space separated list of IPv4 cookie server (RFC 865) addresses.
+
+    9 - LPRServers
+        Space separated list of IPv4 line printer server (RFC 1179) addresses.
+
+    10 - ImpressServers
+        Space separated list of IPv4 imagen impress server addresses.
+
+    11 - ResourseLocationServers
+        Space separated list of IPv4 resource location (RFC 887) addresses.
+
+    12 - HostName
+        The client name. See RFC 1035 for character limits.
+
+    13 - BootFileSize
+        Number of 512 byte blocks making up the boot file (16-bit decimal
+        value).
+
+    14 - MeritDumpFile
+        Client core file.
+
+    15 - DomainName
+        Domain name for the client.
+
+    16 - SwapServer
+        IPv4 address of the swap server that the client should use.
+
+    17 - RootPath
+        The path to the root disk the client should use.
+
+    18 - ExtensionPath
+        Path to a file containing additional DHCP options (RFC2123).
+
+    19 - IPForwarding
+        Whether IP forwarding should be enabled by the client (boolean).
+
+    20 - OptNonLocalSourceRouting
+        Whether non-local datagrams should be forwarded by the client (boolean)
+
+    21 - PolicyFilter
+        List of IPv4 addresses and masks pairs controlling non-local source
+        routing.
+
+    22 - MaxDgramReassemblySize
+        The maximum datagram size the client should reassemble (16-bit decimal
+        value).
+
+    23 - DefaultIPTTL
+        The default time-to-leave on outgoing (IP) datagrams (8-bit decimal
+        value).
+
+    24 - PathMTUAgingTimeout
+        RFC1191 path MTU discovery timeout value in seconds (32-bit decimal
+        value).
+
+    25 - PathMTUPlateauTable
+        RFC1191 path MTU discovery size table, sorted in ascending order (list
+        of 16-bit decimal values).
+
+    26 - InterfaceMTU
+        The MTU size for the interface (16-bit decimal value).
+
+    27 - AllSubnetsAreLocal
+        Indicates whether the MTU size is the same for all subnets (boolean).
+
+    28 - BroadcastAddress
+        Broadcast address (RFC1122) for the client to use (IPv4 address).
+
+    29 - PerformMaskDiscovery
+        Whether to perform subnet mask discovery via ICMP (boolean).
+
+    30 - MaskSupplier
+        Whether to respond to subnet mask requests via ICMP (boolean).
+
+    31 - PerformRouterDiscovery
+        Whether to perform router discovery (RFC1256) (boolean).
+
+    32 - RouterSolicitationAddress
+        Where to send router solicitation requests (RFC1256) (IPv4 address).
+
+    33 - StaticRoute
+        List of network and router address pairs addresses.
+
+    34 - TrailerEncapsulation
+        Whether to negotiate the use of trailers for ARP (RTF893) (boolean).
+
+    35 - ARPCacheTimeout
+        The timeout in seconds for ARP cache entries (32-bit decimal value).
+
+    36 - EthernetEncapsulation
+        Whether to use IEEE 802.3 (RTF1042) rather than of v2 (RFC894) ethernet
+        encapsulation (boolean).
+
+    37 - TCPDefaultTTL
+        Default time-to-live for TCP sends (non-zero 8-bit decimal value).
+
+    38 - TCPKeepaliveInterval
+        The interface in seconds between TCP keepalive messages (32-bit decimal
+        value).
+
+    39 - TCPKeepaliveGarbage
+        Whether to include a byte of garbage in TCP keepalive messages for
+        backward compatibility (boolean).
+
+    40 - NISDomain
+        The NIS (Sun Network Information Services) domain name (string).
+
+    41 - NISServers
+        Space separated list of IPv4 NIS server addresses.
+
+    42 - NTPServers
+        Space separated list of IPv4 NTP (RFC1035) server addresses.
+
+    43 - VendorSpecificInfo
+        Vendor specific information. Only accessible using --set-opt-hex.
+
+    44 - NetBIOSNameServers
+        Space separated list of IPv4 NetBIOS name server (NBNS) addresses
+        (RFC1001,RFC1002).
+
+    45 - NetBIOSDatagramServers
+        Space separated list of IPv4 NetBIOS datagram distribution server
+        (NBDD) addresses (RFC1001,RFC1002).
+
+    46 - NetBIOSNodeType
+        NetBIOS node type (RFC1001,RFC1002): 1=B-node, 2=P-node, 4=M-node, and
+        8=H-node (8-bit decimal value).
+
+    47 - NetBIOSScope
+        NetBIOS scope (RFC1001,RFC1002). Only accessible using --set-opt-hex.
+
+    48 - XWindowsFontServers
+        Space separated list of IPv4 X windows font server addresses.
+
+    49 - XWindowsDisplayManager
+        Space separated list of IPv4 X windows display manager addresses.
+
+    62 - NetWareIPDomainName
+        Netware IP domain name (RFC2242) (string).
+
+    63 - NetWareIPInformation
+        Netware IP information (RFC2242). Only accessible using --set-opt-hex.
+
+    64 - NISPlusDomain
+        The NIS+ domain name (string).
+
+    65 - NISPlusServers
+        Space separated list of IPv4 NIS+ server addresses.
+
+    66 - TFTPServerName
+        TFTP server name (string).
+
+    67 - BootfileName
+        Bootfile name (string).
+
+    68 - MobileIPHomeAgents
+        Space separated list of IPv4 mobile IP agent addresses.
+
+    69 - SMTPServers
+        Space separated list of IPv4 simple mail transport protocol (SMTP)
+        server addresses.
+
+    70 - POP3Servers
+        Space separated list of IPv4 post office protocol 3 (POP3) server
+        addresses.
+
+    71 - NNTPServers
+        Space separated list of IPv4 network news transport protocol (NTTP)
+        server addresses.
+
+    72 - WWWServers
+        Space separated list of default IPv4 world wide web (WWW) server
+        addresses.
+
+    73 - FingerServers
+        Space separated list of default IPv4 finger server addresses.
+
+    74 - IRCServers
+        Space separated list of default IPv4 internet relay chat (IRC) server
+        addresses.
+
+    75 - StreetTalkServers
+        Space separated list of IPv4 StreetTalk server addresses.
+
+    76 - STDAServers
+        Space separated list of IPv4 StreetTalk directory assistance (STDA)
+        server addresses.
+
+    78 - SLPDirectoryAgent
+        Address of one or more service location protocol (SLP) directory
+        agents, and an indicator of whether their use is mandatory. Only
+        accessible using --set-opt-hex.
+
+    79 - SLPServiceScope
+        List of service scopes for the service location protocol (SLP) and
+        whether using the list is mandatory. Only accessible using
+        --set-opt-hex.
+
+    119 - DomainSearch
+        Domain search list, see RFC3397 and section 4.1.4 in RFC1035 for
+        encoding. Only accessible using --set-opt-hex.

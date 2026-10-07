@@ -1,0 +1,82 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage encryptmedium -- Manage a DEK-encrypted medium or image.
+
+Usage
+=====
+
+  VBoxManage encryptmedium <uuid | filename> [--cipher=cipher-ID]
+      [--newpassword=password] [--newpasswordid=password-ID]
+      [--oldpassword=password]
+
+Description
+===========
+
+  The VBoxManage encryptmedium command enables you to create and manage a
+  DEK-encrypted medium or image. You can encrypt an image, decrypt an image,
+  and change the encryption password of an image. See section "Encrypting Disk
+  Images" in chapter 1 of the user manual.
+
+  <uuid> | <filename>
+      Specifies the Universally Unique Identifier (UUID) or the absolute path
+      name of the medium or image to encrypt.
+
+  --newpassword=<password>
+      Specifies the new encryption password. <password> is either the absolute
+      path name of a password file on the host operating system or -, which
+      prompts you for the password.
+
+      You must use the --newpasswordid option with this --newpassword option.
+
+  --oldpassword=<password>
+      Specifies the original encryption password. <password> is either the
+      absolute path name of a password file on the host operating system or -,
+      which prompts you for the original password.
+
+      This option enables you to gain access to an encrypted medium or image to
+      do the following:
+
+        - Decrypt an encrypted image by using this option by itself.
+        - Change the password of the encrypted image by using the --newpassword
+        option.
+        - Change the encryption cipher of the image by using the --cipher
+        option.
+
+  --cipher=<cipher-ID>
+      Specifies the cipher to use for encryption. Valid values are
+      AES-XTS128-PLAIN64 or AES-XTS256-PLAIN64.
+
+      This option enables you to set up or change encryption on the medium or
+      image.
+
+  --newpasswordid=<password-ID>
+      Specifies a new password identifier that is used for correct
+      identification when supplying multiple passwords during VM startup.
+
+      If you use the same password and password identifier when encrypting
+      multiple images, you need to supply the password only one time during VM
+      startup.
+
+
+Examples
+========
+
+  The following example shows how to encrypt the ol7u4-1.vdi image by using the
+  AES-XTS128-PLAIN64 cipher, specifying a password identifier of 1001, and
+  using the $HOME/pwfile password file:
+$ VBoxManage encryptmedium "$HOME/VirtualBox VMs/ol7u4/ol7u4-1.vdi" \
+  --cipher="AES-XTS128-PLAIN64" --newpasswordid="1001" --newpassword=$HOME/pwfile
+
+  The following example shows how to decrypt an encrypted image called
+  ol7u4-2.vdi:
+$ VBoxManage encryptmedium "$HOME/VirtualBox VMs/ol7u4/ol7u4-2.vdi" \
+  --oldpassword=-
+  Password: 
+
+  The following example shows how to change the password for an encrypted image
+  called ol7u4-3.vdi. The command reads the original password from the
+  $HOME/pwfile.orig file, reads the new password from the $HOME/pwfile file,
+  and assigns a password identifier of 1001.
+$ VBoxManage encryptmedium "$HOME/VirtualBox VMs/ol7u4/ol7u4-3.vdi" \
+  --oldpassword=$HOME/pwfile.orig --newpassword=$HOME/pwfile --newpasswordid="1001"

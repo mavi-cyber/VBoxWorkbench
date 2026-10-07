@@ -1,0 +1,44 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage registervm -- Register a virtual machine.
+
+Usage
+=====
+
+  VBoxManage registervm <filename> --password file
+
+Description
+===========
+
+  The VBoxManage registervm command enables you to create a virtual machine
+  (VM) by importing an XML machine configuration file into Oracle VirtualBox.
+  The VM cannot have the same UUID as a VM that is already registered in Oracle
+  VirtualBox. Ensure that the XML machine configuration file is in the machines
+  folder prior to registration.
+
+  When you use the VBoxManage createvm command to create a VM, you can specify
+  the --register option to register the VM.
+
+  <filename>
+      Specifies the XML machine configuration file. This file has the .vbox
+      file extension.
+
+  --password
+      Use the --password to supply the encryption password of the VM. Either
+      specify the absolute pathname of a password file on the host operating
+      system, or - to prompt you for the password on the command line.
+
+
+Examples
+========
+
+  The following command registers a VM called vm2. The XML machine
+  configuration file for the VM is located in the default machines folder.
+$ VBoxManage registervm "/home/user/VirtualBox VMs/vm2/vm2.vbox"
+
+
+See Also
+========
+
+  "VBoxManage createvm", "VBoxManage unregistervm"

@@ -1,0 +1,172 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage usbfilter -- Manage USB filters.
+
+Usage
+=====
+  VBoxManage usbfilter add <index,0-N> <--target= <uuid | vmname | global>>
+      <--name=string> <--action=ignore | hold> [--active=yes | no]
+      [--vendorid=XXXX] [--productid=XXXX] [--revision=IIFF]
+      [--manufacturer=string] [--product=string] [--port=hex]
+      [--remote=yes | no] [--serialnumber=string] [--maskedinterfaces=XXXXXXXX]
+  VBoxManage usbfilter modify <index,0-N> <--target= <uuid | vmname | global>>
+      [--name=string] [--action=ignore | hold] [--active=yes | no]
+      [--vendorid=XXXX | ""] [--productid=XXXX | ""] [--revision=IIFF | ""]
+      [--manufacturer=string | ""] [--product=string | ""] [--port=hex]
+      [--remote=yes | no] [--serialnumber=string | ""]
+      [--maskedinterfaces=XXXXXXXX]
+  VBoxManage usbfilter remove <index,0-N> <--target= <uuid | vmname | global>>
+
+Description
+===========
+
+  The VBoxManage usbfilter command enables you to manage USB filters for a
+  specific virtual machine (VM), or global USB filters that affect the entire
+  Oracle VirtualBox configuration.
+
+  Global filters are applied before VM-specific filters. This means that you
+  can use a global filter to prevent devices from being captured by any VM.
+
+  Global filters are applied in sequence based on where they were located in
+  the list (see the --index option below for the list ordering details). Only
+  the first filter that matches a device is applied. For example, if two global
+  filters were created and the first filter made a specific Kingston memory
+  stick device available while the second filter ignored all Kingston devices
+  the result of applying these two filters would be that this specific Kingston
+  memory stick would made available to any VM but no other Kingston USB devices
+  would be made available.
+
+    Common Operand and Options
+    --------------------------
+    index,0-<N>
+        Specifies a single integer that indicates the position of the filter in
+        the list. Zero (0) represents the first position in the list. If a
+        filter already exists at the specified position, the existing filter
+        and any existing filters that follow are moved down the list.
+        Otherwise, the new filter is appended to the list.
+
+    --action=ignore | hold
+        Specifies whether to allow VMs access to devices that match a USB
+        filter (hold) or to deny them access (ignore). This option applies only
+        to global filters.
+
+    --active=yes | no
+        Specifies whether a USB filter is active or temporarily disabled. Valid
+        values are yes, which activates the filter, and no, which disables the
+        filter. The default value is yes.
+
+    --manufacturer=<string>
+        Specifies a manufacturer ID filter as a string. The default value is an
+        empty string ("").
+
+    --maskedinterfaces=<XXXXXXXX>
+        Specifies a masked interface filter that is used to hide one or more
+        USB interfaces from the guest. The value is a bit mask where the set
+        bits correspond to the USB interfaces to hide, or mask off. This
+        feature is supported on Linux host systems only.
+
+    --name=<filter-name>
+        Specifies the name of the filter.
+
+    --port=<hex>
+        Specifies a hub port number filter as a string. The default value is an
+        empty string ("").
+
+    --product=<string>
+        Specifies a product ID filter as a string. The default value is an
+        empty string ("").
+
+    --productid=<XXXX>
+        Specifies a product ID filter. The string representation for an exact
+        match has the form <XXXX>, where <X> is a hexadecimal digit including
+        leading zeroes. The default value is an empty string ("").
+
+    --remote=yes | no
+        Specifies a remote filter that indicates whether the device is
+        physically connected to a remote VRDE client or to a local host system.
+        This option applies to VM filters only. The default value is no.
+
+    --revision=<IIFF>
+        Specifies a revision ID filter. The string representation for an exact
+        match has the form <IIFF>. <I> is a decimal digit of the integer part
+        of the revision. <F> is a decimal digit of its fractional part that
+        includes leading and trailing zeros. The default value is an empty
+        string ("").
+
+        To specify a range of revision IDs, ensure that you use the hexadecimal
+        form so that the revision is stored as a 16-bit packed BCD value. For
+        example, the int:0x0100-0x0199 expression matches any revision from 1.0
+        to 1.99, inclusive.
+
+    --serialnumber=<string>
+        Specifies a serial number filter as a string. The default value is an
+        empty string ("").
+
+    --target=<uuid> | <vmname> | global
+        Specifies the VM that the filter is attached to. You can specify the
+        Universally Unique Identifier (UUID) or the name of the VM. To apply
+        the filter description to all VMs, specify global.
+
+    --vendorid=<XXXX>
+        Specifies a vendor ID filter, which is a string representation of a
+        four-digit hexadecimal number. <X> is the hexadecimal digit including
+        leading zeroes. The default value is an empty string ("").
+
+
+    Add a USB Filter or a Global Filter
+    -----------------------------------
+
+    VBoxManage usbfilter add <index,0-N> <--target= <uuid | vmname | global>>
+        <--name=string> <--action=ignore | hold> [--active=yes | no]
+        [--vendorid=XXXX] [--productid=XXXX] [--revision=IIFF]
+        [--manufacturer=string] [--product=string] [--port=hex]
+        [--remote=yes | no] [--serialnumber=string]
+        [--maskedinterfaces=XXXXXXXX]
+
+    Use the VBoxManage usbfilter add command to create a new USB filter.
+
+    In addition, specify parameters by which to filter. You can use the
+    VBoxManage list usbhost command to view the parameters of the USB devices
+    that are attached to your system.
+
+
+    Modify a USB Filter or a Global Filter
+    --------------------------------------
+
+    VBoxManage usbfilter modify <index,0-N> <--target= <uuid | vmname |
+        global>> [--name=string] [--action=ignore | hold] [--active=yes | no]
+        [--vendorid=XXXX | ""] [--productid=XXXX | ""] [--revision=IIFF | ""]
+        [--manufacturer=string | ""] [--product=string | ""] [--port=hex]
+        [--remote=yes | no] [--serialnumber=string | ""]
+        [--maskedinterfaces=XXXXXXXX]
+
+    Use the VBoxManage usbfilter modify command to modify a USB filter. You can
+    use the VBoxManage list usbfilters command to list global filter indexes
+    and the VBoxManage showvminfo command to list indexes for a specific
+    virtual machine.
+
+
+    Remove a USB Filter or a Global Filter
+    --------------------------------------
+
+    VBoxManage usbfilter remove <index,0-N> <--target= <uuid | vmname |
+        global>>
+
+    Use the VBoxManage usbfilter remove command to remove a USB filter entry.
+
+
+Examples
+========
+
+  The following command lists the available USB devices on the host system.
+$ VBoxManage list usbhost
+
+  The following command adds a USB filter called filter01 to the ol7 VM. The
+  filter specifies a Kingston DataTraveler memory stick and is placed first in
+  the list of USB filters for the VM.
+$ VBoxManage usbfilter add 0 --target ol7 --name filter01 --vendorid 0x0930 --productid 0x6545
+
+  The following command removes the USB filter that is second in the list for
+  the ol7 VM.
+$ VBoxManage usbfilter remove 1 --target ol7

@@ -1,0 +1,87 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage updatecheck -- Checks for a newer version of Oracle VirtualBox.
+
+Usage
+=====
+
+  VBoxManage updatecheck perform [--machine-readable]
+  VBoxManage updatecheck list [--machine-readable]
+  VBoxManage updatecheck modify [--disable | --enable] [--channel=stable |
+      withbetas | all] [--frequency=days]
+
+Description
+===========
+
+  The updatecheck subcommand is used to check if a newer version of Oracle
+  VirtualBox is available. The two subcommand options of updatecheck are used
+  for modifying or viewing the settings associated with checking for a newer
+  version of Oracle VirtualBox.
+
+    updatecheck perform
+    -------------------
+
+    VBoxManage updatecheck perform [--machine-readable]
+
+    Checks if a newer version of Oracle VirtualBox is available.
+
+    --machine-readable
+        Machine readable output.
+
+
+    updatecheck list
+    ----------------
+
+    VBoxManage updatecheck list [--machine-readable]
+
+    Displays the current settings used for specifying when to check for a newer
+    version of Oracle VirtualBox.
+
+    --machine-readable
+        Machine readable output.
+
+
+    updatecheck modify
+    ------------------
+
+    VBoxManage updatecheck modify [--disable | --enable] [--channel=stable |
+        withbetas | all] [--frequency=days]
+
+    Modifies the settings used for specifying when to check for a newer version
+    of Oracle VirtualBox.
+
+    --enable
+        Enable the update check service.
+
+    --disable
+        Disable the update check service.
+
+    --channel=stable | withbetas | all
+        The preferred release type used for determining whether a newer version
+        of Oracle VirtualBox is available. The default is 'stable'.
+
+        stable
+            Checks for newer stable releases (maintenance and minor releases
+            within the same major release) of Oracle VirtualBox.
+
+        all
+            Checks for newer stable releases (maintenance and minor releases
+            within the same major release) and major releases of Oracle
+            VirtualBox.
+
+        withbetas
+            Checks for newer stable releases (maintenance and minor releases
+            within the same major release), major releases, and beta releases
+            of Oracle VirtualBox.
+
+    --frequency=days
+        Specifies how often in days to check for a newer version of Oracle
+        VirtualBox.
+
+    --proxy-mode=system | manual | none
+        Specifies the proxy mode to use.
+
+    --proxy-url=<address>
+        Specifies the proxy address to use. Set to empty string to clear proxy
+        address.

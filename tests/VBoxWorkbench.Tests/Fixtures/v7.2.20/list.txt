@@ -1,0 +1,374 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage list -- View system information and VM configuration details.
+
+Usage
+=====
+
+  VBoxManage list [--long] [--platform-arch= x86 | arm] [--sorted] [bridgedifs
+      | cloudnets | cloudprofiles | cloudproviders | cpu-profiles | dhcpservers
+      | dvds | extpacks | floppies | groups | hddbackends | hdds | hostcpuids |
+      hostdrives | hostdvds | hostfloppies | hostinfo | hostonlyifs |
+      hostonlynets | intnets | natnets | ostypes | ossubtypes | runningvms |
+      screenshotformats | systemproperties | usbfilters | usbhost | vms |
+      webcams]
+
+Description
+===========
+
+  The VBoxManage list subcommands enable you to obtain information about the
+  Oracle VirtualBox software, the VMs and associated services that you create.
+
+    Common Options
+    --------------
+    --long
+        Shows detailed information about each information entry if available.
+        The short form of this option is -l.
+
+    --platform-arch
+        Filters the output by the given platform architecture (if available,
+        otherwise ignored). The short form of this option is -p.
+
+    --sorted
+        Sorts the list of information entries alphabetically. The short form of
+        this option is -s.
+
+
+    List the Bridged Network Interfaces on the Host System
+    ------------------------------------------------------
+
+    VBoxManage list bridgedifs
+
+    The VBoxManage list bridgedifs command lists the bridged network interfaces
+    that are currently available on the host system. The output shows detailed
+    configuration information about each interface. See chapter 1 "Virtual
+    Networking" in the user manual.
+
+
+    List the Cloud Network Interfaces
+    ---------------------------------
+
+    VBoxManage list cloudnets
+
+    The VBoxManage list cloudnets command lists the cloud network interfaces
+    that have been configured. A cloud network interface provides connectivity
+    between local VMs and a cloud network.
+
+
+    List the Cloud Profiles
+    -----------------------
+
+    VBoxManage list cloudprofiles
+
+    The VBoxManage list cloudprofiles command lists the cloud profiles that
+    have been configured. A cloud profile contains settings for a cloud service
+    account.
+
+
+    List the Cloud Providers
+    ------------------------
+
+    VBoxManage list cloudproviders
+
+    The VBoxManage list cloudproviders command lists the cloud providers that
+    are supported by Oracle VirtualBox. Oracle Cloud Infrastructure is an
+    example of a cloud provider.
+
+
+    List the known CPU Profiles
+    ---------------------------
+
+    VBoxManage list cpu-profiles
+
+    The VBoxManage list cpu-profiles command lists the CPU profiles that are
+    known by Oracle VirtualBox.
+
+
+    List the DHCP Servers on the Host System
+    ----------------------------------------
+
+    VBoxManage list dhcpservers
+
+    The VBoxManage list dhcpservers command lists the DHCP servers that are
+    currently available on the host system. The output shows detailed
+    configuration information about each DHCP server. See chapter 1 "Virtual
+    Networking" in the user manual.
+
+
+    List the DVD Virtual Disk Images
+    --------------------------------
+
+    VBoxManage list dvds
+
+    The VBoxManage list dvds command shows information about the DVD virtual
+    disk images that are currently in use by the Oracle VirtualBox software.
+    For each image, the output shows all the settings, the UUIDs associated
+    with the image by Oracle VirtualBox, and all files associated with the
+    image.
+
+    This command performs the same function as the Virtual Media Manager. See
+    section "The Virtual Media Manager" in chapter 1 of the user manual.
+
+
+    List the Installed Oracle VirtualBox Extension Packs
+    ----------------------------------------------------
+
+    VBoxManage list extpacks
+
+    The VBoxManage list extpacks command shows all Oracle VirtualBox extension
+    packs that are currently installed. See section "Install the" in chapter 1
+    of the user manual and "VBoxManage extpack".
+
+
+    List the Floppy Disk Virtual Disk Images
+    ----------------------------------------
+
+    VBoxManage list floppies
+
+    The VBoxManage list floppies command shows information about the floppy
+    disk images that are currently in use by the Oracle VirtualBox software.
+    For each image, the output shows all the settings, the UUIDs associated
+    with the image by Oracle VirtualBox, and all files associated with the
+    image.
+
+    This command performs the same function as the Virtual Media Manager. See
+    section "The Virtual Media Manager" in chapter 1 of the user manual.
+
+
+    List the Virtual Machine Groups
+    -------------------------------
+
+    VBoxManage list groups
+
+    The VBoxManage list groups command shows all VM groups. See section "Using
+    VM Groups" in chapter 1 of the user manual.
+
+
+    List the Virtual Disk Backends
+    ------------------------------
+
+    VBoxManage list hddbackends
+
+    The VBoxManage list hddbackends command lists all known virtual disk
+    backends of the Oracle VirtualBox software. For each such format, such as
+    VDI, VMDK, or RAW, this command lists the backend's capabilities and
+    configuration.
+
+
+    List the Hard Disk Virtual Disk Images
+    --------------------------------------
+
+    VBoxManage list hdds
+
+    The VBoxManage list hdds command shows information about the hard disk
+    virtual disk images that are currently in use by the Oracle VirtualBox
+    software. For each image, the output shows all the settings, the UUIDs
+    associated with the image by Oracle VirtualBox, and all files associated
+    with the image.
+
+    This command performs the same function as the Virtual Media Manager. See
+    section "The Virtual Media Manager" in chapter 1 of the user manual.
+
+
+    List the CPUID Information for the Host System CPUs
+    ---------------------------------------------------
+
+    VBoxManage list hostcpuids
+
+    The VBoxManage list hostcpuids command lists CPUID information for each CPU
+    on the host system. Use this information to perform a more fine grained
+    analyis of the host system's virtualization capabilities.
+
+
+    List the Storage Drives on the Host System
+    ------------------------------------------
+
+    VBoxManage list hostdrives
+
+    The VBoxManage list hostdrives command lists the disk drives on the host
+    system potentially useful for creating a VMDK raw disk image. Each entry
+    includes the name used to reference them from within Oracle VirtualBox.
+
+
+    List the DVD Drives on the Host System
+    --------------------------------------
+
+    VBoxManage list hostdvds
+
+    The VBoxManage list hostdvds command lists the DVD drives on the host
+    system. Each DVD entry includes the name used to access them from within
+    Oracle VirtualBox.
+
+
+    List the Floppy Disk Drives on the Host System
+    ----------------------------------------------
+
+    VBoxManage list hostfloppies
+
+    The VBoxManage list hostfloppies command lists the floppy disk drives on
+    the host system. Each floppy disk entry includes the name used to access
+    them from within Oracle VirtualBox.
+
+
+    List Information About the Host System
+    --------------------------------------
+
+    VBoxManage list hostinfo
+
+    The VBoxManage list hostinfo command shows information about the host
+    system. The output includes information about the CPUs, memory, and the OS
+    version.
+
+
+    List the Host-Only Network Interfaces on the Host System
+    --------------------------------------------------------
+
+    VBoxManage list hostonlyifs
+
+    The VBoxManage list hostonlyifs command lists the host-only network
+    interfaces that are currently available on the host system. The output
+    shows detailed configuration information about each interface. See chapter
+    1 "Virtual Networking" in the user manual.
+
+
+    List Host-Only Networks
+    -----------------------
+
+    VBoxManage list hostonlynets
+
+    The VBoxManage list hostonlynets command lists the host-only networks that
+    have been configured. A host-only network provides connectivity between the
+    host and local VMs. See chapter 1 "Virtual Networking" in the user manual.
+
+
+    List Internal Networks
+    ----------------------
+
+    VBoxManage list intnets
+
+    The VBoxManage list intnets command shows information about the internal
+    networks. See chapter 1 "Virtual Networking" in the user manual.
+
+
+    List the NAT Network Interfaces on the Host System
+    --------------------------------------------------
+
+    VBoxManage list natnets
+
+    The VBoxManage list natnets command lists the NAT network interfaces that
+    are currently available on the host system. See chapter 1 "Virtual
+    Networking" in the user manual.
+
+
+    List the Guest Operating Systems
+    --------------------------------
+
+    VBoxManage list ostypes
+
+    The VBoxManage list ostypes command lists all guest operating systems
+    (OSes) that are known to Oracle VirtualBox. Each OS entry includes an
+    identifier, a description, a family identifier, a family description, and
+    whether the OS has 64-bit support.
+
+    You can use these identifiers with the VBoxManage modifyvm command.
+
+
+    List the Guest Operating System Subtypes
+    ----------------------------------------
+
+    VBoxManage list ossubtypes
+
+    The VBoxManage list ossubtypes command lists all guest operating system
+    (OS) subtypes along with the associated guest OS descriptions that are
+    known to Oracle VirtualBox. Each list entry includes a guest OS family
+    identifier, the guest OS subtypes associated with that OS family (if any),
+    and a description the guest OSes associated with that OS subtype.
+
+
+    List the Running Virtual Machines
+    ---------------------------------
+
+    VBoxManage list runningvms
+
+    The VBoxManage list runningvms command lists all virtual machines (VMs)
+    that are currently running. By default this displays a compact list that
+    shows the name and UUID of each VM.
+
+
+    List the Available Screen Shot Formats
+    --------------------------------------
+
+    VBoxManage list screenshotformats
+
+    The VBoxManage list screenshotformats command shows the list of available
+    screen shot formats.
+
+
+    List System Properties
+    ----------------------
+
+    VBoxManage list systemproperties
+
+    The VBoxManage list systemproperties command shows a large collection of
+    global Oracle VirtualBox settings and limits, such as minimum and maximum
+    guest RAM, virtual hard disk size, folder settings, and the current
+    authentication library in use.
+
+
+    List the Registered Global USB Filters
+    --------------------------------------
+
+    VBoxManage list usbfilters
+
+    The VBoxManage list usbfilters command lists all global USB filters
+    registered with Oracle VirtualBox and displays the filter parameters.
+    Global USB filters are for devices which are accessible to all virtual
+    machines.
+
+
+    List the USB Devices on the Host System
+    ---------------------------------------
+
+    VBoxManage list usbhost
+
+    The VBoxManage list usbhost command shows information about the USB devices
+    that are attached to the host system. The output includes information that
+    you can use to construct USB filters and indicates whether the device is
+    currently in use by the host system.
+
+
+    List Virtual Machines
+    ---------------------
+
+    VBoxManage list vms
+
+    The VBoxManage list vms command lists all virtual machines (VMs) that are
+    currently registered with Oracle VirtualBox. By default this command
+    displays a compact list that shows the name and UUID of each VM.
+
+
+    List the Webcams Attached to a Running Virtual Machine
+    ------------------------------------------------------
+
+    VBoxManage list webcams
+
+    The VBoxManage list webcams command shows the list of webcams that are
+    attached to the running VM.
+
+    The output is a list of absolute paths or aliases that are used to attach
+    the webcams to the VM by using the VBoxManage webcam attach command.
+
+
+Examples
+========
+
+  The following command lists the VM groups configured for Oracle VirtualBox.
+$ VBoxManage list groups
+"/Linux-VMs"
+"/Windows-VMs"
+
+  The following command lists the VMs that are currently running.
+$ VBoxManage list runningvms
+"ol7" {}
+"win8" {}

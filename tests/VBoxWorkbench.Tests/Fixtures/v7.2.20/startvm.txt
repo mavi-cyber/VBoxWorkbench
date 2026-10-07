@@ -1,0 +1,82 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage startvm -- Start a virtual machine.
+
+Usage
+=====
+
+  VBoxManage startvm [--putenv=name[=value]]
+      [--type=<gui|headless|sdl|separate>] [--password=file]
+      [--password-id=password-identifier] <uuid | vmname...>
+
+Description
+===========
+
+  The VBoxManage startvm command starts an Oracle VirtualBox virtual machine
+  (VM) that is in the Powered Off or Saved state.
+
+  <uuid> | <vmname>
+      Specifies the name or Universally Unique Identifier (UUID) of the VM.
+
+  --putenv=<name>=<value>
+      Assigns a value to an environment variable as a name-value pair. For
+      example, VBOX_DISABLE_HOST_DISK_CACHE=1.
+
+      The short form of this option is -E.
+
+  --type=gui | headless | sdl | separate
+      Specifies the frontend used to start the VM.
+
+      You can use the VBoxManage setproperty command to set a global default
+      value for the frontend. Alternatively, you can use the
+      VBoxManage modifyvm command to specify a default frontend value for a
+      specific VM. If neither a global or per-VM default value is set and you
+      do not specify the --type option, then the VM opens in a window on the
+      host desktop.
+
+      The --type option accepts the following values:
+
+      gui
+          Starts a VM in a graphical user interface (GUI) window. This is the
+          default.
+
+      headless
+          Starts a VM for remote display only.
+
+      sdl
+          Starts a VM using the VBoxSDL frontend.
+
+      separate
+          Starts a VM with a detachable user interface (UI), which means that
+          the VM runs headless with the UI in a separate process.
+
+  --password
+      Use the --password to supply the encryption password. Either specify the
+      absolute pathname of a password file on the host operating system, or -
+      to prompt you for the password on the command line.
+
+  --password-id
+      Use the --password-id option to specify the id the password is supplied
+      for.
+
+  If a VM fails to start with a particular frontend and the error information
+  is inconclusive, consider starting the VM directly by running the frontend.
+  This workaround might provide additional error information.
+
+
+Examples
+========
+
+  The following command starts the ol7u6 VM:
+$ VBoxManage startvm ol7u6
+
+  The following command starts the ol7u6-mininstall VM in headless mode.
+$ VBoxManage startvm ol7u6-mininstall --type headless
+
+
+See Also
+========
+
+  section "VBoxHeadless, the Remote Desktop Server" in chapter 1 of the user
+  manual, "VBoxManage setproperty", "VBoxManage modifyvm".

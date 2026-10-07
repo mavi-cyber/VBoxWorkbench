@@ -1,0 +1,1436 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage modifyvm -- Change settings for a virtual machine that is stopped.
+
+Usage
+=====
+
+  VBoxManage modifyvm <uuid | vmname> [--name=name] [--groups=group
+      [,group...]] [--description=description] [--os-type=OS-type]
+      [--icon-file=filename] [--memory=size-in-MB] [--page-fusion= on | off]
+      [--vram=size-in-MB] [--acpi= on | off] [--ioapic= on | off]
+      [--hardware-uuid=UUID] [--cpus=CPU-count] [--cpu-hotplug= on | off]
+      [--plug-cpu=CPU-ID] [--unplug-cpu=CPU-ID] [--cpu-execution-cap=number]
+      [--x86-pae= on | off] [--x86-long-mode= on | off] [--ibpb-on-vm-exit= on
+      | off] [--ibpb-on-vm-entry= on | off] [--spec-ctrl= on | off]
+      [--l1d-flush-on-sched= on | off] [--l1d-flush-on-vm-entry= on | off]
+      [--mds-clear-on-sched= on | off] [--mds-clear-on-vm-entry= on | off]
+      [--cpu-profile= host | Intel 8086 | Intel 80286 | Intel 80386]
+      [--x86-hpet= on | off] [--hwvirtex= on | off] [--triple-fault-reset= on |
+      off] [--apic= on | off] [--x86-x2apic= on | off] [--arm-gic-its= on |
+      off] [--paravirt-provider= none | default | legacy | minimal | hyperv |
+      kvm] [--paravirt-debug= key=value [,key=value...]] [--nested-paging= on |
+      off] [--large-pages= on | off] [--x86-vtx-vpid= on | off] [--x86-vtx-ux=
+      on | off] [--nested-hw-virt= on | off] [--virt-vmsave-vmload= on | off]
+      [--accelerate-3d= on | off] [--chipset= ich9 | piix3 | armv8virtual]
+      [--iommu= none | automatic | amd | intel] [--tpm-type= none | 1.2 | 2.0 |
+      host | swtpm] [--tpm-location=location] [--firmware-logo-fade-in= on |
+      off] [--firmware-logo-fade-out= on | off]
+      [--firmware-logo-display-time=msec] [--firmware-logo-image-path=pathname]
+      [--firmware-boot-menu= disabled | menuonly | messageandmenu]
+      [--firmware-apic= disabled | apic | x2apic]
+      [--firmware-system-time-offset=msec] [--firmware-pxe-debug= on | off]
+      [--system-uuid-le= on | off] [--bootX= none | floppy | dvd | disk | net]
+      [--rtc-use-utc= on | off] [--graphicscontroller= none | vboxvga | vmsvga
+      | vboxsvga | qemuramfb] [--snapshot-folder= default | pathname]
+      [--firmware= bios | efi | efi32 | efi64]
+      [--guest-memory-balloon=size-in-MB] [--default-frontend= default | name]
+      [--vm-process-priority= default | flat | low | normal | high]
+      [--vm-execution-engine= default | hm | hwvirt | nem | native-api |
+      interpreter | recompiler]
+  VBoxManage modifyvm <uuid | vmname> [--nicN= none | null | nat | bridged |
+      intnet | hostonly | hostonlynet | generic | natnetwork | cloud]
+      [--nic-typeN= Am79C970A | Am79C973 | 82540EM | 82543GC | 82545EM | virtio
+      | usbnet] [--cable-connectedN= on | off] [--nic-traceN= on | off]
+      [--nic-trace-fileN=filename] [--nic-propertyN=name=  [value]]
+      [--nic-speedN=kbps] [--nic-boot-prioN=priority] [--nic-promiscN= deny |
+      allow-vms | allow-all] [--nic-bandwidth-groupN= none | name]
+      [--bridge-adapterN= none | device-name] [--cloud-networkN=network-name]
+      [--host-only-adapterN= none | device-name]
+      [--host-only-netN=network-name] [--intnetN=network-name]
+      [--nat-networkN=network-name] [--nic-generic-drvN=driver-name]
+      [--mac-addressN= auto | MAC-address]
+  VBoxManage modifyvm <uuid | vmname> [--nat-netN= network | default]
+      [--nat-pfN= [rule-name],tcp |
+      udp,[host-IP],hostport,[guest-IP],guestport] [--nat-pfN=delete=rule-name]
+      [--nat-tftp-prefixN=prefix] [--nat-tftp-fileN=filename]
+      [--nat-tftp-serverN=IP-address] [--nat-bind-ipN=IP-address]
+      [--nat-dns-pass-domainN= on | off] [--nat-localhostreachableN= on | off]
+      [--nat-settingsN=[mtu]] [--nat-forward-broadcastN= on | off]
+      [--nat-enable-tftpN= on | off]
+  VBoxManage modifyvm <uuid | vmname> [--mouse= ps2 | usb | usbtablet |
+      usbmultitouch | usbmtscreenpluspad] [--keyboard= ps2 | usb] [--uartN= off
+      | IO-baseIRQ] [--uart-modeN= disconnected | server pipe | client pipe |
+      tcpserver port | tcpclient hostname:port | file filename | device-name]
+      [--uart-typeN= 16450 | 16550A | 16750] [--lpt-modeN=device-name] [--lptN=
+      off | IO-baseIRQ] [--audio-controller= ac97 | hda | sb16] [--audio-codec=
+      stac9700 | ad1980 | stac9221 | sb16] [--audio-driver= none | default |
+      null | dsound | was | oss | alsa | pulse | coreaudio] [--audio-enabled=
+      on | off] [--audio-in= on | off] [--audio-out= on | off]
+      [--clipboard-mode= disabled | hosttoguest | guesttohost | bidirectional]
+      [--clipboard-file-transfers= enabled | disabled] [--drag-and-drop=
+      disabled | hosttoguest | guesttohost | bidirectional]
+      [--monitor-count=number] [--usb-ehci= on | off] [--usb-ohci= on | off]
+      [--usb-xhci= on | off] [--usb-rename=old-namenew-name]
+  VBoxManage modifyvm <uuid | vmname> [--recording= on | off]
+      [--recording-screens= all | none | screen-ID[,screen-ID...]]
+      [--recording-file=filename] [--recording-max-size=MB]
+      [--recording-max-time=seconds] [--recording-opts= 
+      key=value[,key=value...]] [--recording-video-fps=fps]
+      [--recording-video-rate=rate] [--recording-video-res=width x height]
+  VBoxManage modifyvm <uuid | vmname> [--vrde= on | off]
+      [--vrde-property=property-name= [property-value]] [--vrde-extpack=
+      default | name] [--vrde-port=port] [--vrde-address=hostip]
+      [--vrde-auth-type= null | external | guest] [--vrde-auth-library= default
+      | name] [--vrde-multi-con= on | off] [--vrde-reuse-con= on | off]
+      [--vrde-video-channel= on | off] [--vrde-video-channel-quality=percent]
+  VBoxManage modifyvm <uuid | vmname> [--teleporter= on | off]
+      [--teleporter-port=port] [--teleporter-address= address | empty]
+      [--teleporter-password=password] [--teleporter-password-file= filename |
+      stdin] [--cpuid-portability-level=level] [--cpuid-set=leaf
+      [:subleaf]eax ebx ecx edx] [--cpuid-remove=leaf [:subleaf]]
+      [--cpuid-remove-all]
+  VBoxManage modifyvm <uuid | vmname> [--tracing-enabled= on | off]
+      [--tracing-config=string] [--tracing-allow-vm-access= on | off]
+  VBoxManage modifyvm <uuid | vmname> [--usb-card-reader= on | off]
+  VBoxManage modifyvm <uuid | vmname> [--autostart-enabled= on | off]
+      [--autostart-delay=seconds]
+  VBoxManage modifyvm <uuid | vmname> [--guest-debug-provider= none | native |
+      gdb | kd] [--guest-debug-io-provider= none | tcp | udp | ipc]
+      [--guest-debug-address= IP-Address | path] [--guest-debug-port=port]
+  VBoxManage modifyvm <uuid | vmname> [--pci-attach=host-PCI-address
+      [@guest-PCI-bus-address]] [--pci-detach=host-PCI-address]
+  VBoxManage modifyvm <uuid | vmname> [--testing-enabled= on | off]
+      [--testing-mmio= on | off] [--testing-cfg-dwordidx=value]
+
+Description
+===========
+
+  The VBoxManage modifyvm command enables you to change the properties of a
+  registered virtual machine (VM) that is not running.
+
+  Most of these properties correspond to the VM settings that are shown in each
+  VM's Settings dialog in the VirtualBox Manager. See chapter 1 "Working with
+  Virtual Machines" in the user manual. However, some settings can only be
+  viewed and managed with the VBoxManage command.
+
+  You can use the VBoxManage modifyvm command to change VM settings only when
+  the VM is powered off. The VM cannot be running or in saved state when you
+  use this command.
+
+  You can use the VBoxManage controlvm command to dynamically change some VM
+  machine settings while the VM is running. See "VBoxManage controlvm".
+
+    General Settings
+    ----------------
+
+    VBoxManage modifyvm <uuid | vmname> [--name=name] [--groups=group
+        [,group...]] [--description=description] [--os-type=OS-type]
+        [--icon-file=filename] [--memory=size-in-MB] [--page-fusion= on | off]
+        [--vram=size-in-MB] [--acpi= on | off] [--ioapic= on | off]
+        [--hardware-uuid=UUID] [--cpus=CPU-count] [--cpu-hotplug= on | off]
+        [--plug-cpu=CPU-ID] [--unplug-cpu=CPU-ID] [--cpu-execution-cap=number]
+        [--x86-pae= on | off] [--x86-long-mode= on | off] [--ibpb-on-vm-exit=
+        on | off] [--ibpb-on-vm-entry= on | off] [--spec-ctrl= on | off]
+        [--l1d-flush-on-sched= on | off] [--l1d-flush-on-vm-entry= on | off]
+        [--mds-clear-on-sched= on | off] [--mds-clear-on-vm-entry= on | off]
+        [--cpu-profile= host | Intel 8086 | Intel 80286 | Intel 80386]
+        [--x86-hpet= on | off] [--hwvirtex= on | off] [--triple-fault-reset= on
+        | off] [--apic= on | off] [--x86-x2apic= on | off] [--arm-gic-its= on |
+        off] [--paravirt-provider= none | default | legacy | minimal | hyperv |
+        kvm] [--paravirt-debug= key=value [,key=value...]] [--nested-paging= on
+        | off] [--large-pages= on | off] [--x86-vtx-vpid= on | off]
+        [--x86-vtx-ux= on | off] [--nested-hw-virt= on | off]
+        [--virt-vmsave-vmload= on | off] [--accelerate-3d= on | off]
+        [--chipset= ich9 | piix3 | armv8virtual] [--iommu= none | automatic |
+        amd | intel] [--tpm-type= none | 1.2 | 2.0 | host | swtpm]
+        [--tpm-location=location] [--firmware-logo-fade-in= on | off]
+        [--firmware-logo-fade-out= on | off]
+        [--firmware-logo-display-time=msec]
+        [--firmware-logo-image-path=pathname] [--firmware-boot-menu= disabled |
+        menuonly | messageandmenu] [--firmware-apic= disabled | apic | x2apic]
+        [--firmware-system-time-offset=msec] [--firmware-pxe-debug= on | off]
+        [--system-uuid-le= on | off] [--bootX= none | floppy | dvd | disk |
+        net] [--rtc-use-utc= on | off] [--graphicscontroller= none | vboxvga |
+        vmsvga | vboxsvga | qemuramfb] [--snapshot-folder= default | pathname]
+        [--firmware= bios | efi | efi32 | efi64]
+        [--guest-memory-balloon=size-in-MB] [--default-frontend= default |
+        name] [--vm-process-priority= default | flat | low | normal | high]
+        [--vm-execution-engine= default | hm | hwvirt | nem | native-api |
+        interpreter | recompiler]
+
+    The following options enable you to modify general information about your
+    VM.
+
+    The VBoxManage modifyvm command supports the following options:
+
+    --name=<vmname>
+        Changes the name of the VM and its related internal VM files. See
+        "VBoxManage createvm".
+
+    --groups=<group>
+        Changes the group membership of a VM. Group names always begin with a
+        slash character (/) and can be nested. By default, VMs are members of
+        the / group. A VM can be member of multiple groups, but its primary
+        group determines the directory structure where the internal VM files
+        are placed by default.
+
+    --description=<desc>
+        Changes the optional VM description. Use a description to record
+        details about the VM in a meaningful way. The GUI interprets HTML
+        markup while the VBoxManage modifyvm command enables you include
+        arbitrary strings that can contain multiple lines.
+
+    --os-type=<OS-type>
+        Specifies the guest operating system (OS) information for the VM. Use
+        the VBoxManage list ostypes command to view the OS type identifiers.
+
+    --icon-file=<filename>
+        Specifies the path to the VM icon file in PNG format on the host
+        system. The icon is shown in the VM manager UI and when running the VM
+        with UI.
+
+    --memory=<size>
+        Specifies the amount of host system RAM to allocate to the VM. The size
+        is in MB. See chapter 1 "Creating a New Virtual Machine" in the user
+        manual.
+
+    --page-fusion=on | off
+        Enables or disables the Page Fusion feature, which is disabled by
+        default. Use the Page Fusion feature to minimize the memory duplication
+        between VMs that have similar configurations and that run on the same
+        host system. See section "Page Fusion" in chapter 1 of the user manual.
+
+    --vram=<size>
+        Specifies the amount of RAM to allocate to the virtual graphics card.
+        See section "Display Settings" in chapter 1 of the user manual.
+
+    --acpi=on | off
+        Determines whether the VM has ACPI support. See section "Motherboard
+        Tab" in chapter 1 of the user manual.
+
+    --ioapic=on | off
+        Determines whether the VM has I/O APIC support. See section
+        "Motherboard Tab" in chapter 1 of the user manual.
+
+    --hardware-uuid=<uuid>
+        Specifies the Universally Unique Identifier (UUID) to present to the
+        guest VM in memory tables (DMI/SMBIOS), hardware, and VM properties. By
+        default this hardware UUID is the same as the VM UUID. Cloning a VM and
+        the teleporting feature automatically preserve the hardware UUID value.
+        Likewise for Virtual Appliance export and import, but only if both
+        operations are done by Oracle VirtualBox.
+
+    --cpus=<CPU-count>
+        Specifies the number of virtual CPUs to assign to the VM. See section
+        "Processor Tab" in chapter 1 of the user manual.
+
+        If CPU hot-plugging is enabled, this option specifies the maximum
+        number of virtual CPUs that can be plugged into the VMs.
+
+    --cpu-hotplug=on | off
+        Enables or disables CPU hot-plugging. When enabled, you can dynamically
+        add virtual CPUs to a VM or remove virtual CPUs from a VM. See section
+        "CPU Hot-Plugging" in chapter 1 of the user manual.
+
+    --plug-cpu=<CPU-ID>
+        Adds a virtual CPU to the VM. <CPU-ID> is the index of the virtual CPU
+        to add. A valid index value is a number from 0 to the maximum number of
+        CPUs that you configured by using the --cpus option.
+
+        Only use this option if CPU hot-plugging is enabled.
+
+    --unplug-cpu=<CPU-ID>
+        Removes a virtual CPU from the VM. <CPU-ID> is the index of the virtual
+        CPU to remove. A valid index value is a number from 1 to the maximum
+        number of CPUs that you configured by using the --cpus option.
+
+        Only use this option if CPU hot-plugging is enabled.
+
+        Note that you cannot remove CPU 0.
+
+    --cpuexectioncap=<percentage>
+        Specifies how much CPU time a virtual CPU can use. A valid value is
+        from 1 to 100. A value of 50 indicates that a single virtual CPU can
+        use up to 50% of a single host CPU.
+
+        Use this feature with caution, it can have unexpected results including
+        timekeeping problems and lower performance than specified. If you want
+        to limit the resource usage of a VM it is more reliable to pick an
+        appropriate number of VCPUs.
+
+    --x86-pae=on | off
+        Enables or disables physical address extension (PAE). See section
+        "Processor Tab" in chapter 1 of the user manual.
+
+    --x86-long-mode=on | off
+        Enables or disables long mode. See section "Processor Tab" in chapter 1
+        of the user manual.
+
+    --ibpb-on-vm-exit=on | off
+        Enables use of Indirect Branch Prediction Barrier (IBPB) on every VM
+        exit.
+
+    --ibpb-on-vm-entry=on | off
+        Enables use of Indirect Branch Prediction Barrier (IBPB) on every VM
+        entry.
+
+    --spec-ctrl=on | off
+        Enables or disables the exposure of speculation control interfaces to
+        the guest VM. These interfaces must be available on the host system.
+
+        Depending on the host CPU and the workload, enabling speculation
+        control might significantly reduce performance.
+
+    --l1d-flush-on-sched=on | off
+        Enables or disables level 1 data cache flushing when a thread is
+        scheduled to execute guest code. See section "CVE-2018-3646" in chapter
+        1 of the user manual.
+
+    --l1d-flush-on-vm-entry=on | off
+        Enables or disables level 1 data cache flushing on every VM entry. See
+        section "CVE-2018-3646" in chapter 1 of the user manual.
+
+    --mds-clear-on-sched=on | off
+        Enables CPU buffer clearing when a thread is scheduled to execute guest
+        code. See section "CVE-2018-12126, CVE-2018-12127, CVE-2018-12130,
+        CVE-2019-11091" in chapter 1 of the user manual.
+
+    --mds-clear-on-vm-entry=on | off
+        Enables CPU buffer clearing on every VM entry. See section
+        "CVE-2018-12126, CVE-2018-12127, CVE-2018-12130, CVE-2019-11091" in
+        chapter 1 of the user manual.
+
+    --cpu-profile=host | Intel 8086 | Intel 80286 | Intel 80386
+        Specifies the profile to use for guest CPU emulation. Specify a value
+        that is based on the host system CPU (host) or one of the following
+        older Intel micro-architectures: 8086, 80286, or 80386.
+
+    --x86-hpet=on | off
+        Enables or disables a High Precision Event Timer (HPET) that can
+        replace a legacy system timer. This feature is disabled by default.
+        Note HPET is supported on Windows versions starting with Vista.
+
+    --hwvirtex=on | off
+        Enables or disables the use of hardware virtualization extensions in
+        the processor of the host system. Such extensions are Intel VT-x or
+        AMD-V.
+
+    --triple-fault-reset=on | off
+        Enables or disables the resetting of the guest VM instead of triggering
+        a Guru Meditation. Some guest VMs raise a triple fault to reset the
+        CPU, so sometimes resetting the guest VM is the best outcome. This
+        option only applies to guests that do not use symmetric multiprocessing
+        (SMP).
+
+    --apic=on | off
+        Enables or disables APIC. With APIC, OSes can use more than 16
+        interrupt requests (IRQs) to avoid IRQ sharing and to improve
+        reliability. APIC is enabled by default. See section "Motherboard Tab"
+        in chapter 1 of the user manual.
+
+    --x86-x2apic=on | off
+        Enables or disables the CPU x2APIC feature. CPU x2APIC enables an OS to
+        run more efficiently on high core count configurations and to optimize
+        interrupt distribution in virtualized environments. This feature is
+        enabled by default.
+
+        Disable this feature when the OS that runs on a host system or a guest
+        VM is incompatible with CPU x2APIC.
+
+    --arm-gic-its=on | off
+        Enables or disables the ITS (Interrupt Translation Service) component
+        of the GIC (Generic Interrupt Controller). This feature is disabled by
+        default.
+
+    --paravirt-provider=none | default | legacy | minimal | hyperv | kvm
+        Specifies one of the following paravirtualization interfaces to provide
+        to the guest OS:
+
+          - none does not expose any paravirtualization interface.
+          - default selects the appropriate interface based on the guest OS
+          type when starting the VM. This is the default value used when
+          creating new VMs.
+          - legacy selects a paravirtual interface for VMs that were created by
+          older Oracle VirtualBox versions.
+          - minimal is required for Mac OS X guest VMs.
+          - kvm is recommended for Linux guest VMs. See section
+          "Paravirtualization Providers" in chapter 1 of the user manual.
+          - hyperv is recommended for Windows guest VMs. See section
+          "Paravirtualization Providers" in chapter 1 of the user manual.
+
+    --paravirt-debug=<property>=<value>
+        Specifies debugging properties that are specific to the
+        paravirtualization provider configured for the specified VM. See
+        section "Paravirtualized Debugging" in chapter 1 of the user manual.
+
+    --nested-paging=on | off
+        Enables or disables the nested paging feature in the processor of the
+        host system. This option is available only when hardware virtualization
+        is enabled. See section "CVE-2018-3646" in chapter 1 of the user
+        manual.
+
+    --large-pages=on | off
+        Enables or disables the hypervisor's use of large pages, which can
+        improve performance by up to 5%. The use of large pages reduces TLB use
+        and overhead. This option is available only when both hardware
+        virtualization and nested paging are enabled.
+
+    --x86-vtx-vpid=on | off
+        Enables or disables the use of the tagged TLB (VPID) feature in the
+        processor of your host system. This option is available only when
+        hardware virtualization is enabled on Intel VT-x.
+
+    --x86-vtx-ux=on | off
+        Enables or disables the use of unrestricted guest mode for executing
+        the guest VM. This option is available only when hardware
+        virtualization is enabled on Intel VT-x.
+
+    --nested-hw-virt=on | off
+        Enables or disables nested virtualization. Enabling makes hardware
+        virtualization features available to the VM. See section "Nested
+        Virtualization" in chapter 1 of the user manual.
+
+    --virt-vmsave-vmload=on | off
+        If hardware virtualization is enabled and the host has an AMD CPU, this
+        setting enables or disables the use of the virtualized vmsave/vmload
+        host feature while executing the VM. It is enabled by default. It is
+        recommended to leave it enabled as it has a drastic impact on
+        performance while executing nested VMs when using the nested hardware
+        virtualization feature. section "Nested Virtualization" in chapter 1 of
+        the user manual.
+
+    --accelerate-3d=on | off
+        Enables or disables hardware 3D acceleration for the graphics adapter
+        variants which support it. This option has an effect only when the
+        Guest Additions are installed. See section "Hardware-Accelerated
+        Graphics" in chapter 1 of the user manual.
+
+    --chipset=piix3 | ich9 | armv8virtual
+        Specify the Intel chipset for Oracle VirtualBox to emulate. For the x86
+        platform, the default value is the Intel PIIX3 chipset. (piix3). For
+        the ARM platform, the default value is the ARMv8Virtual chipset.
+        (armv8virtual).
+
+        Change this value only if you need to relax some of the chipset
+        constraints. See section "Motherboard Tab" in chapter 1 of the user
+        manual.
+
+    --iommu=none | automatic | amd | intel
+        Specifies the IOMMU type for Oracle VirtualBox to emulate. Both Intel
+        and AMD IOMMU emulation currently require the use of the Intel ICH9
+        chipset (see --chipset option).
+
+        Valid values are as follows:
+
+          - none – No IOMMU is present and is the default value.
+          - automatic – An IOMMU is present but its type is automatically
+          chosen to match the host CPU vendor when the VM is powered on.
+          - amd – An AMD IOMMU is present.
+          - intel – An Intel IOMMU is present.
+
+    --tpm-type=none | 1.2 | 2.0 | host | swtpm
+        Specifies the TPM type for Oracle VirtualBox to emulate.
+
+        Valid values are as follows:
+
+          - none – No TPM is present and is the default value.
+          - 1.2 – A TPM conforming to the TCG specification version 1.2 is
+          present.
+          - 2.0 – A TPM conforming to the TCG specification version 2.0 is
+          present.
+          - host – The host TPM is passed through to the guest. May not be
+          available on all supported host platforms.
+          - swtpm – The VM connects to an external TPM emulation compliant to
+          swtpm. Requires to set the TPM location to connect to (see
+          --tpm-location option).
+
+    --firmware-logo-fade-in=on | off
+        Specifies whether the BIOS logo fades in on VM startup. By default, an
+        Oracle VirtualBox logo is shown.
+
+    --firmware-logo-fade-out=on | off
+        Specifies whether the BIOS logo fades out on VM startup.
+
+    --firmware-logo-display-time=<msec>
+        Specifies the amount of time in milliseconds that the BIOS logo is
+        visible.
+
+    --firmware-logo-image-path=<pathname>
+        Replaces the existing BIOS logo with a different image. The replacement
+        image must be an uncompressed 16, 256 or 16M color bitmap file (BMP)
+        that does not contain color space information (Windows 3.0 format).
+        Also ensure that the image is no larger than 640 X 480 pixels.
+
+    --firmware-boot-menu=disabled | menuonly | messageandmenu
+        Specifies whether the BIOS permits you to select a temporary boot
+        device. Valid values are:
+
+          - disabled outputs the alternate boot device message and permits you
+          to select a temporary boot device by pressing F12.
+          - menuonly suppresses the alternate boot device message, but permits
+          you to select a temporary boot device by pressing F12.
+          - messageandmenu suppresses the alternate boot device message and
+          prevents you from selecting a temporary boot device by pressing F12.
+
+    --firmware-apic=x2apic | apic | disabled
+        Specifies the APIC level of the firmware. Valid values are: x2apic,
+        apic, and disabled. When the value is disabled, neither the apic nor
+        the x2apic version of the firmware is used.
+
+        Note that if you specify the x2apic value and x2APIC is unsupported by
+        the virtual CPU, the APIC level downgrades to apic, if supported.
+        Otherwise, the APIC level downgrades to disabled. Similarly, if you
+        specify the apic value and APIC is unsupported by the virtual CPU, the
+        APIC level downgrades to disabled.
+
+    --firmware-system-time-offset=<msec>
+        Specifies the time offset in milliseconds of the guest VM relative to
+        the time on the host system. If the offset value is positive, the guest
+        VM time runs ahead of the time on the host system.
+
+    --firmware-pxe-debug=on | off
+        Enables or disables additional debugging output when using the Intel
+        PXE boot ROM. The debug output is written to the release log file. See
+        section "Collecting Debugging Information" in chapter 1 of the user
+        manual.
+
+    --system-uuid-le=on | off
+        Enables or disables representing the system UUID in little endian form.
+        The default value is on for new VMs. For old VMs the setting is off to
+        keep the content of the DMI/SMBIOS table unchanged, which can be
+        important for Windows license activation.
+
+    --boot<N>=none | floppy | dvd | disk | net
+        Enables you to specify the boot device order for the VM by assigning
+        one of the device types to each of the four boot device slots that are
+        represented by <N> in the option name.
+
+        A value of 1 for <N> represents the first boot device slot, and so on.
+
+        The device types are floppy for floppy disks, dvd for DVDs or CDs, disk
+        for hard disks, and net for a network device. A value of none indicates
+        that no boot device is associated with the specified slot.
+
+    --rtc-use-utc=on | off
+        Specifies whether the real-time clock (RTC) uses coordinated universal
+        time (UTC). See section "Motherboard Tab" in chapter 1 of the user
+        manual.
+
+    --graphicscontroller=none | vboxvga | vmsvga | vboxsvga
+        Specifies the graphics controller type to use. See section "Screen Tab"
+        in chapter 1 of the user manual.
+
+    --snapshot-folder=default | <pathname>
+        Specifies the name of the VM's snapshot storage folder. If you specify
+        default, the folder name is Snapshots/ in the machine folder.
+
+    --firmware=bios | efi | efi32 | efi64
+        Specifies the firmware used to boot the VM. Valid values are: bios,
+        efi, efi32, or efi64. Use EFI values with care.
+
+        By default, BIOS firmware is used.
+
+    --guest-memory-balloon=<size>
+        Specifies the size of the guest memory balloon. The guest memory
+        balloon is the memory allocated by the Guest Additions from the guest
+        OS and returned to the hypervisor for use by other VMs. Specify <size>
+        in megabytes. The default value is 0 megabytes. See section "Memory
+        Ballooning" in chapter 1 of the user manual.
+
+    --default-frontend=default | <name>
+        Specifies the default frontend to use when starting the specified VM.
+        If you specify default, the VM is shown in a window on the user's
+        desktop. See "VBoxManage startvm".
+
+    --vm-process-priority=default | flat | low | normal | high
+        Specifies the priority scheme of the VM process to use when starting
+        the specified VM and while the VM runs.
+
+        The following valid values are:
+
+          - default – Default process priority determined by the OS.
+          - flat – Assumes a scheduling policy which puts the process at the
+          default priority and with all threads at the same priority.
+          - low – Assumes a scheduling policy which puts the process mostly
+          below the default priority of the host OS.
+          - normal – Assume a scheduling policy which shares the CPU
+          resources fairly with other processes running with the default
+          priority of the host OS.
+          - high – Assumes a scheduling policy which puts the task above the
+          default priority of the host OS. This policy might easily cause other
+          tasks in the system to starve.
+
+
+    Networking Settings
+    -------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--nicN= none | null | nat | bridged |
+        intnet | hostonly | hostonlynet | generic | natnetwork | cloud]
+        [--nic-typeN= Am79C970A | Am79C973 | 82540EM | 82543GC | 82545EM |
+        virtio | usbnet] [--cable-connectedN= on | off] [--nic-traceN= on |
+        off] [--nic-trace-fileN=filename] [--nic-propertyN=name=  [value]]
+        [--nic-speedN=kbps] [--nic-boot-prioN=priority] [--nic-promiscN= deny |
+        allow-vms | allow-all] [--nic-bandwidth-groupN= none | name]
+        [--bridge-adapterN= none | device-name] [--cloud-networkN=network-name]
+        [--host-only-adapterN= none | device-name]
+        [--host-only-netN=network-name] [--intnetN=network-name]
+        [--nat-networkN=network-name] [--nic-generic-drvN=driver-name]
+        [--mac-addressN= auto | MAC-address]
+
+    The following options enable you to modify networking on your VM. With all
+    these options, <N> is an integer greater than zero that represents the
+    particular virtual network adapter to configure.
+
+    --nic<N>=none | null | nat | natnetwork | bridged | intnet | hostonly | generic
+        Configures the network type used by each virtual network card in the
+        VM.
+
+        The following valid values correspond to the modes described in section
+        "Introduction to Networking Modes" in chapter 1 of the user manual:
+
+          - none – No networking present
+          - null – Not connected to the host system
+          - nat – Use network address translation (NAT)
+          - natnetwork – Use a NAT network
+          - bridged – Use bridged networking
+          - intnet – Use internal networking
+          - hostonly – Use host-only networking
+          - generic – Access rarely used sub-modes
+
+    --nic-type<N>=Am79C970A | Am79C973 | 82540EM | 82543GC | 82545EM | virtio | usbnet
+        Identifies the type of networking hardware that Oracle VirtualBox
+        presents to the guest VM for the specified virtual network card. See
+        section "Virtual Networking Hardware" in chapter 1 of the user manual.
+
+        Valid values are as follows:
+
+          - Am79C970A represents the AMD PCNet PCI II.
+          - Am79C973 represents the AMD PCNet FAST III, which is the default
+          value.
+          - 82540EM represents the Intel PRO/1000 MT Desktop.
+          - 82543GC represents the Intel PRO/1000 T Server.
+          - 82545EM represents the Intel PRO/1000 MT Server.
+          - virtio represents a paravirtualized network adapter.
+          - usbnet represents an Ethernet over USB network adapter.
+
+    --cable-connected<N>=on | off
+        Temporarily disconnects a virtual network interface, as if you pull a
+        network cable from a physical network card. You might use this option
+        to reset certain software components in the VM.
+
+    --nic-trace<N>=on | off
+        Enables or disables network tracing for the specified virtual network
+        card.
+
+    --nic-trace-file<N>=<filename>
+        Specifies the absolute path of the file in which to write trace log
+        information. Use this option if network tracing is enabled.
+
+    --nic-property<N>=<name>=<value>
+        Enables you to set property values and pass them to rarely used network
+        backends. To use this option, you must also use the --nic-generic-drv
+        option.
+
+        These properties are specific to the backend engine and differ between
+        the UDP Tunnel and the VDE backend drivers. For property examples, see
+        section "UDP Tunnel Networking" in chapter 1 of the user manual.
+
+    --nic-speed<N>=<kbps>
+        Specifies the throughput rate in kilobits per second for rarely used
+        networking sub-modes such as VDE network and UDP Tunnel. Use this
+        option only if you used the --nic option to enable generic networking
+        for the specified virtual network card.
+
+    --nic-boot-prio<N>=<priority>
+        Assigns a priority to each NIC that determines the order in which that
+        NIC is used to perform a PXE network boot. The priority value is an
+        integer in the range from 0 to 4. Priority 0, which is the default
+        value, is the lowest priority. Priority 1 is the highest priority, and
+        priorities 3 and 4 are lower.
+
+        This option has an effect only when using the Intel PXE boot ROM.
+
+    --nic-promisc<N>=deny | allow-vms | allow-all
+        Enables you to specify whether to deny or allow promiscuous mode for
+        the specified VM virtual network card. This option is relevant only for
+        bridged networking. Valid values are as follows:
+
+          - deny hides any traffic that is not intended for the VM. This is the
+          default value.
+          - allow-vms hides all host traffic from the VM, but allows the VM to
+          see traffic to and from other VMs.
+          - allow-all allows the VM to see all traffic.
+
+    --nic-bandwidth-group<N>=none | <name>
+        Adds or removes a bandwidth group assignment to the specified virtual
+        network interface. Valid values are as follows:
+
+          - none removes any current bandwidth group assignment from the
+          specified virtual network interface.
+          - <name> adds a bandwidth group assignment to the specified virtual
+          network interface.
+
+        See section "Limiting Bandwidth for Network Input/Output" in chapter 1
+        of the user manual.
+
+    --bridge-adapter<N>=none | <device-name>
+        Specifies the host interface to use for the specified virtual network
+        interface. See section "Bridged Networking" in chapter 1 of the user
+        manual. Use this option only if you used the --nic option to enable
+        bridged networking for the specified virtual network card.
+
+    --host-only-adapter<N>=none | <device-name>
+        Specifies which host-only networking interface to use for the specified
+        virtual network interface. See section "Host-Only Networking" in
+        chapter 1 of the user manual. Use this option only if you used the
+        --nic option to enable host-only networking for the specified virtual
+        network card.
+
+    --intnet<N>=<network-name>
+        Specifies the name of the internal network. See section "Internal
+        Networking" in chapter 1 of the user manual. Use this option only if
+        you used the --nic option to enable internal networking for the
+        specified virtual network card.
+
+    --nat-network<N>=<network-name>
+        Specifies the name of the NAT network to which this adapter is
+        connected. Use this option only if the networking type is natnetwork,
+        not nat.
+
+    --nic-generic-drv<N>=<backend-driver>
+        Enables you to access rarely used networking sub-modes, such as VDE
+        networks and UDP Tunnel. Use this option only if you used the --nic
+        option to enable generic networking for a virtual network card.
+
+    --mac-address<N>=auto | <MAC-address>
+        Specifies the MAC address of the specified network adapter on the VM.
+        By default, Oracle VirtualBox assigns a random MAC address to each
+        network adapter at VM creation.
+
+
+    NAT Networking Settings
+    -----------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--nat-netN= network | default]
+        [--nat-pfN= [rule-name],tcp |
+        udp,[host-IP],hostport,[guest-IP],guestport]
+        [--nat-pfN=delete=rule-name] [--nat-tftp-prefixN=prefix]
+        [--nat-tftp-fileN=filename] [--nat-tftp-serverN=IP-address]
+        [--nat-bind-ipN=IP-address] [--nat-dns-pass-domainN= on | off]
+        [--nat-localhostreachableN= on | off] [--nat-settingsN=[mtu]]
+        [--nat-forward-broadcastN= on | off] [--nat-enable-tftpN= on | off]
+
+    The following options use <N> to specify the particular virtual network
+    adapter to modify.
+
+    --nat-net<N>=default | <network>
+        Specifies the IP address range to use for this network. See section
+        "Fine Tuning the NAT Engine" in chapter 1 of the user manual. Use this
+        option only if the networking type is nat, not natnetwork.
+
+    --nat-pf<N>=[<name>],tcp | udp,[<host-IP>],<hostport>,[<guest-IP>],<guestport>
+        Specifies the NAT port-forwarding rule to use. See section "Configuring
+        Port Forwarding with NAT" in chapter 1 of the user manual.
+
+    --nat-pf<N>=delete <name>
+        Specifies the NAT port-forwarding rule to delete. See section
+        "Configuring Port Forwarding with NAT" in chapter 1 of the user manual.
+
+    --nat-tftp-prefix<N>=<prefix>
+        Specifies a prefix to use for the built-in TFTP server. For example,
+        you might use a prefix to indicate where the boot file is located. See
+        section "PXE Booting with NAT" in chapter 1 of the user manual and
+        section "Configuring the Boot Server (Next Server) of a NAT Network
+        Interface" in chapter 1 of the user manual.
+
+    --nat-tftp-file<N>=<boot-file>
+        Specifies the name of the TFT boot file. See section "Configuring the
+        Boot Server (Next Server) of a NAT Network Interface" in chapter 1 of
+        the user manual.
+
+    --nat-tftp-server<N>=<tftp-server>
+        Specifies the address of the TFTP server from which to boot. See
+        section "Configuring the Boot Server (Next Server) of a NAT Network
+        Interface" in chapter 1 of the user manual.
+
+    --nat-bind-ip<N>=<IP-address>
+        Specifies an alternate IP address to which the NAT engine binds. See
+        section "Fine Tuning the NAT Engine" in chapter 1 of the user manual.
+        By default, Oracle VirtualBox's NAT engine routes TCP/IP packets
+        through the default interface assigned by the host's TCP/IP stack.
+
+    --nat-dns-pass-domain<N>=on | off
+        Specifies whether the built-in DHCP server passes the domain name for
+        network name resolution.
+
+    --nat-localhostreachable<N>=on | off
+        Specifies whether the NAT engine allows traffic from the guest directed
+        to 10.0.2.2 to pass to the host's loopback interface, i.e. localhost or
+        127.0.0.1.
+
+    --nat-settings<N>=[<mtu>]
+        Specifies values for tuning NAT performance. See section "Fine Tuning
+        the NAT Engine" in chapter 1 of the user manual.
+
+
+    Other Hardware Settings
+    -----------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--mouse= ps2 | usb | usbtablet |
+        usbmultitouch | usbmtscreenpluspad] [--keyboard= ps2 | usb] [--uartN=
+        off | IO-baseIRQ] [--uart-modeN= disconnected | server pipe |
+        client pipe | tcpserver port | tcpclient hostname:port | file filename
+        | device-name] [--uart-typeN= 16450 | 16550A | 16750]
+        [--lpt-modeN=device-name] [--lptN= off | IO-baseIRQ]
+        [--audio-controller= ac97 | hda | sb16] [--audio-codec= stac9700 |
+        ad1980 | stac9221 | sb16] [--audio-driver= none | default | null |
+        dsound | was | oss | alsa | pulse | coreaudio] [--audio-enabled= on |
+        off] [--audio-in= on | off] [--audio-out= on | off] [--clipboard-mode=
+        disabled | hosttoguest | guesttohost | bidirectional]
+        [--clipboard-file-transfers= enabled | disabled] [--drag-and-drop=
+        disabled | hosttoguest | guesttohost | bidirectional]
+        [--monitor-count=number] [--usb-ehci= on | off] [--usb-ohci= on | off]
+        [--usb-xhci= on | off] [--usb-rename=old-namenew-name]
+
+    The following options enable you to configure other hardware, such as the
+    serial port, monitor, audio device, USB ports, and the clipboard, and
+    drag-and-drop features.
+
+    --mouse=ps2 | usb | usbtablet | usbmultitouch | usbmtscreenpluspad
+        Specifies the mode of the mouse to use in the VM. Valid values are:
+        ps2, usb, usbtablet, usbmultitouch and usbmtscreenpluspad.
+
+    --keyboard=ps2 | usb
+        Specifies the mode of the keyboard to use in the VM. Valid values are:
+        ps2 and usb.
+
+    --uart<N>=off | <I/O-base><IRQ>
+        Configures virtual serial ports for the VM. <N> represents the serial
+        port to modify. Valid values are off to disable the port or an I/O base
+        address and IRQ. For information about the traditional COM port I/O
+        base address and IRQ values, see section "Serial Ports" in chapter 1 of
+        the user manual.
+
+    --uart-mode<N>=<mode>
+        Specifies how Oracle VirtualBox connects the specified virtual serial
+        port to the host system that runs the VM. See section "Serial Ports" in
+        chapter 1 of the user manual.
+
+        Ensure that you first configure the virtual serial port by using the
+        --uart<N> option.
+
+        Specify one of the following connection modes for each port:
+
+          - disconnected indicates that even though the serial port is shown to
+          the guest VM, it is not connected. This state is like a physical COM
+          port without a cable attached.
+          - server<pipe-name> creates the specified named pipe or local domain
+          socket on the host system and connects the virtual serial device to
+          it.
+
+          - On a Windows host system, <pipe-name> is a named pipe that has a
+          name that uses the following form: \\.\pipe\<pipe-name>.
+
+          - On a Linux host system, <pipe-name> is a local domain socket.
+          - client<pipe-name> connects the virtual serial device to the
+          specified named pipe or local domain socket.
+
+          - Note that the named pipe or local domain socket must already exist.
+          - tcpserver<port> creates a TCP socket with the specified TCP port on
+          the host system and connects the virtual serial device to it.
+
+          - For UNIX-like systems, use ports over 1024 for non-root users.
+          - tcpclient<hostname>:<port> connects the virtual serial device to
+          the TCP socket.
+
+          - Note that the TCP socket must already exist.
+          - file<filename> redirects the serial port output to the specified
+          raw file. Ensure that <filename> is the absolute path of the file on
+          the host system.
+          - <device-name>: specifies the device name of a physical hardware
+          serial port on the specified host system to which the virtual serial
+          port connects.
+
+          - Use this mode to connect a physical serial port to a VM.
+
+          - On a Windows host system, the device name is a COM port such as
+          COM1. On a Linux host system, the device name is similar to
+          /dev/ttyS0.
+
+    --uart-type<N>=<UART-type>
+        Configures the UART type for the specified virtual serial port (<N>).
+        Valid values are 16450, 16550A, and 16750. The default value is 16550A.
+
+    --lpt-mode<N>=<device-name>
+        Specifies the device name of the parallel port to use.
+
+        For a Windows host system, use a device name such as lpt1. For a Linux
+        host system, use a device name such as /dev/lp0.
+
+    --lpt<N>=<I/O-base><IRQ>
+        Specifies the I/O base address and IRQ of the parallel port.
+
+        You can view the I/O base address and IRQ that the VM uses for the
+        parallel port in the Device Manager.
+
+    --audio-controller=<controller-type>
+        Specifies the audio controller to be used with the VM. Valid audio
+        controller type values are: ac97, hda, and sb16.
+
+    --audio-codec=<codec-type>
+        Specifies the audio codec to be used with the VM. Valid audio codec
+        type values are: stac9700, ad1980, stac9221, and sb16.
+
+    --audio-driver=<type>
+        Specifies whether which audio driver (backend) to use. none, default,
+        null, dsound, was, oss, alsa, pulse, and coreaudio.
+
+        Note that the audio driver are dependent on the host operating system.
+        Use the VBoxManage modifyvm command usage output to determine the
+        supported audio types for your host system.
+
+        For maximum interoperability between hosts, the default audio driver
+        can be used. The VM will then automatically select the most appropriate
+        audio driver for the current host available.
+
+    --audio-enabled=on|off
+        Specifies whether to enable or disable audio for the VM.
+
+        This option has precedence over the --audio-on and --audio-off options,
+        i.e. turning off audio via this option will turn off both, input and
+        output, audio.
+
+    --audio-in=on|off
+        Specifies whether to enable or disable audio capture from the host
+        system.
+
+    --audio-out=on|off
+        Specifies whether to enable or disable audio playback from the guest
+        VM.
+
+    --clipboard-mode=<value>
+        Specifies how to share the guest VM or host system OS's clipboard with
+        the host system or guest VM, respectively. Valid values are: disabled,
+        hosttoguest, guesttohost, and bidirectional. See section "General
+        Settings" in chapter 1 of the user manual.
+
+        The clipboard feature is available only if you have the Guest Additions
+        be installed in the VM.
+
+    --clipboard-file-transfers=<value>
+        Specifies whether file transfers via clipboard between the guest VM and
+        the host are enabled or not. Valid values are: disabled, enabled.
+        Depends on the current clipboard mode being set.
+
+        This clipboard file transfer feature is available only if you have the
+        Guest Additions be installed in the VM.
+
+    --drag-and-drop=<value>
+        Specifies how to use the drag and drop feature between the host system
+        and the VM. Valid values are: disabled, hosttoguest, guesttohost, and
+        bidirectional. See section "Drag and Drop" in chapter 1 of the user
+        manual.
+
+        The drag and drop feature is available only if you have the Guest
+        Additions be installed in the VM.
+
+    --monitor-count=<count>
+        Enables you to configure multiple monitors. See section "Display
+        Settings" in chapter 1 of the user manual.
+
+    --usb-ohci=on | off
+        Enables or disables the VM's virtual USB 1.1 controller. See section
+        "USB Settings" in chapter 1 of the user manual.
+
+    --usb-ehci=on | off
+        Enables or disables the VM's virtual USB 2.0 controller. See section
+        "USB Settings" in chapter 1 of the user manual.
+
+    --usb-xhci=on | off
+        Enables or disables the VM's virtual USB 3.0 controller. This is the
+        most efficient option if the VM supports it. See section "USB Settings"
+        in chapter 1 of the user manual.
+
+    --usb-rename=<old-name><new-name>
+        Rename's the VM's virtual USB controller from <old-name> to <new-name>.
+
+
+    Recording Settings
+    ------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--recording= on | off]
+        [--recording-screens= all | none | screen-ID[,screen-ID...]]
+        [--recording-file=filename] [--recording-max-size=MB]
+        [--recording-max-time=seconds] [--recording-opts= 
+        key=value[,key=value...]] [--recording-video-fps=fps]
+        [--recording-video-rate=rate] [--recording-video-res=width x height]
+
+    The following options enable you to modify settings for video recording,
+    audio recording, or both.
+
+    --recording=on | off
+        Enables or disables the recording of a VM session into a WebM or VP8
+        file. When set to on, recording begins when the VM session starts.
+
+    --recording-screens=all | none | <screen-ID>[,<screen-ID>...
+        Enables you to specify the VM screens to record. The recording for each
+        screen is output to its own file. Valid values are: all, which records
+        all screens, none, which records no screens, or one or more specified
+        screens.
+
+    --recording-file=<filename>
+        Specifies the name of the file in which to save the recording.
+
+    --recording-max-size=<MB>
+        Specifies the maximum size of the recorded video file in megabytes.
+        When the file reaches the specified size, recording stops. If the value
+        is 0, recording continues until you manually stop recording.
+
+    --recording-max-time=<seconds>
+        Specifies the maximum amount of time to record in seconds. When the
+        specified time elapses, recording stops. If the value is 0, recording
+        continues until you manually stop recording.
+
+    --recording-opts=<keyword>=<value>
+        Specifies additional video-recording properties as a comma-separated
+        property keyword-value list. For example, foo=bar,a=b.
+
+        Only use this option if you are an advanced user. For information about
+        keywords, see the Oracle VirtualBox Programming Guide and Reference.
+
+    --recording-video-fps=<fps>
+        Specifies the maximum number of video frames per second (FPS) to
+        record. The recording ignores any frames that have a higher frequency.
+        When you increase the FPS, fewer frames are ignored but the recording
+        and the size of the recording file increases.
+
+    --recording-video-rate=<bit-rate>
+        Specifies the bit rate of the video in kilobits per second. When you
+        increase the bit rate, the recording appearance improves and the size
+        of the recording file increases.
+
+    --recording-video-res=<width>x<height>
+        Specifies the video resolution (width and height) of the recorded video
+        in pixels.
+
+
+    Remote Machine Settings
+    -----------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--vrde= on | off]
+        [--vrde-property=property-name= [property-value]] [--vrde-extpack=
+        default | name] [--vrde-port=port] [--vrde-address=hostip]
+        [--vrde-auth-type= null | external | guest] [--vrde-auth-library=
+        default | name] [--vrde-multi-con= on | off] [--vrde-reuse-con= on |
+        off] [--vrde-video-channel= on | off]
+        [--vrde-video-channel-quality=percent]
+
+    The following options enable you to modify the VirtualBox Remote Desktop
+    Extension (VRDE) behavior.
+
+    --vrde=on | off
+        Enables or disables the VRDE server.
+
+    --vrde-property=TCP/Ports=<port>
+        <port> is the port or port range to which the VRDE server binds. The
+        default or 0 value uses port 3389, which is the standard RDP port.
+
+        See also the --vrde-port option description.
+
+    --vrde-property=TCP/Address=<IP-address>
+        <IP-address> is the IP address of the host network interface to which
+        the VRDE server binds. When specified, the server accepts connections
+        only on the host network interface at that IP address.
+
+        See also the --vrde-address option description.
+
+    --vrde-property=VideoChannel/Enabled=<value>
+        Specifies whether the VRDP video channel is on or off. 1 means on and 0
+        means off. See section "VRDP Video Redirection" in chapter 1 of the
+        user manual.
+
+    --vrde-property=Quality=<value>
+        Specifies a value between 10% and 100%, inclusive, that represents the
+        JPEG compression level on the VRDE server video channel. A lower value
+        produces lower JPEG quality but higher compression. See section "VRDP
+        Video Redirection" in chapter 1 of the user manual.
+
+    --vrde-property=DownscaleProtection=<value>
+        Enables or disables the video downscale protection feature. Valid
+        values are 1 to enable the feature and 0 to disable the feature.
+
+        When this feature is enabled, Oracle VirtualBox determines whether to
+        display the video:
+
+          - When the video size equals the size of the shadow buffer, the video
+          is considered to be full screen and is displayed.
+          - When the video size is between full screen and the downscale
+          threshold, the video is not displayed. Such a video might be an
+          application window, which is unreadable when downscaled.
+
+        When this feature is disabled, an attempt is always made to display a
+        video.
+
+    --vrde-property=Client/DisableDisplay=1
+        Disables the display VRDE server feature.
+
+        To re-enable a feature, assign an empty value. For example, to
+        re-enable the display feature, specify the
+        VBoxManage modifyvm --vrde-property=Client/DisableDisplay= command. See
+        section "VRDP Customization" in chapter 1 of the user manual.
+
+    --vrde-property=DisableInput=1
+        Disables the input VRDE server feature.
+
+    --vrde-property=DisableAudio=1
+        Disables the audio VRDE server feature.
+
+    --vrde-property=DisableUSB=1
+        Disables the USB VRDE server feature.
+
+    --vrde-property=Client/DisableClipboard=1
+        Disables the clipboard VRDE server feature. To re-enable the feature,
+        assign an empty value. See section "VRDP Customization" in chapter 1 of
+        the user manual.
+
+    --vrde-property=DisableUpstreamAudio=1
+        Disables the upstream audio VRDE server feature. To re-enable the
+        feature, assign an empty value. See section "VRDP Customization" in
+        chapter 1 of the user manual.
+
+    --vrde-property=Client/DisableRDPDR=1
+        Disables the RDP device redirection for smart cards VRDE server
+        feature. To re-enable this feature, assign an empty value.
+
+    --vrde-property=H3DRedirect/Enabled=1
+        Enables the 3D redirection VRDE server feature. To disable this
+        feature, assign an empty value.
+
+    --vrde-property=Security/Method=<value>
+        Specifies the following information that is required for a connection:
+
+          - Negotiate indicates that both Enhanced (TLS) and Standard RDP
+          Security connections are permitted. The security method is negotiated
+          with the client. This is the default value.
+          - RDP indicates that only Standard RDP Security is accepted.
+          - TLS indicates that only Enhanced RDP Security is accepted. The
+          client must support TLS.
+
+        See section "RDP Encryption" in chapter 1 of the user manual.
+
+    --vrde-property=ServerCertificate=<value>
+        Specifies the absolute path to the server certificate. See section "RDP
+        Encryption" in chapter 1 of the user manual.
+
+    --vrde-property=ServerPrivateKey=<value>
+        Specifies the absolute path to the server private key. See section "RDP
+        Encryption" in chapter 1 of the user manual.
+
+    --vrde-property=CACertificate=<value>
+        Specifies the absolute path to the CA self-signed certificate. See
+        section "RDP Encryption" in chapter 1 of the user manual.
+
+    --vrde-property Audio/RateCorrectionMode=<value>
+        Specifies the audio connection mode or the path to the audio log file.
+        Valid values are as follows:
+
+          - VRDP_AUDIO_MODE_VOID is no mode. Use this value to unset any set
+          audio mode.
+          - VRDP_AUDIO_MODE_RC is the rate correction mode.
+          - VRDP_AUDIO_MODE_LPF is the low pass filter mode.
+          - VRDP_AUDIO_MODE_CS is the client sync sync mode to prevent an
+          underflow or overflow of the client queue.
+
+    --vrde-property=LogPath=<value>
+        Specifies the absolute path to the audio log file.
+
+    --vrde-extpack=default | <name>
+        Specifies the library to use to access the VM remotely. The default
+        value uses the RDP code that is part of the Oracle VirtualBox Extension
+        Pack.
+
+        To use the VRDE module in VNC, specify VNC. See section "Other
+        Extension Packs" in chapter 1 of the user manual.
+
+    --vrde-port=default | <port>
+        <port> is the port or port range to which the VRDE server binds. The
+        default or 0 value uses port 3389, which is the standard RDP port.
+
+        You can specify a comma-separated list of ports or port ranges of
+        ports. Use a dash between two port numbers to specify a port range. The
+        VRDE server binds to only one of the available ports from the list.
+        Only one machine can use a given port at a time. For example, the
+        --vrde-port=5000,5010-5012 option specifies that server can bind to one
+        of following ports: 5000, 5010, 5011, or 5012.
+
+    --vrde-address=<IP-address>
+        Specifies the IP address of the host network interface to which the
+        VRDE server binds. If you specify an IP address, the server accepts
+        connections only on the specified host network interface.
+
+        Use this option to specify whether the VRDP server should accept IPv4,
+        IPv6, or both type of connections:
+
+          - Only IPv4: Use the --vrde-address="0.0.0.0" option.
+          - Only IPv6: Use the --vrde-address="::" option.
+          - Both IPv6 and IPv4: Use the --vrde-address="" option. This is the
+          default value.
+
+    --vrde-auth-type=null | external | guest
+        Specify whether to use authorization and how to perform authorization.
+        See section "RDP Authentication" in chapter 1 of the user manual. Valid
+        values are as follows:
+
+          - null provides no authentication.
+          - external provides external authentication through an authentication
+          library.
+          - guest performs authentication by using guest user accounts. This
+          unsupported method requires that you install the Guest Additions on
+          the VM.
+
+    --vrde-auth-library=default | <name>
+        Specifies the library to use for RDP authentication. The default
+        library for external authentication is VBoxAuth. See section "RDP
+        Authentication" in chapter 1 of the user manual.
+
+    --vrde-multi-con=on | off
+        Enables or disables the multiple connections VRDE server feature, if
+        supported. See section "Multiple Connections to the VRDP Server" in
+        chapter 1 of the user manual.
+
+    --vrde-reuse-con=on | off
+        Specifies how the VRDE server behaves when multiple connections are
+        disabled. When the value is on, the server permits a new client to
+        connect and drops the existing connection. When the value is off, a new
+        connection is not accepted if a client is already connected to the
+        server. This is the default value.
+
+    --vrde-video-channel=on | off
+        Enables video redirection if supported by the VRDE server. See section
+        "VRDP Video Redirection" in chapter 1 of the user manual.
+
+    --vrde-video-channel-quality=<percent>
+        Specifies the image quality for video redirection as a value from 10 to
+        100 percent. The percentage represents the JPEG compression level where
+        a lower number diminishes quality and provides higher compression. See
+        section "VRDP Video Redirection" in chapter 1 of the user manual.
+
+
+    Teleporting Settings
+    --------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--teleporter= on | off]
+        [--teleporter-port=port] [--teleporter-address= address | empty]
+        [--teleporter-password=password] [--teleporter-password-file= filename
+        | stdin] [--cpuid-portability-level=level] [--cpuid-set=leaf
+        [:subleaf]eax ebx ecx edx] [--cpuid-remove=leaf [:subleaf]]
+        [--cpuid-remove-all]
+
+    The following options enable you to configure a machine as a teleporting
+    target. See section "Teleporting" in chapter 1 of the user manual and the
+    teleporting related entries in section "Potentially Insecure Operations" in
+    chapter 1 of the user manual.
+
+    --teleporter=on | off
+        Enables or disables the teleporter. When enabled, a machine starts up
+        and waits to receive a teleporting request from the network instead of
+        booting normally.
+
+        Teleporting requests are received on the port and address specified
+        using the following parameters.
+
+    --teleporter-port=<port>
+        Specifies the port on which the VM listens to receive a teleporting
+        request from another VM. <port> is any free TCP/IP port number, such as
+        6000. You must also specify the --teleporter option.
+
+    --teleporter-address=<IP-address>
+        Specifies the IP address on which the VM listens to receive a
+        teleporting request from another VM. <IP-address> is any IP address or
+        host name and specifies the TCP/IP socket on which to bind. The default
+        IP address is 0.0.0.0, which represents any IP address. You must also
+        specify the --teleporter option.
+
+    --teleporter-password=<password>
+        Specifies the password to use for authentication. When specified, the
+        teleporting request only succeeds if the password on the source machine
+        is the same password as the one you specify.
+
+    --teleporter-password-file=<filename>
+        Specifies a file that contains the password to use for authentication.
+        When specified, the teleporting request only succeeds if the password
+        on the source machine is the same password as the one you specify in
+        the password file. A value of stdin reads the password from standard
+        input.
+
+    --cpuid-portability-level=<level>
+        Restricts the virtual CPU capabilities that Oracle VirtualBox presents
+        to the guest OS by using portability rules. Higher integer values
+        designate more restrictive behavior. The default level of 0 indicates
+        that all virtualized features supported by the host are made available
+        to the guest. The value 3 suppresses most features. Values of 1 and 2
+        represent restrictions in between. The behavior may change depending on
+        the product version.
+
+    --cpuid-set=<leaf>[:<subleaf>] <eax> <ebx> <ecx> <edx>
+        Advanced users can use this setting before a teleporting operation (in
+        fact before starting the VM) to restrict the virtual CPU capabilities
+        that Oracle VirtualBox presents to the guest operating system. This
+        must be run on both the source and the target machines involved in
+        teleporting and will then modify what the guest sees when it executes
+        the CPUID machine instruction. This might help with misbehaving
+        applications that wrongly assume that certain CPU capabilities are
+        present. The meaning of the parameters is hardware dependent. Refer to
+        the AMD or Intel processor documentation.
+
+        The values of <leaf>, <subleaf> (optional), <eax>, <ebx>, <ecx> and
+        <edx> are integers given in hexadecimal format, i.e. using a radix
+        (base) of 16 without requiring any prefix.
+
+    --cpuid-remove=<leaf>[:<subleaf>]
+        Removes an adjustment established with --cpuid-set.
+
+    --cpuid-remove-all
+        Removes all adjustments established with --cpuid-set.
+
+
+    Debugging Settings
+    ------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--tracing-enabled= on | off]
+        [--tracing-config=string] [--tracing-allow-vm-access= on | off]
+
+    Only use the following options to perform low-level VM debugging. These
+    options are for advanced users only.
+
+    --tracing-enabled=on | off
+        Enables or disables the trace buffer. Note that when specified, the
+        trace buffer consumes some memory and adds overhead.
+
+    --tracing-config=<config-string>
+        Enables a tracing configuration that defines which group of trace
+        points are enabled.
+
+    --tracing-allow-vm-access=on | off
+        Enables or disables VM access to the trace buffer. The default value is
+        off, which disables access.
+
+
+    USB Card Reader Settings
+    ------------------------
+
+    VBoxManage modifyvm <uuid | vmname> [--usb-card-reader= on | off]
+
+    The following options specify the access to a USB Card Reader by the guest
+    environment. A USB card reader can access data on memory cards, such as
+    CompactFlash (CF), Secure Digital (SD), and MultiMediaCard (MMC).
+
+    --usb-card-reader=on | off
+        Enables or disables the USB card reader interface.
+
+
+    Autostarting VMs During Host System Boot
+    ----------------------------------------
+
+    The following options enable you to configure the VM autostart feature,
+    which automatically starts the VM at host system boot-up. You must do some
+    host system configuration before you can use this feature. See section
+    "Starting Virtual Machines During System Boot" in chapter 1 of the user
+    manual.
+
+    VBoxManage modifyvm <uuid | vmname> [--autostart-enabled= on | off]
+        [--autostart-delay=seconds]
+
+    --autostart-enabled=on | off
+        Enables or disables VM autostart at host system boot-up for the
+        specified users.
+
+    --autostart-delay=<seconds>
+        Specifies the number of seconds after host system boot-up to autostart
+        the VM.
+
+
+    Guest Debugging
+    ---------------
+
+    These options are for configuring the VMM for guest debugging.
+
+    VBoxManage modifyvm <uuid | vmname> [--guest-debug-provider= none | native
+        | gdb | kd] [--guest-debug-io-provider= none | tcp | udp | ipc]
+        [--guest-debug-address= IP-Address | path] [--guest-debug-port=port]
+
+    --guest-debug-provider=none | native | gdb | kd
+        Selects the given debug stub provider.
+
+    --guest-debug-io-provider=none | tcp | udp | ipc
+        Selects the given I/O transport backend for the selected provider.
+
+    --guest-debug-address=<IP-Address> | <path>
+        Sets the path the debugger is accessible under, depends on the selected
+        I/O transport.
+
+    --guest-debug-port=<port>
+        Sets the port the debugger is accessible under, depends on the selected
+        I/O transport.
+
+
+    PCI Passthrough Settings
+    ------------------------
+
+    The following options enable you to configure the PCI passthrough feature,
+    which currently is not available in Oracle VirtualBox. It is planned to
+    bring this functionality back in the future.
+
+    VBoxManage modifyvm <uuid | vmname> [--pci-attach=host-PCI-address
+        [@guest-PCI-bus-address]] [--pci-detach=host-PCI-address]
+
+    --pci-attach=<host-PCI-address>[@<guest-PCI-bus-address>]
+        Attaches the specified PCI network controller on the host to the guest
+        VM. You can optionally specify the PCI bus on the guest VM on which to
+        attach the controller.  See <xref linkend="pcipassthrough" />.
+
+    --pci-detach=<host-PCI-address>
+        Detaches the specified PCI network controller from the attached PCI bus
+        on the guest VM.  See <xref linkend="pcipassthrough" />.
+
+
+    Testing (ValidationKit / Bootsector)
+    ------------------------------------
+
+    These options are for configuring the testing functionality of the VMM
+    device and almost exclusively used by the bootsector testcases in the
+    ValidationKit.
+
+    VBoxManage modifyvm <uuid | vmname> [--testing-enabled= on | off]
+        [--testing-mmio= on | off] [--testing-cfg-dwordidx=value]
+
+    --testing-enabled=on | off
+        Enabled the testing functionality of the VMMDev. See VMMDevTesting.h
+        for details.
+
+    --testing-mmio=on | off
+        Enabled the MMIO region of the VMMDev testing feature.
+
+    --testing-cfg-dword<idx>=<value>
+        This sets one of the 10 dword configuration values. The <idx> must be
+        in the range 0 through 9. The <value> is limited to 32 bits (dword).
+
+
+Examples
+========
+
+  The following command changes the description for the ol7 VM.
+$ VBoxManage modifyvm ol7 --description "Oracle Linux 7 with UEK4"
+
+  The following command enables VirtualBox Remote Display Protocol (VRDP)
+  support for the ol7 VM.
+$ VBoxManage modifyvm ol7 --vrde on
+
+
+See Also
+========
+
+  "VBoxManage showvminfo", "VBoxManage controlvm", "VBoxManage createvm",
+  "VBoxManage startvm" "VBoxManage list"

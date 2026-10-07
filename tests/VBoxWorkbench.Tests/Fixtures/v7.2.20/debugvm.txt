@@ -1,0 +1,438 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage debugvm -- Introspection and guest debugging.
+
+Usage
+=====
+
+  VBoxManage debugvm <uuid | vmname> dumpvmcore <--filename=name>
+  VBoxManage debugvm <uuid | vmname> info <item> [args...]
+  VBoxManage debugvm <uuid | vmname> injectnmi
+  VBoxManage debugvm <uuid | vmname> log [--release | --debug]
+      [group-settings...]
+  VBoxManage debugvm <uuid | vmname> logdest [--release | --debug]
+      [destinations...]
+  VBoxManage debugvm <uuid | vmname> logflags [--release | --debug] [flags...]
+  VBoxManage debugvm <uuid | vmname> osdetect
+  VBoxManage debugvm <uuid | vmname> osinfo
+  VBoxManage debugvm <uuid | vmname> osdmesg [--lines=lines]
+  VBoxManage debugvm <uuid | vmname> getregisters [--cpu=id]
+      [reg-set.reg-name...]
+  VBoxManage debugvm <uuid | vmname> setregisters [--cpu=id]
+      [reg-set.reg-name=value...]
+  VBoxManage debugvm <uuid | vmname> show [--human-readable | --sh-export |
+      --sh-eval | --cmd-set] [settings-item...]
+  VBoxManage debugvm <uuid | vmname> stack [--cpu=id]
+  VBoxManage debugvm <uuid | vmname> statistics [--reset] [--descriptions]
+      [--pattern=pattern]
+  VBoxManage debugvm <uuid | vmname> guestsample [--filename=filename]
+      [--sample-interval-us=interval] [--sample-time-us=time]
+
+Description
+===========
+
+  The "debugvm" commands are for experts who want to tinker with the exact
+  details of virtual machine execution. Like the VM debugger described in
+  section "The Built-In VM Debugger" in chapter 1 of the user manual, these
+  commands are only useful if you are very familiar with the details of the PC
+  architecture and how to debug software.
+
+    Common options
+    --------------
+
+    The subcommands of debugvm all operate on a running virtual machine:
+
+    <uuid> | <vmname>
+        Either the UUID or the name (case sensitive) of a VM.
+
+
+    debugvm dumpvmcore
+    ------------------
+
+    VBoxManage debugvm <uuid | vmname> dumpvmcore <--filename=name>
+
+    Creates a system dump file of the specified VM. This file will have the
+    standard ELF core format (with custom sections); see section "VM Core
+    Format" in chapter 1 of the user manual.
+
+    This corresponds to the writecore command in the debugger.
+
+    --filename=<filename>
+        The name of the output file. This option is required.
+
+
+    debugvm info
+    ------------
+
+    VBoxManage debugvm <uuid | vmname> info <item> [args...]
+
+    Displays info items relating to the VMM, device emulations and associated
+    drivers.
+
+    This corresponds to the info command in the debugger.
+
+    <item>
+        Name of the info item to display. The special name help will list all
+        the available info items and hints about optional arguments.
+
+    <args>
+        Optional argument string for the info item handler. Most info items do
+        not take any extra arguments. Arguments not recognized are generally
+        ignored.
+
+
+    debugvm injectnmi
+    -----------------
+
+    VBoxManage debugvm <uuid | vmname> injectnmi
+
+    Causes a non-maskable interrupt (NMI) to be injected into the guest. This
+    might be useful for certain debugging scenarios. What happens exactly is
+    dependent on the guest operating system, but an NMI can crash the whole
+    guest operating system. Do not use unless you know what you're doing.
+
+
+    debugvm log
+    -----------
+
+    VBoxManage debugvm <uuid | vmname> log [--release | --debug]
+        [group-settings...]
+
+    Changes the group settings for either the debug (--debug) or release
+    (--release) logger of the VM process.
+
+    The <group-settings> are typically strings of the form em.e.f.l, hm=~0 and
+    -em.f. Basic wildcards are supported for group matching. The all group is
+    an alias for all the groups.
+
+    Please keep in mind that the group settings are applied as modifications to
+    the current values.
+
+    This corresponds to the log command in the debugger.
+
+
+    debugvm logdest
+    ---------------
+
+    VBoxManage debugvm <uuid | vmname> logdest [--release | --debug]
+        [destinations...]
+
+    Changes the destination settings for either the debug (--debug) or release
+    (--release) logger of the VM process. For details on the destination
+    format, the best source is src/VBox/Runtime/common/log/log.cpp.
+
+    The <destinations> argument is one or more mnemonics, optionally prefixed
+    by "no" to disable them. Some of these take values after a ":" or "="
+    separator. Multiple mnemonics can be separated by whitespace or given as
+    separate arguments on the command line.
+
+    List of available destinations:
+
+    file[=<file>], nofile
+        Specifies a log file. If no filename is given, one will be generated
+        based on the current UTC time and VM process name and placed in the
+        current directory of the VM process. Note that this will not have any
+        effect if the log file has already been opened.
+
+    dir=<directory>, nodir
+        Specifies the output directory for log files. Note that this will not
+        have any effect if the log file has already been opened.
+
+    history=<count>, nohistory
+        A non-zero value enables log rotation, with the value specifying how
+        many old log files to keep.
+
+    histsize=<bytes>
+        The max size of a log file before it is rotated. Default is infinite.
+
+    histtime=<seconds>
+        The max age (in seconds) of a log file before it is rotated. Default is
+        infinite.
+
+    ringbuffer, noringbuffer
+        Only log to the log buffer until an explicit flush (e.g. via an
+        assertion) occurs. This is fast and saves diskspace.
+
+    stdout, nostdout
+        Write the log content to standard output.
+
+    stdout, nostdout
+        Write the log content to standard error.
+
+    debugger, nodebugger
+        Write the log content to the debugger, if supported by the host OS.
+
+    com, nocom
+        Writes logging to the COM port. This is only applicable for raw-mode
+        and ring-0 logging.
+
+    user, nouser
+        Custom destination which has no meaning to VM processes.
+
+    This corresponds to the logdest command in the debugger.
+
+
+    debugvm logflags
+    ----------------
+
+    VBoxManage debugvm <uuid | vmname> logflags [--release | --debug]
+        [flags...]
+
+    Changes the flags for either the debug (--debug) or release (--release)
+    logger of the VM process. Please note that the modifications are applied to
+    the existing values, they do not replace them.
+
+    The <flags> are a list of flag mnemonics, optionally prefixed by a "no",
+    "!", "~" or "-" to negate their meaning. The "+" prefix can be used to undo
+    a previous negation or as a separator, although it is better to use
+    whitespace or separate arguments for that.
+
+    List of log flag mnemonics, with their opposite value where applicable (an
+    asterisk indicates the default value):
+
+    enabled*, disabled
+        Enables or disables logging.
+
+    buffered, unbuffered*
+        Enables buffering of log output before it hits the destinations.
+
+    writethrough(/writethru)
+        Whether to open the destination file with writethru buffering settings
+        or not.
+
+    flush
+        Enables flushing of the output file (to disk) after each log statement.
+
+    lockcnts
+        Prefix each log line with lock counts for the current thread.
+
+    cpuid
+        Prefix each log line with the ID of the current CPU.
+
+    pid
+        Prefix each log line with the current process ID.
+
+    flagno
+        Prefix each log line with the numeric flags corresponding to the log
+        statement.
+
+    flag
+        Prefix each log line with the flag mnemonics corresponding to the log
+        statement.
+
+    groupno
+        Prefix each log line with the log group number for the log statement
+        producing it.
+
+    group
+        Prefix each log line with the log group name for the log statement
+        producing it.
+
+    tid
+        Prefix each log line with the current thread identifier.
+
+    thread
+        Prefix each log line with the current thread name.
+
+    time
+        Prefix each log line with the current UTC wall time.
+
+    timeprog
+        Prefix each log line with the current monotonic time since the start of
+        the program.
+
+    msprog
+        Prefix each log line with the current monotonic timestamp value in
+        milliseconds since the start of the program.
+
+    ts
+        Prefix each log line with the current monotonic timestamp value in
+        nanoseconds.
+
+    tsc
+        Prefix each log line with the current CPU timestamp counter (TSC)
+        value.
+
+    rel, abs*
+        Selects whether the ts and tsc prefixes should be displayed as relative
+        to the previous log line or as absolute time.
+
+    hex*, dec
+        Selects whether the ts and tsc prefixes should be formatted as
+        hexadecimal or decimal.
+
+    custom
+        Custom log prefix, has by default no meaning for VM processes.
+
+    usecrlf, uself*
+        Output with DOS style (CRLF) or just UNIX style (LF) line endings.
+
+    overwrite*, append
+        Overwrite the destination file or append to it.
+
+    This corresponds to the logflags command in the debugger.
+
+
+    debugvm osdetect
+    ----------------
+
+    VBoxManage debugvm <uuid | vmname> osdetect
+
+    Make the VMM's debugger facility (re)-detect the guest operating system
+    (OS). This will first load all debugger plug-ins.
+
+    This corresponds to the detect command in the debugger.
+
+
+    debugvm osinfo
+    --------------
+
+    VBoxManage debugvm <uuid | vmname> osinfo
+
+    Displays information about the guest operating system (OS) previously
+    detected by the VMM's debugger facility.
+
+
+    debugvm osdmesg
+    ---------------
+
+    VBoxManage debugvm <uuid | vmname> osdmesg [--lines=lines]
+
+    Displays the guest OS kernel log, if detected and supported.
+
+    --lines=<lines>
+        Number of lines of the log to display, counting from the end. The
+        default is infinite.
+
+
+    debugvm getregisters
+    --------------------
+
+    VBoxManage debugvm <uuid | vmname> getregisters [--cpu=id]
+        [reg-set.reg-name...]
+
+    Retrieves register values for guest CPUs and emulated devices.
+
+    <reg-set.reg-name>
+        One or more registers, each having one of the following forms:
+
+         1. register-set.register-name.sub-field
+         2. register-set.register-name
+         3. cpu-register-name.sub-field
+         4. cpu-register-name
+         5. all
+
+        The <all> form will cause all registers to be shown (no sub-fields).
+        The registers names are case-insensitive.
+
+    --cpu=<id>
+        Selects the CPU register set when specifying just a CPU register (3rd
+        and 4th form). The default is 0.
+
+
+    debugvm setregisters
+    --------------------
+
+    VBoxManage debugvm <uuid | vmname> setregisters [--cpu=id]
+        [reg-set.reg-name=value...]
+
+    Changes register values for guest CPUs and emulated devices.
+
+    <reg-set.reg-name=value>
+        One or more register assignment, each having one of the following
+        forms:
+
+         1. register-set.register-name.sub-field=value
+         2. register-set.register-name=value
+         3. cpu-register-name.sub-field=value
+         4. cpu-register-name=value
+
+        The value format should be in the same style as what getregisters
+        displays, with the exception that both octal and decimal can be used
+        instead of hexadecimal.
+
+    --cpu=<id>
+        Selects the CPU register set when specifying just a CPU register (3rd
+        and 4th form). The default is 0.
+
+
+    debugvm show
+    ------------
+
+    VBoxManage debugvm <uuid | vmname> show [--human-readable | --sh-export |
+        --sh-eval | --cmd-set] [settings-item...]
+
+    Shows logging settings for the VM.
+
+    --human-readable
+        Selects human readable output.
+
+    --sh-export
+        Selects output format as bourne shell style export commands.
+
+    --sh-eval
+        Selects output format as bourne shell style eval command input.
+
+    --cmd-set
+        Selects output format as DOS style SET commands.
+
+    <settings-item>
+        What to display. One or more of the following:
+
+          - logdbg-settings - debug log settings.
+          - logrel-settings - release log settings.
+          - log-settings - alias for both debug and release log settings.
+
+
+    debugvm stack
+    -------------
+
+    VBoxManage debugvm <uuid | vmname> stack [--cpu=id]
+
+    Unwinds the guest CPU stacks to the best of our ability. It is recommended
+    to first run the osdetect command, as this gives both symbols and perhaps
+    unwind information.
+
+    --cpu=<id>
+        Selects a single guest CPU to display the stack for. The default is all
+        CPUs.
+
+
+    debugvm statistics
+    ------------------
+
+    VBoxManage debugvm <uuid | vmname> statistics [--reset] [--descriptions]
+        [--pattern=pattern]
+
+    Displays or resets VMM statistics.
+
+    Retrieves register values for guest CPUs and emulated devices.
+
+    --pattern=<pattern>
+        DOS/NT-style wildcards patterns for selecting statistics. Multiple
+        patterns can be specified by using the '|' (pipe) character as
+        separator.
+
+    --reset
+        Select reset instead of display mode.
+
+
+    debugvm guestsample
+    -------------------
+
+    VBoxManage debugvm <uuid | vmname> guestsample [--filename=filename]
+        [--sample-interval-us=interval] [--sample-time-us=time]
+
+    Creates a sample report of the guest activity.
+
+    Retrieves the filename to dump the report to.
+
+    --filename=<filename>
+        The filename to dump the sample report to.
+
+    --sample-interval-us=<interval>
+        The interval in microseconds between guest samples.
+
+    --sample-time-us=<time>
+        The amount of microseconds to take guest samples.

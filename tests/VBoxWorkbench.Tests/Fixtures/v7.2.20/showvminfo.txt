@@ -1,0 +1,115 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage showvminfo -- Show configuration information or log file contents
+for a virtual machine.
+
+Usage
+=====
+
+  VBoxManage showvminfo <uuid | vmname> [--details] [--machinereadable]
+      [--password-id] [--password]
+  VBoxManage showvminfo <uuid | vmname> <--log=index> [--password-id id]
+      [--password file|-]
+
+Description
+===========
+
+  The VBoxManage showvminfo command outputs configuration information or log
+  file contents for a specified virtual machine (VM).
+
+    Viewing Virtual Machine Information
+    -----------------------------------
+
+    VBoxManage showvminfo <uuid | vmname> [--details] [--machinereadable]
+        [--password-id] [--password]
+
+    The VBoxManage showvminfo command outputs information about the specified
+    VM in a detailed format or in a machine-readable format.
+
+    The VBoxManage showvminfo command shows the same information for the
+    specified VM in the same format as the VBoxManage list vms --long command.
+
+    --details
+        Includes detailed information about the VM.
+
+    --machinereadable
+        Specifies that the VM information be in a machine-readable format.
+
+    --password-id <id>
+        Specifies password id of the VM if it is encrypted.
+
+    --password <file>|-
+        Specifies password of the VM if it is encrypted. Either specify the
+        absolute pathname of a password file on the host operating system, or -
+        to prompt you for the password.
+
+
+    Viewing Virtual Machine Log Contents
+    ------------------------------------
+
+    VBoxManage showvminfo <uuid | vmname> <--log=index> [--password-id id]
+        [--password file|-]
+
+    The VBoxManage showvminfo --log command outputs the contents of one of the
+    specified VM's log files.
+
+    --log=<index>
+        Specifies a numerical index that identifies the log file.
+
+        The index value starts at 0, which indicates the VBox.log file. An
+        index value of 1 indicates the VBoxHardening.log file. Index values
+        starting at 2 indicate other log files, such as the VBox.log.1 file.
+
+    --password-id <id>
+        Specifies password id of the VM if it is encrypted.
+
+    --password <file>|-
+        Specifies password of the VM if it is encrypted. Either specify the
+        absolute pathname of a password file on the host operating system, or -
+        to prompt you for the password.
+
+
+Examples
+========
+
+  The following example shows typical output for this command:
+$ VBoxManage showvminfo "Windows 10"
+Name:            Windows 10
+Groups:          /
+Guest OS:        Windows 10 (64-bit)
+UUID:            1bf3464d-57c6-4d49-92a9-a5cc3816b7e7
+Config file:     /home/username/VirtualBox VMs/Windows 10/Windows 10.vbox
+Snapshot folder: /home/username/VirtualBox VMs/Windows 10/Snapshots
+Log folder:      /home/username/VirtualBox VMs/Windows 10/Logs
+Hardware UUID:   1bf3464d-57c6-4d49-92a9-a5cc3816b7e7
+Memory size:     2048MB
+Page Fusion:     off
+VRAM size:       12MB
+CPU exec cap:    100%
+...
+
+  The following example shows the information output in a machine-readable
+  format, which shows the entries as a <property>=<value> string:
+$ VBoxManage showvminfo "Windows 10" --machinereadable
+...
+groups="/"
+ostype="Windows 10 (64-bit)"
+UUID="1bf3464d-57c6-4d49-92a9-a5cc3816b7e7"
+...
+
+  The following example shows the contents of the VBox.log log file:
+$ VBoxManage showvminfo "Windows 10" --log 0
+00:00:02.895106 VirtualBox VM 6.0.0_RC1 r127378 linux.amd64 (Dec 10 2018 17:16:06) release log
+00:00:02.895109 Log opened 2018-12-14T14:31:44.088259000Z
+00:00:02.895111 Build Type: release
+00:00:02.895115 OS Product: Linux
+00:00:02.895117 OS Release: 4.1.12-61.1.22.el7uek.x86_64
+00:00:02.895119 OS Version: #2 SMP Fri Dec 2 09:28:44 PST 2016
+...
+
+
+See Also
+========
+
+  "VBoxManage list"

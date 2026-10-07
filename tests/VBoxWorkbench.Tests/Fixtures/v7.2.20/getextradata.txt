@@ -1,0 +1,64 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage getextradata -- View keyword values that are associated with a
+virtual machine or configuration.
+
+Usage
+=====
+
+  VBoxManage getextradata <global | uuid | vmname> <keyword | enumerate>
+
+Description
+===========
+
+  The VBoxManage getextradata command enables you to retrieve keyword data that
+  is associated with a virtual machine (VM) or with an Oracle VirtualBox
+  configuration.
+
+  global
+      Specifies to retrieve information about the configuration rather than a
+      VM.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or name of the VM.
+
+  enumerate
+      Shows all keyword values for the specified VM or configuration.
+
+  <keyword>
+      Specifies the keyword for which to retrieve its value.
+
+
+Examples
+========
+
+  The following command retrieves the installdate keyword value for the Fedora5
+  VM:
+$ VBoxManage getextradata Fedora5 installdate
+Value: 2006.01.01
+
+  The following command retrieves the information for all keywords of the
+  OracleLinux7u4 VM:
+$ VBoxManage getextradata OracleLinux7u4 enumerate
+Key: GUI/LastCloseAction, Value: PowerOff
+Key: GUI/LastGuestSizeHint, Value: 1048,696
+Key: GUI/LastNormalWindowPosition, Value: 851,286,1048,738
+
+  The following command retrieves the information for all keywords in the
+  configuration:
+$ VBoxManage getextradata global enumerate
+Key: GUI/LastItemSelected, Value: m=OracleLinux7u4
+Key: GUI/LastWindowPosition, Value: 951,510,960,520
+Key: GUI/SplitterSizes, Value: 318,637
+Key: GUI/Toolbar/MachineTools/Order, Value: Details
+Key: GUI/Tools/LastItemsSelected, Value: Welcome,Details
+Key: GUI/UpdateCheckCount, Value: 71
+Key: GUI/UpdateDate, Value: 1 d, 2022-10-10, stable, 7.0.0
+Key: GUI/VirtualMediaManager/Details/Expanded, Value: true
+
+
+See Also
+========
+
+  "VBoxManage setextradata"

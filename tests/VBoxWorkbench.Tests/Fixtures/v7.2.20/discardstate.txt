@@ -1,0 +1,36 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage discardstate -- Discard the saved state of a virtual machine.
+
+Usage
+=====
+
+  VBoxManage discardstate <uuid | vmname>
+
+Description
+===========
+
+  The VBoxManage discardstate command discards the saved state of a virtual
+  machine (VM) that is not currently running. This command causes the VM's
+  operating system to restart the next time you start the VM.
+
+  Where possible, avoid performing this action. The effects of this command are
+  equivalent to unplugging the power cable on a physical machine.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or name of the VM.
+
+
+Examples
+========
+
+  The following command discards the saved state file for the VM called vm2.
+  When you next start the VM, the VM's operating system is restarted.
+$ VBoxManage discardstate vm2
+
+
+See Also
+========
+
+  "VBoxManage adoptstate"

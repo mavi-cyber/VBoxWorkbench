@@ -1,0 +1,105 @@
+<Window x:Class="VBoxWorkbench.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VBox Workbench" Icon="/Assets/app.ico" Height="860" Width="1400" MinHeight="600" MinWidth="1000"
+        Background="{DynamicResource Bench}" Foreground="{DynamicResource Ink}" FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top bar: search -->
+        <Border Grid.Row="0" Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" Padding="14,10">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="206">
+                    <Image Source="/Assets/logo.png" Width="28" Height="28" Margin="0,0,9,0" VerticalAlignment="Center"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <TextBlock Text="VBox Workbench" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <TextBlock x:Name="VersionText" Foreground="{DynamicResource Muted}" VerticalAlignment="Center" Margin="12,0"/>
+                    <Button x:Name="RefreshButton" Margin="0" ToolTip="Reload machines and parts (F5)" Click="Refresh_Click">
+                        <TextBlock Text="&#xE72C;" FontFamily="{StaticResource Icons}"/>
+                    </Button>
+                    <Button x:Name="ThemeButton" Content="Theme" Margin="6,0,0,0" Click="Theme_Click"
+                            ToolTip="Light, dark, or follow Windows"/>
+                    <Button x:Name="RunOptionsButton" Content="Run options" Margin="6,0,0,0" Click="RunOptions_Click"
+                            ToolTip="Global VBoxManage options: settings password, response file"/>
+                </StackPanel>
+                <Grid>
+                    <TextBox x:Name="SearchBox" FontSize="15" Padding="34,7,8,7" TextChanged="SearchBox_TextChanged"
+                             PreviewKeyDown="SearchBox_PreviewKeyDown" GotKeyboardFocus="SearchBox_GotFocus"
+                             AutomationProperties.Name="Search for something to do"/>
+                    <TextBlock Text="&#xE721;" FontFamily="{StaticResource Icons}" Foreground="{DynamicResource Muted}" Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                    <TextBlock x:Name="SearchHint" Text="What do you want to do? Try &quot;snapshot&quot;, &quot;forward port&quot;, &quot;more ram&quot; or an option like --nic   (Ctrl+K)"
+                               Foreground="{DynamicResource Muted}" Margin="36,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False" FontSize="14"/>
+                    <Popup x:Name="SearchPopup" PlacementTarget="{Binding ElementName=SearchBox}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True"
+                           Width="{Binding ActualWidth, ElementName=SearchBox}">
+                        <Border Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Copper}" BorderThickness="1" CornerRadius="0,0,8,8" Padding="4">
+                            <ListBox x:Name="SearchList" BorderThickness="0" Background="Transparent" MaxHeight="480"
+                                     PreviewMouseLeftButtonUp="SearchList_Click" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0" Padding="8">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="NavPanel"/>
+                </ScrollViewer>
+            </Border>
+            <Grid Grid.Column="1" Margin="16,14,4,0">
+                <ContentControl x:Name="ContentHost" Focusable="False"/>
+                <TextBlock x:Name="StatusText" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="560"/>
+            </Grid>
+            <Border x:Name="ShelfBorder" Grid.Column="2" Width="250" BorderBrush="{DynamicResource Line}" BorderThickness="1,0,0,0" Padding="10" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="ShelfPanel"/>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Command strip: queue and output -->
+        <Border Grid.Row="2" Background="{DynamicResource Term}" Padding="14,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <Button x:Name="OutputToggle" Content="Show output" Style="{StaticResource TermButton}" Click="OutputToggle_Click"/>
+                        <Button Content="Copy" Style="{StaticResource TermButton}" Click="QueueCopy_Click" ToolTip="Copy the queued commands"/>
+                        <Button Content="Save script" Style="{StaticResource TermButton}" Click="QueueSave_Click" ToolTip="Save the queue as a .cmd, .ps1 or .sh script"/>
+                        <Button Content="Clear" Style="{StaticResource TermButton}" Click="QueueClear_Click"/>
+                        <Button x:Name="RunButton" Content="Run queue" Style="{StaticResource PrimaryButton}" Margin="6,0,0,0" Click="QueueRun_Click"/>
+                    </StackPanel>
+                    <TextBlock x:Name="QueueTitle" Text="Queue is empty. Pick something on the bench or search above." Foreground="{DynamicResource TermMuted}" VerticalAlignment="Center"/>
+                </DockPanel>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer MaxHeight="120" VerticalScrollBarVisibility="Auto" Margin="0,6,0,0">
+                        <StackPanel x:Name="QueuePanel"/>
+                    </ScrollViewer>
+                    <TextBox x:Name="OutputBox" Grid.Column="1" Width="560" Height="170" Margin="12,6,0,0" Visibility="Collapsed" IsReadOnly="True"
+                             Background="#121314" Foreground="{DynamicResource TermText}" BorderBrush="#3B3F43" FontFamily="{StaticResource Mono}" FontSize="12"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Top" TextWrapping="NoWrap"
+                             AutomationProperties.Name="Command output"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

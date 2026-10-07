@@ -1,0 +1,75 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage storagectl -- Manage a storage controller.
+
+Usage
+=====
+  VBoxManage storagectl <uuid | vmname> <--name=controller-name> [--add= floppy
+      | ide | pcie | sas | sata | scsi | usb] [--controller= BusLogic | I82078
+      | ICH6 | IntelAhci | LSILogic | LSILogicSAS | NVMe | PIIX3 | PIIX4 | USB
+      | VirtIO] [--bootable= on | off] [--hostiocache= on | off]
+      [--portcount=count] [--remove] [--rename=new-controller-name]
+
+Description
+===========
+
+  The VBoxManage storagectl command enables you to attach, modify, and remove a
+  storage controller. After you configure the storage controller, you can use
+  the VBoxManage storageattach command to attach virtual media to the
+  controller.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or name of the virtual
+      machine (VM).
+
+  --name=<controller-name>
+      Specifies the name of the storage controller.
+
+  --add=<system-bus-type>
+      Specifies the type of the system bus to which to connect the storage
+      controller. Valid values are floppy, ide, pcie, sas, sata, scsi, and usb.
+
+  --controller=<chipset-type>
+      Specifies the chipset type to emulate for the specified storage
+      controller. Valid values are BusLogic, I82078, ICH6, IntelAHCI, LSILogic,
+      LSILogicSAS, NVMe, PIIX3, PIIX4, and USB.
+
+      The default value varies, according to the type of storage controller.
+
+  --portcount=<count>
+      Specifies the number of ports that the storage controller supports. Valid
+      values depend on the type of storage controller.
+
+  --hostiocache=on|off
+      Specifies whether to use the host I/O cache for all disk images attached
+      to this storage controller. Valid values are on and off. See section
+      "Host Input/Output Caching" in chapter 1 of the user manual.
+
+  --bootable=on|off
+      Specifies whether this controller is bootable. Valid values are on and
+      off.
+
+  --rename=<new-controller-name>
+      Specifies a new name for the storage controller.
+
+  --remove
+      Removes a storage controller from the VM configuration.
+
+
+Examples
+========
+
+  The following command creates a SATA storage controller called sata01 and
+  adds it to the ol7 VM. The storage controller emulates the IntelAHCI chipset.
+$ VBoxManage storagectl ol7 --name "sata01" --add sata --controller IntelAHCI
+
+  The following command creates an IDE storage controller called ide01 and adds
+  it to the ol7 VM.
+$ VBoxManage storagectl ol7 --name "ide01" --add ide
+
+
+See Also
+========
+
+  "VBoxManage storageattach"

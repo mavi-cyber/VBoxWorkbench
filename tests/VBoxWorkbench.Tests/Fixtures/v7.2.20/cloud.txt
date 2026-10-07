@@ -1,0 +1,507 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage cloud -- Manage the cloud entities.
+
+Usage
+=====
+  VBoxManage cloud <--provider=name> <--profile=name>
+       list instances [--state=string] [--compartment-id=string]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       list images <--compartment-id=string> [--state=string]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       list vnicattachments <--compartment-id=string> [--filter= instanceId |
+           vnicId | availabilityDomain=value...]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance create <--domain-name=name> <--image-id=id |
+           --boot-volume-id=id> <--display-name=name> <--shape=type>
+           <--subnet=id> [--boot-disk-size=size in GB] [--publicip= true |
+           false] [--privateip=IP address] [--public-ssh-key=key string...]
+           [--launch-mode= NATIVE | EMULATED | PARAVIRTUALIZED]
+           [--cloud-init-script-path=path to a script]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance info <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance terminate <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance start <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance pause <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance reset <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance clone <--id=unique id> [--clone-name=name for a clone instance]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance metriclist <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       instance metricdata <--id=unique id> <--metric-name=metric name>
+           <--metric-points=number of history metric points>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       image create <--display-name=name> [--bucket-name=name]
+           [--object-name=name] [--instance-id=unique id]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       image info <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       image delete <--id=unique id>
+  VBoxManage cloud <--provider=name> <--profile=name>
+       image import <--id=unique id> [--bucket-name=name] [--object-name=name]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       image export <--id=unique id> <--display-name=name> [--bucket-name=name]
+           [--object-name=name]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       network setup [--gateway-os-name=string] [--gateway-os-version=string]
+           [--gateway-shape=string] [--tunnel-network-name=string]
+           [--tunnel-network-range=string] [--proxy=string]
+           [--compartment-id=string]
+  VBoxManage cloud <--provider=name> <--profile=name>
+       network create <--name=string> <--network-id=string> [--enable |
+           --disable]
+  VBoxManage cloud network update <--name=string> [--network-id=string]
+      [--enable | --disable]
+  VBoxManage cloud network delete <--name=string>
+  VBoxManage cloud network info <--name=string>
+
+Description
+===========
+
+    Common options
+    --------------
+
+    The word cloud is an umbrella term for all commands related to
+    intercommunication with the Cloud. The following common options must be
+    placed after the cloud argument and before the following sub-commands:
+
+    --provider=<name>
+        Short cloud provider name.
+
+    --profile=<name>
+        Cloud profile name.
+
+
+    cloud list instances
+    --------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         list instances [--state=string] [--compartment-id=string]
+
+    Displays a list of the cloud instances for a specified compartment.
+
+    --state=<running|paused|terminated>
+        The state of cloud instance. The possible states are running, paused,
+        and terminated. If a state isn't provided a list of instances with all
+        possible states is returned.
+
+    --compartment-id
+        A compartment is the logical container used to organize and isolate
+        cloud resources. Different cloud providers may use different names for
+        this entity.
+
+
+    cloud list images
+    -----------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         list images <--compartment-id=string> [--state=string]
+
+    Displays the list of the images for a specified compartment.
+
+    --state=<available|disabled|deleted>
+        The state of the cloud image. The possible states are available,
+        disabled and deleted. If a state isn't provided a list of images with
+        all possible states is returned.
+
+    --compartment-id
+        A compartment is the logical container used to organize and isolate
+        cloud resources. Different cloud providers may use different names for
+        this entity.
+
+
+    cloud list vnic attachments
+    ---------------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         list vnicattachments <--compartment-id=string> [--filter= instanceId |
+             vnicId | availabilityDomain=value...]
+
+    Displays the list of the vnic attachments for a specified compartment.
+
+    --filter={instanceId|vnicId|domainName}=<string>
+        Filters are used to narrow down the set of Vnic attachments of
+        interest. This parameter can be specified multiple times. The possible
+        filter types are instanceId, vnicId, or availabilityDomain.
+
+        Filters have a syntax of type=[value] as seen in the following
+        examples:
+
+          - instanceId=ocid1.instance.oc1.iad.anuwcl...js6
+          - vnicId=ocid1.vnic.oc1.iad.abuwcl...jsm
+          - domainName=ergw:US-ASHBURN-AD-2
+
+        If a filter isn't provided the entire list of vnic attachments for a
+        specified compartment is returned.
+
+    --compartment-id
+        A compartment is the logical container used to organize and isolate
+        cloud resources. Different cloud providers may use different names for
+        this entity.
+
+
+    cloud instance create
+    ---------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         instance create <--domain-name=name> <--image-id=id |
+             --boot-volume-id=id> <--display-name=name> <--shape=type>
+             <--subnet=id> [--boot-disk-size=size in GB] [--publicip= true |
+             false] [--privateip=IP address] [--public-ssh-key=key string...]
+             [--launch-mode= NATIVE | EMULATED | PARAVIRTUALIZED]
+             [--cloud-init-script-path=path to a script]
+
+    Creates new instance in the Cloud. There are two standard ways to create an
+    instance in the Cloud:
+     1. Create an instance from an existing custom image.
+     2. Create an instance from an existing bootable volume. This bootable
+     volume shouldn't be attached to any instance.
+
+    The first approach requires the following two options: image-id,
+    boot-disk-size. The second approach requires the following option:
+    boot-volume-id.
+
+    The following options are common to both cases: display-name, launch-mode,
+    subnet-id, publicIP, privateIP, shape, domain.
+
+    --domain-name
+        Cloud domain where the new instance is to be created.
+
+    --image-id
+        Unique identifier which fully identifies a custom image in the Cloud.
+
+    --boot-volume-id
+        Unique identifier which fully identifies a boot volume in the Cloud.
+
+    --display-name
+        Name for the new instance in the Cloud.
+
+    --shape
+        The shape of the instance which defines the number of CPUs and memory
+        (RAM).
+
+    --subnet
+        Unique identifier which fully identifies an existing subnet in the
+        Cloud which will be used by the instance.
+
+    --boot-disk-size
+        The size of the bootable image in GB. Default is 50GB.
+
+    --publicip
+        Public IP address for the created instance.
+
+    --privateip
+        Private IP address for the created instance.
+
+    --public-ssh-key
+        Public SSH key to use to connect to the instance via SSH. This
+        parameter may be repeated if using more than one key:
+        --public-ssh-key=firstSSHKey --public-ssh-key=secondSSHKey.
+
+    --launch-mode
+        Supported values are EMULATED, NATIVE, and PARAVIRTUALIZED.
+
+    --cloud-init-script-path
+        Absolute path to the cloud-init script.
+
+
+    cloud instance info
+    -------------------
+
+    Display information about a cloud instance with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud instance termination
+    --------------------------
+
+    Delete a cloud instance with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud instance start
+    --------------------
+
+    Start a cloud instance with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud instance pause
+    --------------------
+
+    Pause a cloud instance with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud instance reset
+    --------------------
+
+    Force reset a cloud instance with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud instance clone
+    --------------------
+
+    Clone a cloud instance with the specified ID. Only works for the instances
+    accessible through Oracle VirtualBox, i.e., not every instance in the cloud
+    may be cloned.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+    --clone-name
+        Name for the clone instance
+
+
+    available list of metrics for cloud instances
+    ---------------------------------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         instance metriclist <--id=unique id>
+
+    Displays the list of the available metrics for the instance. The returned
+    names must be used with the command VBoxManage cloud instance metricdata.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    Displays cloud instance metric data
+    -----------------------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         instance metricdata <--id=unique id> <--metric-name=metric name>
+             <--metric-points=number of history metric points>
+
+    Displays the metric data with the resolution of 1 minute for the requested
+    cloud instances. The timestamps are returned in the format described in
+    RFC2822.
+
+    --id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+    --metric-name
+        Metric name
+
+    --metric-points
+        Metric points begin at the current time, which has a value of one, and
+        continue into the past with the values increasing. If only the most
+        recent metric point is desired supply the value 1. If the most recent
+        value and the preceding value are desired then supply a value of 2.
+
+
+    cloud image create
+    ------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         image create <--display-name=name> [--bucket-name=name]
+             [--object-name=name] [--instance-id=unique id]
+
+    Creates new image in the Cloud. There are two standard ways to create an
+    image in the Cloud:
+     1. Create an image from an object in the Cloud Storage.
+     2. Create an image from an existing cloud instance.
+
+    For the first approach the following three options are required:
+    bucket-name, object-name, and display-name.
+
+    For the second approach the following two options are required:
+    instance-id, display-name
+
+    --display-name
+        Name for new image in the Cloud.
+
+    --bucket-name
+        The name of the Cloud bucket where the image (object) is located..
+
+    --object-name
+        Name of object in the bucket.
+
+    --instance-id
+        Unique identifier which fully identifies the instance in the Cloud.
+
+
+    cloud image info
+    ----------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         image info <--id=unique id>
+
+    Display information about a cloud image with a specified ID.
+
+    --id
+        Unique identifier which fully identifies the image in the Cloud.
+
+
+    cloud image delete
+    ------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         image delete <--id=unique id>
+
+    Delete an image with a specified ID from the Cloud.
+
+    --id
+        Unique identifier which fully identifies the image in the Cloud.
+
+
+    cloud image import
+    ------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         image import <--id=unique id> [--bucket-name=name]
+             [--object-name=name]
+
+    Import an image with the specified ID from the Cloud to a local host. The
+    result is an object in the local "temp" folder on the local host. There are
+    two possible approaches when importing from the Cloud:
+     1. Create an object from an image in the Cloud Storage.
+     2. Download the object to the local host.
+
+    --id
+        Unique identifier which fully identifies the image in the Cloud.
+
+    --bucket-name
+        The name of the Cloud bucket where the object will be created.
+
+    --object-name
+        Name of the created object in the bucket or the name of the downloaded
+        object. If no --object-name option is supplied a default image name is
+        used.
+
+
+    cloud image export
+    ------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         image export <--id=unique id> <--display-name=name>
+             [--bucket-name=name] [--object-name=name]
+
+    Export an existing VBox image with the specified uuid from a local host to
+    the Cloud. The result is new image in the Cloud. There are two possible
+    approaches when exporting to the Cloud:
+     1. Upload a VBox image to the Cloud Storage.
+     2. Create an image from the uploaded object.
+
+    --id
+        Unique identifier of the image in Oracle VirtualBox.
+
+    --display-name
+        The name of the new image in the Cloud.
+
+    --bucket-name
+        The name of the Cloud bucket where the image (object) will be uploaded.
+
+    --object-name
+        Name of the object in the bucket.
+
+
+    cloud network setup
+    -------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         network setup [--gateway-os-name=string] [--gateway-os-version=string]
+             [--gateway-shape=string] [--tunnel-network-name=string]
+             [--tunnel-network-range=string] [--proxy=string]
+             [--compartment-id=string]
+
+    Set up a cloud network environment for the specified cloud profile.
+
+    --gateway-os-name
+        The name of OS to use for the cloud gateway.
+
+    --gateway-os-version
+        The version of the OS to use for the cloud gateway.
+
+    --gateway-shape
+        The instance shape to use for the cloud gateway.
+
+    --tunnel-network-name
+        The name of the VCN/subnet to use for tunneling.
+
+    --tunnel-network-range
+        The IP address range to use for tunneling.
+
+    --proxy
+        The proxy URL to be used in a local gateway installation.
+
+    --compartment-id
+        The compartment to create the tunnel network in.
+
+
+    cloud network create
+    --------------------
+
+    VBoxManage cloud <--provider=name> <--profile=name>
+         network create <--name=string> <--network-id=string> [--enable |
+             --disable]
+
+    Create a new cloud network descriptor associated with an existing cloud
+    subnet.
+
+    --name
+        The name to assign to the cloud network descriptor.
+
+    --network-id
+        The unique identifier of an existing subnet in the cloud.
+
+    --enable, --disable
+        Whether to enable the network descriptor or disable it. If not
+        specified, the network will be enabled.
+
+
+    cloud network update
+    --------------------
+
+    VBoxManage cloud network update <--name=string> [--network-id=string]
+        [--enable | --disable]
+
+    Modify an existing cloud network descriptor.
+
+    --name
+        The name of an existing cloud network descriptor.
+
+    --network-id
+        The unique identifier of an existing subnet in the Cloud.
+
+    --enable, --disable
+        Whether to enable the network descriptor or disable it.
+
+
+    cloud network delete
+    --------------------
+
+    VBoxManage cloud network delete <--name=string>
+
+    Delete an existing cloud network descriptor.
+
+    --name
+        The name of an existing cloud network descriptor.
+
+
+    cloud network info
+    ------------------
+
+    VBoxManage cloud network info <--name=string>
+
+    Display information about a cloud network descriptor.
+
+    --name
+        The name of an existing cloud network descriptor.

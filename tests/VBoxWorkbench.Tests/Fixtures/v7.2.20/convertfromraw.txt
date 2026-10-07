@@ -1,0 +1,121 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage convertfromraw -- Convert a raw disk image to a virtual disk image.
+
+Usage
+=====
+  VBoxManage convertfromraw <inputfile> <outputfile> [--format= VDI | VMDK |
+      VHD] [--uuid=uuid] [--variant=Standard|Fixed|Split2G|Stream|ESX...]
+  VBoxManage convertfromraw stdin <outputfile> <bytes> [--format= VDI | VMDK |
+      VHD] [--uuid=uuid] [--variant=Standard|Fixed|Split2G|Stream|ESX...]
+
+Description
+===========
+
+  The VBoxManage convertfromraw command enables you to convert a raw disk image
+  to an Oracle VirtualBox virtual disk image (VDI).
+
+  For compatibility with earlier versions of Oracle VirtualBox, you can use the
+  VBoxManage convertdd command instead of the VBoxManage convertfromraw
+  command.
+
+    Convert a Raw Disk File to a Virtual Disk Image File
+    ----------------------------------------------------
+
+    VBoxManage convertfromraw <inputfile> <outputfile> [--format= VDI | VMDK |
+        VHD] [--uuid=uuid] [--variant=Standard|Fixed|Split2G|Stream|ESX...]
+
+    The VBoxManage convertfromraw command converts the specified raw disk image
+    input file to an Oracle VirtualBox VDI file.
+
+    <inputfile>
+        Specifies the name of the raw disk image file to convert.
+
+    <outputfile>
+        Specifies the name of the file in which to write the VDI output.
+
+    --format=VDI | VMDK | VHD
+        Specifies the format of the disk image to create. Valid values are VDI,
+        VMDK, and VHD. The default format is VDI.
+
+    --uuid=<uuid>
+        Specifies the Universally Unique Identifier (UUID) of the output file.
+
+    --variant=Standard | Fixed | Split2G | Stream | ESX[,...]
+        Specifies any required file format variants for the output file. This
+        is a comma-separated list of variant values. Following are the valid
+        values:
+
+          - Standard is the default disk image type, which has a dynamically
+          allocated file size.
+          - Fixed uses a disk image that has a fixed file size.
+          - Split2G indicates that the disk image is split into 2GB segments.
+          This value is for VMDK only.
+          - Stream optimizes the disk image for downloading. This value is for
+          VMDK only.
+          - ESX is used for some VMWare products. This value is for VMDK only.
+
+        Note that not all variant combinations are valid. Specifying
+        incompatible variant values in the list will produce an error message.
+
+
+    Convert Raw Data From Standard Input to a Virtual Disk Image File
+    -----------------------------------------------------------------
+
+    VBoxManage convertfromraw stdin <outputfile> <bytes> [--format= VDI | VMDK
+        | VHD] [--uuid=uuid] [--variant=Standard|Fixed|Split2G|Stream|ESX...]
+
+    The VBoxManage convertfromraw stdin command reads the content of the disk
+    image from standard input. Consider using this form of the command in a
+    pipe sequence.
+
+    <outputfile>
+        Specifies the name of the file in which to write the disk image output.
+
+    <bytes>
+        Specifies the capacity of the target image name. This needs to be given
+        explicitly, because generally pipes do not support querying the overall
+        size of the data stream.
+
+    --format=VDI | VMDK | VHD
+        Specifies the format of the disk image to create. Valid values are VDI,
+        VMDK, and VHD. The default format is VDI.
+
+    --uuid=<uuid>
+        Specifies the UUID of the output file.
+
+    --variant=Standard,Fixed,Split2G,Stream,ESX
+        Specifies any required file format variants for the output file. This
+        is a comma-separated list of variant values. The list of valid values
+        is:
+
+          - Standard is the default disk image type, which has a dynamically
+          allocated file size.
+          - Fixed uses a disk image that has a fixed file size.
+          - Split2G indicates that the disk image is split into 2GB segments.
+          This value is for VMDK only.
+          - Stream optimizes the disk image for downloading. This value is for
+          VMDK only.
+          - ESX is used for some VMWare products. This value is for VMDK only.
+
+        Note that not all variant combinations are valid. Specifying
+        incompatible variant values in the list will produce an error message.
+
+
+Examples
+========
+
+  The following command converts the raw disk image input file disk01.raw. The
+  output file is a VDI disk image called disk02.vdi.
+$ VBoxManage convertfromraw disk01.raw disk02.vdi
+
+  The following command converts the raw disk image input file disk01.raw. The
+  output file is a VMDK disk image called disk02.vmdk.
+$ VBoxManage convertfromraw disk01.raw disk02.vmdk --format VMDK
+
+  The following command reads from disk /dev/sda using a pipe and therefore
+  needs the exact disk size in bytes as an additional parameter, which is
+  assumed to be 10737418240. The output file is a VDI disk image called
+  disk.vdi.
+$ dd if=/dev/sda bs=512 | VBoxManage convertfromraw stdin disk.vdi 10737418240

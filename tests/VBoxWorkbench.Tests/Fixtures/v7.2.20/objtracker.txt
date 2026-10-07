@@ -1,0 +1,51 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage objtracker -- Manage the tracked objects.
+
+Usage
+=====
+
+  VBoxManage objtracker ifaces
+  VBoxManage objtracker objlist <--ifacename=VirtualBox interface name>
+  VBoxManage objtracker objinfo <--ifacename=VirtualBox interface name>
+      <--id=Unique object Id>
+
+Description
+===========
+
+    objtracker ifaces
+    -----------------
+
+    VBoxManage objtracker ifaces
+
+    Shows the actual list of VirtualBox interfaces supported for tracking
+
+
+    objtracker objlist
+    ------------------
+
+    VBoxManage objtracker objlist <--ifacename=VirtualBox interface name>
+
+    Shows the list of the unique identifiers of the tracked objects existing at
+    moment for a specified interface
+
+    --ifacename=<vbox interface name>
+        The name which fully identifies VitualBox interface aka IProgress,
+        ISession, IMachine.
+
+
+    objtracker objinfo
+    ------------------
+
+    VBoxManage objtracker objinfo <--ifacename=VirtualBox interface name>
+        <--id=Unique object Id>
+
+    Shows the information about the tracked object
+
+    --ifacename=<vbox interface name>
+        The name which fully identifies VitualBox interface aka IProgress,
+        ISession, IMachine.
+
+    --id=<unique object id>
+        The unique identifer assigned to a tracked object by VirtualBox

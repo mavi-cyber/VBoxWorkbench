@@ -1,0 +1,133 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage clonevm -- Create a clone of an existing virtual machine.
+
+Usage
+=====
+
+  VBoxManage clonevm <vmname|uuid> [--basefolder=basefolder]
+      [--groups=group,...] [--mode=machine | --mode=machinechildren |
+      --mode=all] [--name=name] [--options=option,...] [--register]
+      [--snapshot=snapshot-name] [--uuid=uuid]
+
+Description
+===========
+
+  The VBoxManage clonevm command creates a clone of an existing virtual machine
+  (VM). The clone can be a full copy of the VM or a linked copy of a VM.
+
+  You must specify the name or the universal unique identifier (UUID) of the VM
+  you want to clone.
+
+
+Command Operand and Options
+===========================
+
+  The following list describes the operand and the options that you can use
+  with the VBoxManage clonevm command:
+
+  <vmname|uuid>
+      Specifies the name or UUID of the VM to clone.
+
+  --basefolder=<basefolder>
+      Specifies the name of the folder in which to save the configuration for
+      the new VM.
+
+  --groups=<group>,...
+      Assigns the clone to the specified group or groups. If you specify more
+      than one group, separate each group name with a comma.
+
+      Note that each group is identified by a group ID that starts with a slash
+      character (/) so that groups can be nested. By default, a clone is always
+      assigned membership to the / group.
+
+  --mode=machine|machineandchildren|all
+      Specifies which of the following cloning modes to use:
+
+        - machine mode clones the current state of the existing VM without any
+        snapshots. This is the default mode.
+        - machineandchildren mode clones the snapshot specified by by the
+        --snapshot option and all child snapshots.
+        - all mode clones all snapshots and the current state of the existing
+        VM.
+
+  --name=<name>
+      Specifies a new name for the new VM. The default value is
+      <original-name> Clone where <original-name> is the original name of the
+      VM.
+
+  --options=<option>,...
+      Specifies how to create the new clone.
+
+      The --options argument can be used multiple times to enable multiple
+      options, or the options can be given as a comma separated list. The
+      options are case insensitive.
+
+      The following options (case-insensitive) are recognized:
+
+      Link
+          Creates a linked clone from a snapshot only.
+
+      KeepAllMACs
+          Specifies that the new clone reuses the MAC addresses of each virtual
+          network card from the existing VM.
+
+          If you do not specify this option or the --options=keepnatmacs
+          option, the default behavior is to reinitialize the MAC addresses of
+          each virtual network card.
+
+      KeepNATMACs
+          Specifies that the new clone reuses the MAC addresses of each virtual
+          network card from the existing VM when the network type is NAT.
+
+          If you do not specify this option or the KeepAllMACs option, the
+          default behavior is to reinitialize the MAC addresses of each virtual
+          network card.
+
+      KeepDiskNames
+          Specifies that the new clone reuses the disk image names from the
+          existing VM. By default, disk images are renamed.
+
+      KeepHwUUIDs
+          Specifies that the new clone reuses the hardware IDs from the
+          existing VM. By default, new UUIDs are used.
+
+  --register
+      Automatically registers the new clone in this Oracle VirtualBox
+      installation. You can manually register the new VM later by using the
+      VBoxManage registervm command. See "VBoxManage registervm".
+
+  --snapshot=<snapshot-name>
+      Specifies the snapshot on which to base the new VM. By default, the clone
+      is created from the current state of the specified VM.
+
+  --uuid=<uuid>
+      Specifies the UUID for the new VM. Ensure that this ID is unique for the
+      Oracle VirtualBox instance if you decide to register this new VM. By
+      default, Oracle VirtualBox provides a new UUID.
+
+
+Examples
+========
+
+  The following command creates and registers an exact clone of the ol7 VM. The
+  clone is called ol7-dev-001.
+
+  The new clone includes all of the source VM's snapshots. The new VM also
+  reuses all network interface MAC addresses, disk names, and UUIDs from the
+  source VM.
+
+$ VBoxManage clonevm ol7 --name="ol7-dev-001" --register --mode=all \
+    --options=keepallmacs --options=keepdisknames --options=keephwuuids
+
+  The following command creates and registers a clone of the Snapshot 1
+  snapshot of the ol7 VM. The clone is called ol7-dev-002.
+
+$ VBoxManage clonevm ol7 --name="ol7-dev-002" --register --snapshot="Snapshot 1"
+
+
+See Also
+========
+
+  "VBoxManage registervm"

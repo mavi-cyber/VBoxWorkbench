@@ -1,0 +1,44 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage adoptstate -- Change a virtual machine's state based on a saved
+state file.
+
+Usage
+=====
+
+  VBoxManage adoptstate <uuid | vmname> <state-filename>
+
+Description
+===========
+
+  The VBoxManage adoptstate command enables you to change the state of a
+  virtual machine (VM) to a state described in a saved state file (.sav). This
+  action is referred to as a VM adopting a saved state file. The saved state
+  file must be separate from the VM configuration.
+
+  When you start the VM after adopting the saved state, the VM restores its
+  state from the saved state file.
+
+  Only use this command for custom deployments.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or name of the VM.
+
+  <state-filename>
+      Specifies the name of the saved state file.
+
+
+Examples
+========
+
+  The following command adopts a saved state file called mystate.sav by a VM
+  called vm2. A subsequent start of the VM called vm2 restores the state from
+  the saved state file mystate.sav.
+$ VBoxManage adoptstate vm2 /home/user/mystate.sav
+
+
+See Also
+========
+
+  "VBoxManage discardstate"

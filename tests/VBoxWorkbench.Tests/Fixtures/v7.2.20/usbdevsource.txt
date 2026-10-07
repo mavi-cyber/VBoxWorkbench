@@ -1,0 +1,57 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage usbdevsource -- Add and remove USB device sources.
+
+Usage
+=====
+
+  VBoxManage usbdevsource add <source-name> <--backend=backend>
+      <--address=address>
+  VBoxManage usbdevsource remove <source-name>
+
+Description
+===========
+
+  The VBoxManage usbdevsource command adds a USB device source and makes it
+  available to VM guests on the host system. You can also use this command to
+  remove a USB device source.
+
+    Add a USB Device Source
+    -----------------------
+
+    VBoxManage usbdevsource add <source-name> <--backend=backend>
+        <--address=address>
+
+    The VBoxManage usbdevsource add command adds a USB device source, which is
+    then available to all guest VMs on the host system.
+
+    <source-name>
+        Specifies a unique name for the USB device source.
+
+    --address=<address>
+        Specifies the address of the USB backend.
+
+    --backend=<backend>
+        Specifies the USB proxy service backend to use.
+
+        If specifying a remote server over the USB/IP protocol the only
+        currently supported backend value is USBIP.
+
+
+    Remove a USB Device
+    -------------------
+
+    VBoxManage usbdevsource remove <source-name>
+
+    The VBoxManage usbdevsource remove command removes a USB device.
+
+    <source-name>
+        Specifies the name of the USB device source to remove.
+
+
+Examples
+========
+
+  The following command adds a USB device server called hostusb01.
+$ VBoxManage usbdevsource add hostusb01 --backend USBIP --address 10.0.1.16

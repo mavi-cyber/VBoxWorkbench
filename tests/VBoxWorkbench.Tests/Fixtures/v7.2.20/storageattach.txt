@@ -1,0 +1,280 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage storageattach -- Attach, remove, and modify storage media used by a
+virtual machine.
+
+Usage
+=====
+
+  VBoxManage storageattach <uuid | vmname> <--storagectl=name>
+      [--bandwidthgroup= name | none] [--comment=text] [--device=number]
+      [--discard= on | off] [--encodedlun=lun] [--forceunmount]
+      [--hotpluggable= on | off] [--initiator=initiator] [--intnet] [--lun=lun]
+      [--medium= none | emptydrive | additions | uuid | filename | host:drive |
+      iscsi] [--mtype= normal | writethrough | immutable | shareable | readonly
+      | multiattach] [--nonrotational= on | off] [--passthrough= on | off]
+      [--passwordfile=file] [--password=password] [--port=number] [--server=
+      name | ip] [--setparentuuid=uuid] [--setuuid=uuid] [--target=target]
+      [--tempeject= on | off] [--tport=port] [--type= dvddrive | fdd | hdd]
+      [--username=username]
+
+Description
+===========
+
+  The VBoxManage storageattach command attaches, modifies, or removes a storage
+  medium connected to a storage controller that was previously added with the
+  VBoxManage storagectl command.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or the name of the
+      virtual machine (VM).
+
+  --storagectl=<name>
+      Specifies the name of the storage controller. Use the
+      VBoxManage showvminfo command to list the storage controllers that are
+      attached to the VM.
+
+  --port=<number>
+      Specifies the port number of the storage controller to modify. You must
+      specify this option unless the storage controller has only a single port.
+
+  --device=<number>
+      Specifies the port's device number to modify. You must specify this
+      option unless the storage controller has only one device per port.
+
+  --type=dvddrive | fdd | hdd
+      Specifies the drive type to which the medium is associated. Only omit
+      this option if the medium type can be determined by using the --medium
+      option or by information provided by an earlier medium attachment
+      command.
+
+  --medium=none | emptydrive | additions | <uuid> | <filename> | host:<drive> | iscsi
+      Specifies one of the following values:
+
+      none
+          Removes any existing device from the specified slot.
+
+      emptydrive
+          For a virtual DVD or floppy drive only.
+
+          Makes the device slot behave like a removable drive into which no
+          media has been inserted.
+
+      additions
+          For a virtual DVD drive only.
+
+          Attaches the VirtualBox Guest Additions image to the specified device
+          slot.
+
+      <uuid>
+          Specifies the UUID of a storage medium to attach to the specified
+          device slot. The storage medium must already be known to Oracle
+          VirtualBox, such as a storage medium that is attached to another VM.
+          Use the VBoxManage list command to list media.
+
+      <filename>
+          Specifies the full path of an existing disk image to attach to the
+          specified device slot. The disk image can be in ISO, RAW, VDI, VMDK,
+          or other format.
+
+      host:<drive>
+          For a virtual DVD or floppy drive only.
+
+          Connects the specified device slot to the specified DVD or floppy
+          drive on the host computer.
+
+      iscsi
+          For virtual hard disks only.
+
+          Specifies an iSCSI target for which you must specify additional
+          information. See section "iSCSI Servers" in chapter 1 of the user
+          manual.
+
+      For removable media such as floppies and DVDs, you can make configuration
+      changes while a VM is running. Changes to devices or hard disk device
+      slots require that the VM be powered off.
+
+  --mtype=normal | writethrough | immutable | shareable | readonly | multiattach
+      Specifies how this medium behaves with respect to snapshots and write
+      operations. See section "Special Image Write Modes" in chapter 1 of the
+      user manual.
+
+  --comment=<text>
+      Specifies an optional description to store with the medium.
+
+  --setuuid=<uuid>
+      Modifies the UUID of a medium before attaching it to a VM.
+
+      This is an expert option. Inappropriate values might make the medium
+      unusable or lead to broken VM configurations if another VM already refers
+      to the same medium.
+
+      Using the --setuuid="" option assigns a new random UUID to an image,
+      which can resolve duplicate UUID errors if you used a file copy utility
+      to duplicate an image.
+
+  --setparentuuid=<uuid>
+      Modifies the parent UUID of a medium before attaching it to a VM.
+
+      This is an expert option. Inappropriate values might make the medium
+      unusable or lead to broken VM configurations if another VM already refers
+      to the same medium.
+
+  --passthrough=on | off
+      For a virtual DVD drive only.
+
+      Enables writing to a DVD. This feature is experimental, see section
+      "CD/DVD Support" in chapter 1 of the user manual.
+
+  --tempeject=on | off
+      For a virtual DVD drive only.
+
+      Specifies whether to permit a temporary guest-triggered medium eject
+      operation. When set to on, you can eject a medium. The ability for a
+      guest-triggered eject operation does not persist if the VM is powered off
+      and restarted. So, when you set this option to on and the VM is
+      restarted, the originally configured medium is still in the drive.
+
+  --nonrotational=on | off
+      Enables you to specify that the virtual hard disk is non-rotational. Some
+      guest OSes, such as Windows 7 or later, treat such disks as solid state
+      drives (SSDs) and do not perform disk fragmentation on them.
+
+  --discard=on | off
+      Specifies whether to enable the auto-discard feature for a virtual hard
+      disk. When set to on, a VDI image is shrunk in response to a trim command
+      from the guest OS.
+
+      This feature is experimental and has known bugs which can cause hangs and
+      other instabilities of the guest OS. Do not use if you care about the
+      integrity of data on the virtual hard disk.
+
+      The virtual hard disk must meet the following requirements:
+
+        - The disk format must be VDI.
+        - The size of the cleared area of the disk must be at least 1 MB.
+        - Ensure that the space being trimmed is at least a 1 MB contiguous
+        block at a 1 MB boundary.
+
+      Consider running defragmentation commands as background cron jobs to save
+      space. On Windows, run the defrag.exe /D command. On Linux, run the
+      btrfs filesystem defrag command.
+
+      When you configure the guest OS to issue the trim command, the guest OS
+      typically sees the disk as an SSD.
+
+      Ext4 supports the -o discard mount option. Mac OS X might require
+      additional settings. Windows 7, 8, and 10 automatically detect and
+      support SSDs. The Linux exFAT driver from Samsung supports the trim
+      command.
+
+      The Microsoft implementation of exFAT might not support this feature.
+
+      You can use other methods to issue trim commands. The Linux fstrim
+      command is part of the util-linux package. Earlier solutions required you
+      to zero out unused areas by using the zerofree or a similar command, and
+      then to compact the disk. You can only perform these steps when the VM is
+      offline.
+
+  --bandwidthgroup=<name>
+      Specifies the bandwidth group to use for the device. See section
+      "Limiting Bandwidth for Disk Images" in chapter 1 of the user manual.
+
+  --forceunmount
+      For a virtual DVD or floppy drive only.
+
+      Forcibly unmounts the DVD, CD, or floppy or mounts a new DVD, CD, or
+      floppy even if the previous removable storage is locked by the guest for
+      reading. See section "CD/DVD Support" in chapter 1 of the user manual.
+
+  The following options are applicable when you specify the --medium=iscsi
+  option:
+
+  --server=<hostname> | <IP-address>
+      Specifies the host name or IP address of the iSCSI target.
+
+  --target=<target>
+      Specifies the target name string, which is determined by the iSCSI target
+      and is used to identify the storage resource.
+
+  --tport=<port>
+      Specifies the TCP/IP port number of the iSCSI service on the target.
+
+  --lun=<LUN>
+      Specifies the logical unit number (LUN) of the target resource. For a
+      single disk drive, the value is zero.
+
+  --encodedlun=<LUN>
+      Specifies the hexadecimal-encoded of the target resource. For a single
+      disk drive, the value is zero.
+
+  --username=<username>
+      Specifies the user name to use for target authentication.
+
+      Unless you provide a settings password, the user name is stored as clear
+      text in the XML machine configuration file.
+
+  --password=<password>
+      Specifies the password used for target authentication.
+
+      Unless you provide a settings password, this password is stored as clear
+      text in the XML machine configuration file. When you specify a settings
+      password for the first time, the target authentication password is stored
+      in encrypted form.
+
+  --passwordfile=<password-filename>
+      Specifies a file that contains the target authentication password as
+      clear text.
+
+      Use permission and ownership settings to ensure that the contents of this
+      file cannot be read by unauthorized users.
+
+  --initiator=<initiator>
+      Specifies the iSCSI initiator.
+
+      The Microsoft iSCSI Initiator is a system, such as a server, that
+      attaches to an IP network and initiates requests and receives responses
+      from an iSCSI target. The SAN components in the iSCSI initiator are
+      largely analogous to Fibre Channel SAN components, and they include the
+      following:
+
+        - iSCSI driver. Transports blocks of iSCSI commands over the IP
+        network. This iSCSI driver is installed on the iSCSI host and is
+        included with the Microsoft iSCSI Initiator.
+        - Gigabit Ethernet adapter. Connects to an iSCSI target. Use an
+        Ethernet adapter that can transmit 1000 megabits per second (Mbps).
+        Like standard 10/100 adapters, most gigabit adapters use a preexisting
+        Category 5 or Category 6E cable. Each port on the adapter is identified
+        by a unique IP address.
+        - iSCSI target. Is any device that receives iSCSI commands. The device
+        can be an end node such as a storage device, or it can be an
+        intermediate device such as a network bridge between IP and Fibre
+        Channel devices. Each port on the storage array controller or network
+        bridge is identified by one or more IP addresses.
+
+  --intnet
+      Specifies whether to connect to the iSCSI target that uses internal
+      networking. This configuration requires further configuration. See
+      section "Access iSCSI Targets Using Internal Networking" in chapter 1 of
+      the user manual.
+
+
+Examples
+========
+
+  The following command attaches the o7.vdi disk image to the specified SATA
+  storage controller on the ol7 VM.
+$ storageattach ol7 --storagectl "SATA Controller" --port 0 --device 0 \
+--type hdd --medium /VirtualBox/ol7/ol7.vdi
+
+  The following command attaches the o7-r6-dvd.iso DVD image to the specified
+  IDE storage controller on the ol7 VM.
+$ VBoxManage storageattach ol7 --storagectl "IDE Controller" --port 0 --device 0 \
+--type dvddrive --medium ol7-r6-dvd.iso
+
+
+See Also
+========
+
+  "VBoxManage list", "VBoxManage showvminfo", "VBoxManage storagectl"

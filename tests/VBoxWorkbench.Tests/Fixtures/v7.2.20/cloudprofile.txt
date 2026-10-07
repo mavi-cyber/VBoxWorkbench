@@ -1,0 +1,117 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage cloudprofile -- Manage the cloud profiles.
+
+Usage
+=====
+
+  VBoxManage cloudprofile <--provider=name> <--profile=name> add
+      [--clouduser=unique id] [--fingerprint=MD5 string] [--keyfile=path]
+      [--passphrase=string] [--tenancy=unique id] [--compartment=unique id]
+      [--region=string]
+  VBoxManage cloudprofile <--provider=name> <--profile=name> update
+      [--clouduser=unique id] [--fingerprint=MD5 string] [--keyfile=path]
+      [--passphrase=string] [--tenancy=unique id] [--compartment=unique id]
+      [--region=string]
+  VBoxManage cloudprofile <--provider=name> <--profile=name> delete
+  VBoxManage cloudprofile <--provider=name> <--profile=name> show
+
+Description
+===========
+
+    Common options
+    --------------
+
+    The subcommands of cloudprofile implement the standard Create, Read,
+    Update, and Delete (CRUD) operations for a cloud profile. The following
+    common options must be placed after the cloudprofile argument and before
+    the following sub-commands:
+
+    --provider=<name>
+        Short cloud provider name.
+
+    --profile=<name>
+        Cloud profile name.
+
+
+    cloudprofile add
+    ----------------
+
+    VBoxManage cloudprofile <--provider=name> <--profile=name> add
+        [--clouduser=unique id] [--fingerprint=MD5 string] [--keyfile=path]
+        [--passphrase=string] [--tenancy=unique id] [--compartment=unique id]
+        [--region=string]
+
+    Add a new cloud profile for the specified cloud provider.
+
+    --clouduser=<unique id>
+        The name which fully identifies the user in the specified cloud
+        provider.
+
+    --fingerprint=<MD5 string>
+        Fingerprint of the key pair being used.
+
+    --keyfile=<path>
+        Full path and filename of the private key.
+
+    --passphrase=<string>
+        Passphrase used for the key if it is encrypted.
+
+    --tenancy=<unique id>
+        ID of your tenancy.
+
+    --compartment=<unique id>
+        ID of your compartment.
+
+    --region=<string>
+        Region name. Region is where you plan to deploy an application.
+
+
+    cloudprofile show
+    -----------------
+
+    VBoxManage cloudprofile <--provider=name> <--profile=name> show
+
+    Display information about a cloud profile for the specified cloud provider.
+
+
+    cloudprofile update
+    -------------------
+
+    VBoxManage cloudprofile <--provider=name> <--profile=name> update
+        [--clouduser=unique id] [--fingerprint=MD5 string] [--keyfile=path]
+        [--passphrase=string] [--tenancy=unique id] [--compartment=unique id]
+        [--region=string]
+
+    Modify a cloud profile for the specified cloud provider.
+
+    --clouduser=<unique id>
+        The name which fully identifies the user in the specified cloud
+        provider.
+
+    --fingerprint=<MD5 string>
+        Fingerprint for the key pair being used.
+
+    --keyfile=<path>
+        Full path and filename of the private key.
+
+    --passphrase=<string>
+        Passphrase used for the key if it is encrypted.
+
+    --tenancy=<unique id>
+        ID of the tenancy.
+
+    --compartment=<unique id>
+        ID of the compartment.
+
+    --region=<string>
+        Region name. Region is where you plan to deploy an application.
+
+
+    cloudprofile delete
+    -------------------
+
+    VBoxManage cloudprofile <--provider=name> <--profile=name> delete
+
+    Delete a cloud profile for a specified cloud provider.

@@ -1,0 +1,1086 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage controlvm -- Change state and settings for a running virtual
+machine.
+
+Usage
+=====
+
+  VBoxManage controlvm <uuid | vmname> pause
+  VBoxManage controlvm <uuid | vmname> resume
+  VBoxManage controlvm <uuid | vmname> reset
+  VBoxManage controlvm <uuid | vmname> poweroff
+  VBoxManage controlvm <uuid | vmname> savestate
+  VBoxManage controlvm <uuid | vmname> acpipowerbutton
+  VBoxManage controlvm <uuid | vmname> acpisleepbutton
+  VBoxManage controlvm <uuid | vmname> reboot
+  VBoxManage controlvm <uuid | vmname> shutdown [--force]
+  VBoxManage controlvm <uuid | vmname> keyboardputscancode <hex> [hex...]
+  VBoxManage controlvm <uuid | vmname> keyboardputstring <string> [string...]
+  VBoxManage controlvm <uuid | vmname> keyboardputfile <filename>
+  VBoxManage controlvm <uuid | vmname> setlinkstateN <on | off>
+  VBoxManage controlvm <uuid | vmname> nicN <null | nat | bridged | intnet |
+      hostonly | generic | natnetwork> [device-name]
+  VBoxManage controlvm <uuid | vmname> nictraceN <on | off>
+  VBoxManage controlvm <uuid | vmname> nictracefileN <filename>
+  VBoxManage controlvm <uuid | vmname> nicpropertyN <prop-name=prop-value>
+  VBoxManage controlvm <uuid | vmname> nicpromiscN <deny | allow-vms |
+      allow-all>
+  VBoxManage controlvm <uuid | vmname> natpfN
+      <[rulename],<tcp|udp>,[host-IP],hostport,[guest-IP],guestport>
+  VBoxManage controlvm <uuid | vmname> natpfNdelete <rulename>
+  VBoxManage controlvm <uuid | vmname> guestmemoryballoon <balloon-size>
+  VBoxManage controlvm <uuid | vmname> usbattach <uuid | address>
+      [--capturefile=filename]
+  VBoxManage controlvm <uuid | vmname> usbdetach <uuid | address>
+  VBoxManage controlvm <uuid | vmname> audioin <on | off>
+  VBoxManage controlvm <uuid | vmname> audioout <on | off>
+  VBoxManage controlvm <uuid | vmname> clipboard mode <disabled | hosttoguest |
+      guesttohost | bidirectional>
+  VBoxManage controlvm <uuid | vmname> clipboard filetransfers <on | off>
+  VBoxManage controlvm <uuid | vmname> draganddrop <disabled | hosttoguest |
+      guesttohost | bidirectional>
+  VBoxManage controlvm <uuid | vmname> vrde <on | off>
+  VBoxManage controlvm <uuid | vmname> vrdeport <port>
+  VBoxManage controlvm <uuid | vmname> vrdeproperty <prop-name=prop-value>
+  VBoxManage controlvm <uuid | vmname> vrdevideochannelquality <percentage>
+  VBoxManage controlvm <uuid | vmname> setvideomodehint <xres> <yres> <bpp>
+      [display [<yes | no> [x-origin y-origin]]]
+  VBoxManage controlvm <uuid | vmname> setscreenlayout <display> <on | primary 
+      x-origin y-origin x-resolution y-resolution bpp | off>
+  VBoxManage controlvm <uuid | vmname> screenshotpng <filename> [display]
+  VBoxManage controlvm <uuid | vmname> recording <on | off>
+  VBoxManage controlvm <uuid | vmname> recording start [--wait]
+  VBoxManage controlvm <uuid | vmname> recording stop
+  VBoxManage controlvm <uuid | vmname> recording attach
+  VBoxManage controlvm <uuid | vmname> recording screens <all | none |
+      screen-ID ,screen-ID...>
+  VBoxManage controlvm <uuid | vmname> recording filename <filename>
+  VBoxManage controlvm <uuid | vmname> recording videores <<width>x <height>>
+  VBoxManage controlvm <uuid | vmname> recording videorate <rate>
+  VBoxManage controlvm <uuid | vmname> recording videofps <fps>
+  VBoxManage controlvm <uuid | vmname> recording maxtime <sec>
+  VBoxManage controlvm <uuid | vmname> recording maxfilesize <MB>
+  VBoxManage controlvm <uuid | vmname> recording opts <key= [value]>
+  VBoxManage controlvm <uuid | vmname> setcredentials <username>
+      --passwordfile= <filename | password> <domain-name> --allowlocallogon=
+      <yes | no>
+  VBoxManage controlvm <uuid | vmname> teleport <--host=host-name>
+      <--port=port-name> [--maxdowntime=msec] [--passwordfile=filename |
+      --password=password]
+  VBoxManage controlvm <uuid | vmname> plugcpu <ID>
+  VBoxManage controlvm <uuid | vmname> unplugcpu <ID>
+  VBoxManage controlvm <uuid | vmname> cpuexecutioncap <num>
+  VBoxManage controlvm <uuid | vmname> vm-process-priority <default | flat |
+      low | normal | high>
+  VBoxManage controlvm <uuid | vmname> webcam attach [pathname [settings]]
+  VBoxManage controlvm <uuid | vmname> webcam detach [pathname]
+  VBoxManage controlvm <uuid | vmname> webcam list
+  VBoxManage controlvm <uuid | vmname> addencpassword <ID> <password-file | ->
+      [--removeonsuspend= yes | no]
+  VBoxManage controlvm <uuid | vmname> removeencpassword <ID>
+  VBoxManage controlvm <uuid | vmname> removeallencpasswords
+  VBoxManage controlvm <uuid | vmname> changeuartmodeN disconnected | server
+      pipe-name | client pipe-name | tcpserver port | tcpclient hostname:port |
+      file filename | device-name
+  VBoxManage controlvm <uuid | vmname> autostart-enabledN on | off
+  VBoxManage controlvm <uuid | vmname> autostart-delay <seconds>
+
+Description
+===========
+
+  The VBoxManage controlvm command enables you to change the state of a running
+  virtual machine (VM). The following sections describe the subcommands that
+  you can use:
+
+    Pause a Virtual Machine
+    -----------------------
+
+    VBoxManage controlvm <uuid | vmname> pause
+
+    The VBoxManage controlvm <vmname> pause command temporarily stops the
+    execution of a VM. When paused, the VM's state is not permanently changed.
+
+    The VM window appears as gray and the title bar of the window indicates
+    that the VM is currently Paused. This action is equivalent to selecting
+    Pause from the Machine menu of the GUI.
+
+
+    Resume a Paused Virtual Machine
+    -------------------------------
+
+    VBoxManage controlvm <uuid | vmname> resume
+
+    The VBoxManage controlvm <vmname> resume command restarts the execution of
+    a paused VM. This action is equivalent to selecting Resume from the Machine
+    menu of the GUI.
+
+
+    Reset a Virtual Machine
+    -----------------------
+
+    VBoxManage controlvm <uuid | vmname> reset
+
+    The VBoxManage controlvm <vmname> reset command performs a cold reset the
+    VM. This command has the same effect on a VM as pressing the Reset button
+    on a physical computer.
+
+    A cold reboot immediately restarts and reboots the guest operating system
+    (OS). The state of the VM is not saved prior to the reset, so data might be
+    lost. This action is equivalent to selecting Reset from the Machine menu of
+    the GUI.
+
+
+    Power Off a Virtual Machine
+    ---------------------------
+
+    VBoxManage controlvm <uuid | vmname> poweroff
+
+    The VBoxManage controlvm <vmname> poweroff command powers off the VM. This
+    command has the same effect on a VM as pulling the power cable on a
+    physical computer.
+
+    The state of the VM is not saved prior to poweroff, so data might be lost.
+    This action is equivalent to selecting Close from the Machine menu of the
+    GUI or to clicking the VM window's Close button, and then selecting Power
+    Off the Machine.
+
+    The poweroff subcommand places a VM into the Powered Off state from which
+    you can restart the VM using "VBoxManage startvm".
+
+
+    Save the State of a Virtual Machine
+    -----------------------------------
+
+    VBoxManage controlvm <uuid | vmname> savestate
+
+    The VBoxManage controlvm <vmname> savestate command saves the current state
+    of the VM to disk and then stops the VM.
+
+    This action is equivalent to selecting Close from the Machine menu of the
+    GUI or to clicking the VM window's Close button, and then selecting Save
+    the Machine State.
+
+    The savestate subcommand places a VM into the Saved state from which you
+    can restart the VM using "VBoxManage startvm". The VM will resume from the
+    exact point at which it was saved.
+
+
+    Send an APCI Shutdown Signal to a Virtual Machine
+    -------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> acpipowerbutton
+
+    The VBoxManage controlvm <vmname> acpipowerbutton command sends an ACPI
+    shutdown signal to the VM. This command has the same effect on a VM as
+    pressing the Power button on a physical computer.
+
+    So long as the VM runs a guest OS that provides appropriately configured
+    ACPI support, this command triggers an operating system shutdown from
+    within the VM.
+
+
+    Send an APCI Sleep Signal to a Virtual Machine
+    ----------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> acpisleepbutton
+
+    The VBoxManage controlvm <vmname> acpisleepbutton command sends an ACPI
+    sleep signal to the VM.
+
+    So long as the VM runs a guest OS that provides appropriately configured
+    ACPI support, this command triggers a sleep mechanism from within the VM.
+
+
+    Reboot the guest OS
+    -------------------
+
+    VBoxManage controlvm <uuid | vmname> reboot
+
+    The VBoxManage controlvm <vmname> reboot command asks the guest OS to
+    reboot itself.
+
+    This command requires the Oracle VirtualBox Guest Additions to be installed
+    in the VM.
+
+
+    Shut down the guest OS
+    ----------------------
+
+    VBoxManage controlvm <uuid | vmname> shutdown [--force]
+
+    The VBoxManage controlvm <vmname> shutdown command asks the guest OS to
+    halt + shutdown, optionally forcing the shutdown.
+
+    This command requires the Oracle VirtualBox Guest Additions to be installed
+    in the VM.
+
+
+    Send Keyboard Scancodes to a Virtual Machine
+    --------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> keyboardputscancode <hex> [hex...]
+
+    The VBoxManage controlvm <vmname> keyboardputscancode command sends
+    keyboard scancode commands to the VM.
+
+    For information about keyboard scancodes, see
+    http://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html.
+
+
+    Send Keyboard Strings to a Virtual Machine
+    ------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> keyboardputstring <string> [string...]
+
+    The VBoxManage controlvm <vmname> keyboardputstring command sends keyboard
+    strings to the VM.
+
+
+    Send a File to a Virtual Machine
+    --------------------------------
+
+    VBoxManage controlvm <uuid | vmname> keyboardputfile <filename>
+
+    The VBoxManage controlvm <vmname> keyboardputfile command sends a file to
+    the VM.
+
+
+    Set the Link State for a Virtual Machine
+    ----------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> setlinkstateN <on | off>
+
+    VBoxManage controlvm <vmname> setlinkstate<N> command enables you to
+    connect or disconnect the virtual network cable from the network interface
+    instance (<N>). Valid values are on and off. The default value is on.
+
+
+    Set the Type of Networking to Use for a Virtual Machine
+    -------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> nicN <null | nat | bridged | intnet |
+        hostonly | generic | natnetwork> [device-name]
+
+    The VBoxManage controlvm <vmname> nic<N> command specifies the type of
+    networking to use on the specified VM's virtual network card. <N> numbering
+    begins with 1.
+
+    The following valid network types are also described in section
+    "Introduction to Networking Modes" in chapter 1 of the user manual:
+      - null specifies that the VM is is not connected to the host system.
+      - nat specifies that the VM uses Network Address Translation (NAT).
+      - bridged specifies that the VM uses bridged networking.
+      - intnet specifies that the VM communicates with other VMs by using
+      internal networking.
+      - hostonly specifies that the VM uses host-only networking.
+      - natnetwork specifies that the VM uses NAT networking.
+      - generic specifies that the VM has access to rarely used submodes
+
+
+    Trace the Network Traffic of a Virtual Machine
+    ----------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> nictraceN <on | off>
+
+    The VBoxManage controlvm <vmname> nictrace<N> command enables you to trace
+    the network traffic on the specified virtual network card (<N>). <N>
+    numbering begins with 1. Valid values are on and off. The default value is
+    off.
+
+    If you do not configure a file name for the trace file then a default one
+    is used, placing it in the VM subdirectory.
+
+
+    Specify the Network Traffic Trace Log File for a Virtual Machine
+    ----------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> nictracefileN <filename>
+
+    The VBoxManage controlvm <vmname> nictracefile<N> command enables you to
+    specify the name of the network traffic trace log file for the specified
+    virtual network card (<N>). <N> numbering begins with 1.
+
+
+    Specify the Promiscuous Mode to Use for a Virtual Machine
+    ---------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> nicpromiscN <deny | allow-vms |
+        allow-all>
+
+    The VBoxManage controlvm <vmname> nicpromisc<N> command enables you to
+    specify how to handle promiscuous mode for a bridged network. The default
+    value of deny hides any traffic that is not intended for this VM. The
+    allow-vms value hides all host traffic from this VM but enables the VM to
+    see traffic to and from other VMs. The allow-all value removes this
+    restriction completely.
+
+
+    Specify the Network Backend Property Values for a Virtual Machine
+    -----------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> nicpropertyN <prop-name=prop-value>
+
+    The VBoxManage controlvm <vmname> nicproperty<N><prop-name>=<prop-value>
+    command, in combination with nicgenericdrv, enables you to pass property
+    values to rarely-used network backends.
+
+    Those properties are backend engine-specific and are different between UDP
+    Tunnel and the Virtual Distributed Ethernet (VDE) backend drivers. See
+    section "UDP Tunnel Networking" in chapter 1 of the user manual.
+
+
+    Specify a NAT Port Forwarding Rule for a Virtual Machine
+    --------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> natpfN
+        <[rulename],<tcp|udp>,[host-IP],hostport,[guest-IP],guestport>
+
+    The VBoxManage controlvm <vmname> natpf<N> command specifies a NAT
+    port-forwarding rule. See section "Configuring Port Forwarding with NAT" in
+    chapter 1 of the user manual.
+
+
+    Delete a NAT Port Forwarding Rule for a Virtual Machine
+    -------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> natpfNdelete <rulename>
+
+    The VBoxManage controlvm <vmname> natpf<N> delete command deletes the
+    specified NAT port-forwarding rule. See section "Configuring Port
+    Forwarding with NAT" in chapter 1 of the user manual.
+
+
+    Change Size of a Virtual Machine's Guest Memory Balloon
+    -------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> guestmemoryballoon <balloon-size>
+
+    The VBoxManage controlvm <vmname> guestmemoryballoon command changes the
+    size of the guest memory balloon. The guest memory balloon is the memory
+    allocated by the Oracle VirtualBox Guest Additions from the guest OS and
+    returned to the hypervisor for reuse by other VMs. The value you specify is
+    in megabytes. See section "Memory Ballooning" in chapter 1 of the user
+    manual.
+
+
+    Make a Host System USB Device Visible to a Virtual Machine
+    ----------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> usbattach <uuid | address>
+        [--capturefile=filename]
+
+    The VBoxManage controlvm <vmname> usbattach command dynamically attaches a
+    host USB device to the VM, which makes it visible. You do not need to
+    create a filter.
+
+    Specify a USB device by its Universally Unique Identifier (UUID) or by its
+    address on the host system. Use the VBoxManage list usbhost command to
+    obtain information about USB devices on the host system.
+
+    Use the --capturefile option to specify the absolute path of a file in
+    which to write logging data.
+
+
+    Make a Host System USB Device Invisible to a Virtual Machine
+    ------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> usbdetach <uuid | address>
+
+    The VBoxManage controlvm <vmname> usbdetach command dynamically detaches a
+    host USB device from the VM, which makes it invisible. You do not need to
+    create a filter.
+
+    Specify a USB device by its UUID or by its address on the host system. Use
+    the VBoxManage list usbhost command to obtain information about USB devices
+    on the host system.
+
+
+    Enable or Disable Audio Capture From the Host System
+    ----------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> audioin <on | off>
+
+    The VBoxManage controlvm <vmname> audioin command specifies whether to
+    enable or disable audio capture from the host system. Valid values are on,
+    which enables audio capture and off, which disables audio capture. The
+    default value is off.
+
+
+    Enable or Disable Audio Playback From a Virtual Machine
+    -------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> audioout <on | off>
+
+    The VBoxManage controlvm <vmname> audioout command specifies whether to
+    enable or disable audio playback from the guest VM. Valid values are on,
+    which enables audio playback and off, which disables audio playback. The
+    default value is off.
+
+
+    Specify How to Share the Host OS or Guest OS Clipboard
+    ------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> clipboard mode <disabled | hosttoguest
+        | guesttohost | bidirectional>
+
+    The VBoxManage controlvm <vmname> clipboard mode command specifies how to
+    share the guest or host OS's clipboard with the host system or VM. Valid
+    values are disabled, hosttoguest, guesttohost, and bidirectional. The
+    default value is disabled. See section "General Settings" in chapter 1 of
+    the user manual.
+
+    This feature requires the Oracle VirtualBox Guest Additions to be installed
+    in the VM.
+
+
+    Specify If Files Can Be Transferred Through the Clipboard
+    ---------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> clipboard filetransfers <on | off>
+
+    The VBoxManage controlvm <vmname> clipboard filetransfers command specifies
+    if it is possible to transfer files through the clipboard between the host
+    and VM in the direction(s) configured for the clipboard mode. Valid values
+    are off and on. The default value is off.
+
+    This feature requires the Oracle VirtualBox Guest Additions to be installed
+    in the VM.
+
+
+    Set the Drag and Drop Mode Between the Host System and a Virtual Machine
+    ------------------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> draganddrop <disabled | hosttoguest |
+        guesttohost | bidirectional>
+
+    The VBoxManage controlvm <vmname> draganddrop command specifies the current
+    drag and drop mode to use between the host system and the VM. Valid values
+    are disabled, hosttoguest, guesttohost, and bidirectional. The default
+    value is disabled. See section "Drag and Drop" in chapter 1 of the user
+    manual.
+
+    This feature requires the Oracle VirtualBox Guest Additions to be installed
+    in the VM.
+
+
+    Enable or Disable the VRDE Server
+    ---------------------------------
+
+    VBoxManage controlvm <uuid | vmname> vrde <on | off>
+
+    The VBoxManage controlvm <vmname> vrde command enables or disables the
+    VirtualBox Remote Desktop Extension (VRDE) server, if installed. Valid
+    values are on and off. The default value is off.
+
+
+    Specify VRDE Server Ports
+    -------------------------
+
+    VBoxManage controlvm <uuid | vmname> vrdeport <port>
+
+    The VBoxManage controlvm <vmname> vrdeport command specifies the port or
+    range of ports to which the VRDE server can bind. The default value is
+    default or 0, which uses the standard RDP port, 3389.
+
+    See also the --vrde-port option description in "VBoxManage modifyvm".
+
+
+    Specify VRDE Server Port Numbers and IP Addresses
+    -------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> vrdeproperty <prop-name=prop-value>
+
+    The VBoxManage controlvm <vmname> vrdeproperty command specifies the port
+    numbers and IP address on the VM to which the VRDE server can bind.
+      - TCP/Ports specifies a port or a range of ports to which the VRDE server
+      can bind. The default value is default or 0, which is the standard RDP
+      port, 3389.
+
+      - See also the --vrde-port option description in "VBoxManage modifyvm".
+      - TCP/Address specifies the IP address of the host network interface to
+      which the VRDE server binds. When specified, the server accepts
+      connections only on the specified host network interface.
+
+      - See also the --vrde-address option description in "VBoxManage
+      modifyvm".
+      - VideoChannel/Enabled specifies whether to enable the VirtualBox Remote
+      Desktop Protocol (VRDP) video channel. Valid values are 1 to enable the
+      video channel and 0 to disable the video channel. The default value is 0.
+      See section "VRDP Video Redirection" in chapter 1 of the user manual.
+      - VideoChannel/Quality specifies the JPEG compression level on the VRDE
+      server video channel. Valid values are between 10% and 100%, inclusive.
+      Lower values mean lower quality but higher compression. The default value
+      is 100. See section "VRDP Video Redirection" in chapter 1 of the user
+      manual.
+      - VideoChannel/DownscaleProtection specifies whether to enable the video
+      channel downscale protection feature. Specify 1 to enable the feature.
+      This feature is disabled by default.
+
+      - When enabled, if the video's size equals the shadow buffer size, the
+      video is shown in full-screen mode. If the video's size is between
+      full-screen mode and the downscale threshold, the video is not shown as
+      it might be an application window that is unreadable when downscaled.
+      When disabled, the downscale protection feature always attempts to show
+      videos.
+      - Client/DisableDisplay specifies whether to disable the VRDE server
+      display feature. Valid values are 1 to disable the feature and an empty
+      string ("") to enable the feature. The default value is an empty string.
+      See section "VRDP Customization" in chapter 1 of the user manual.
+      - Client/DisableInput specifies whether to disable the VRDE server input
+      feature. Valid values are 1 to disable the feature and an empty string
+      ("") to enable the feature. The default value is 1. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Client/DisableAudio specifies whether to disable the VRDE server audio
+      feature. Valid values are 1 to disable the feature and an empty string
+      ("") to enable the feature. The default value is 1. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Client/DisableUSB specifies whether to disable the VRDE server USB
+      feature. Valid values are 1 to disable the feature and an empty string
+      ("") to enable the feature. The default value is 1. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Client/DisableClipboard specifies whether to disable the VRDE clipboard
+      feature. Valid values are 1 to disable the feature and an empty string
+      ("") to enable the feature. To re-enable the feature, use
+      Client/DisableClipboard=. The default value is 1. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Client/DisableUpstreamAudio specifies whether to disable the VRDE
+      upstream audio feature. Valid values are 1 to disable the feature and an
+      empty string ("") to enable the feature. To re-enable the feature, use
+      Client/DisableUpstreamAudio=. The default value is 1. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Client/DisableRDPDR specifies whether to disable the RDP Device
+      Redirection For Smart Cards feature on the VRDE server. Valid values are
+      1 to disable the feature and an empty string ("") to enable the feature.
+      The default value is 1. See section "VRDP Customization" in chapter 1 of
+      the user manual.
+      - H3DRedirect/Enabled specifies whether to enable the VRDE server 3D
+      redirection feature. Valid values are 1 to enable the feature and an
+      empty string ("") to disable the feature. See section "VRDP
+      Customization" in chapter 1 of the user manual.
+      - Security/Method specifies the security method to use for a connection.
+      See section "RDP Encryption" in chapter 1 of the user manual.
+
+          - Negotiate accepts both enhanced (TLS) and standard RDP security
+          connections. The security method is negotiated with the client. This
+          is the default value.
+          - RDP accepts only standard RDP security connections.
+          - TLS accepts only enhanced RDP security connections. The client must
+          support TLS.
+      - Security/ServerCertificate specifies the absolute path of the server
+      certificate to use for a connection. See section "RDP Encryption" in
+      chapter 1 of the user manual.
+      - Security/ServerPrivateKey specifies the absolute path of the server
+      private key. See section "RDP Encryption" in chapter 1 of the user
+      manual.
+      - Security/CACertificate specifies the absolute path of the CA
+      self-signed certificate. See section "RDP Encryption" in chapter 1 of the
+      user manual.
+      - Audio/RateCorrectionMode specifies the rate correction mode to use.
+
+          - VRDP_AUDIO_MODE_VOID indicates that no mode is specified. Use this
+          value to unset any audio mode that is already set.
+          - VRDP_AUDIO_MODE_RC specifies to use the rate correction mode.
+          - VRDP_AUDIO_MODE_LPF specifies to use the low pass filter mode.
+          - VRDP_AUDIO_MODE_CS specifies to use the client sync mode to prevent
+          underflow or overflow of the client queue.
+      - Audio/LogPath specifies the absolute path of the audio log file.
+
+
+    Specify the Image Quality for VRDP Video Redirection
+    ----------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> vrdevideochannelquality <percentage>
+
+    The VBoxManage controlvm <vmname> vrdevideochannelquality command sets the
+    image quality, as a JPEG compression level value, for video redirection.
+    Valid values are between 10% and 100%, inclusive. Lower values mean lower
+    quality but higher compression. See section "VRDP Video Redirection" in
+    chapter 1 of the user manual.
+
+
+    Specify the Video Mode for the Guest VM
+    ---------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> setvideomodehint <xres> <yres> <bpp>
+        [display [<yes | no> [x-origin y-origin]]]
+
+    The VBoxManage controlvm <vmname> setvideomodehint command specifies the
+    video mode for the guest VM to use. You must have the Oracle VirtualBox
+    Guest Additions installed. Note that this feature does not work for all
+    guest systems.
+
+
+    Specify the Screen Layout for a Display on the Guest VM
+    -------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> setscreenlayout <display> <on |
+        primary  x-origin y-origin x-resolution y-resolution bpp | off>
+
+    The VBoxManage controlvm <vmname> setscreenlayout command can be used to
+    configure multiscreen displays. The specified screen on the guest VM can be
+    enabled or disabled, or a custom screen layout can be configured.
+
+
+    Take a Screen Shot of the Virtual Machine Display
+    -------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> screenshotpng <filename> [display]
+
+    The VBoxManage controlvm <vmname> screenshotpng command takes a screenshot
+    of the guest display and saves it as PNG in the specified file.
+      - <filename> specifies the name of the PNG file to create.
+      - <display> specifies the display number for the screen shot. For a
+      single monitor guest display, this is 0.
+
+
+    Recording of a Virtual Machine Session
+    --------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> recording <on | off>
+    VBoxManage controlvm <uuid | vmname> recording start [--wait]
+    VBoxManage controlvm <uuid | vmname> recording stop
+    VBoxManage controlvm <uuid | vmname> recording attach
+    VBoxManage controlvm <uuid | vmname> recording screens <all | none |
+        screen-ID ,screen-ID...>
+    VBoxManage controlvm <uuid | vmname> recording filename <filename>
+    VBoxManage controlvm <uuid | vmname> recording videores <<width>x <height>>
+    VBoxManage controlvm <uuid | vmname> recording videorate <rate>
+    VBoxManage controlvm <uuid | vmname> recording videofps <fps>
+    VBoxManage controlvm <uuid | vmname> recording maxtime <sec>
+    VBoxManage controlvm <uuid | vmname> recording maxfilesize <MB>
+    VBoxManage controlvm <uuid | vmname> recording opts <key= [value]>
+
+    The VBoxManage controlvm <vmname> recording command enables or disables the
+    recording of a VM session into a WebM/VP8 file. Valid values are on, which
+    begins recording when the VM session starts and off, which disables
+    recording. The default value is off.
+
+    The VBoxManage controlvm <vmname> recording start command starts the
+    recording of a VM session into a WebM/VP8 file.
+
+    The VBoxManage controlvm <vmname> recording stop command stops the
+    recording of a VM session.
+
+    The VBoxManage controlvm <vmname> recording attach command attaches to a
+    running recording of a VM session.
+
+    The VBoxManage controlvm <vmname> recording screens command enables you to
+    specify which VM screens to record. The recording for each screen that you
+    specify is saved to its own file in the machine folder. You cannot modify
+    this setting while a screen recording is in progress.
+      - all specifies that you record all VM screens.
+      - none specifies that you do not record any VM screens.
+      - <screen-ID> specifies one or more VM screens to record.
+
+    The VBoxManage controlvm <vmname> recording filename command specifies the
+    file in which to save the recording. You cannot modify this setting while a
+    screen recording is in progress.
+
+    The default setting is to store a recording in the machine folder, using
+    the VM name as the file name, with a webm file name extension.
+
+    The VBoxManage controlvm <vmname> recording videores command specifies the
+    resolution of the recorded video in pixels. You cannot modify this setting
+    while a screen recording is in progress.
+
+    The Recording settings in the GUI which are located in the Display page
+    show the current video recording settings which are based on the resolution
+    (frame size). The Frame Size field shows the default value for the
+    recording video resolution.
+
+    Specify the resolution as <width>x<height>:
+      - <width> specifies the width in pixels.
+      - <height> specifies the height in pixels.
+
+    The VBoxManage controlvm <vmname> recording videorate command specifies the
+    <bit-rate>, of the video in kilobits per second. Increasing this value
+    improves the appearance of the video at the cost of an increased file size.
+    You cannot modify this setting while a VM is running with recording
+    enabled.
+
+    The Recording settings in the GUI which are located in the Display page
+    show the current video recording settings which are based on the resolution
+    (frame size). The Video Quality field shows the default value for the
+    recording video quality.
+
+    The VBoxManage controlvm <vmname> recording videofps command specifies the
+    maximum frequency of the video to record. Video frequency is measured in
+    frames per second (FPS). The recording skips any frames that have a
+    frequency higher than the specified maximum. Increasing the frequency
+    reduces the number of skipped frames and increases the file size. You
+    cannot modify this setting while a VM is running with recording enabled.
+
+    The Recording settings in the GUI which are located in the Display page
+    show the current video recording settings which are based on the resolution
+    (frame size). The Frame Rate field shows the default value for the
+    recording frame rate.
+
+    The VBoxManage controlvm <vmname> recording maxtime command specifies the
+    maximum amount time to record in seconds. The recording stops after the
+    specified number of seconds elapses. If this value is zero, the recording
+    continues until you stop the VM or stop the recording.
+
+    The VBoxManage controlvm <vmname> recording maxfilesize command specifies
+    the maximum size of the recorded video file in megabytes. The recording
+    stops when the file reaches the specified size. If this value is zero, the
+    recording continues until you stop the VM or stop the recording. You cannot
+    modify this setting while a screen recording is in progress.
+
+    The VBoxManage controlvm <vmname> recording opts command specifies
+    additional recording options in a comma-separated keyword-value format. For
+    example, foo=bar,a=b. You cannot modify this setting while a screen
+    recording is in progress.
+
+    Use this option if you are an advanced user only. For information about
+    keywords, see Oracle VirtualBox Programming Guide and Reference.
+
+
+    Specify Credentials for Remote Logins on Windows Virtual Machines
+    -----------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> setcredentials <username>
+        --passwordfile= <filename | password> <domain-name> --allowlocallogon=
+        <yes | no>
+
+    The setcredentials command enables you to specify the credentials for
+    remotely logging in to Windows VMs. See section "Automated Guest Logins" in
+    chapter 1 of the user manual.
+      - <username> specifies the user name with which to log in to the Windows
+      VM.
+      - --passwordfile=<filename> specifies the file from which to obtain the
+      password for <username>.
+
+      - The --passwordfile option is mutually exclusive with the --password
+      option.
+      - --password=<password> specifies the password for <username>.
+
+      - The --password option is mutually exclusive with the --passwordfile
+      option.
+      - --allowlocallogon specifies whether to enable or disable local logins.
+      Valid values are on to enable local logins and off to disable local
+      logins.
+
+
+    Configure a Virtual Machine Target for Teleporting
+    --------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> teleport <--host=host-name>
+        <--port=port-name> [--maxdowntime=msec] [--passwordfile=filename |
+        --password=password]
+
+    The VBoxManage controlvm <vmname> teleport command initiates a teleporting
+    operation between the specified VM and the specified host system. See
+    section "Teleporting" in chapter 1 of the user manual.
+
+    If you specify a password, it must match the password you specified when
+    you issued the VBoxManage modifyvm command for the target machine.
+
+    --host=<hostname>
+        Specifies the name of the VM.
+
+    --port=<port>
+        Specifies the port on the VM that should listen for a teleporting
+        request from other VMs. The port number can be any free TCP/IP port
+        number, such as 6000.
+
+    --maxdowntime=<msec>
+        Specifies the maximum downtime, in milliseconds, for the teleporting
+        target VM.
+
+    --password=<password>
+        Specifies the password that the source machine uses for the teleporting
+        request. The request succeeds only if the source machine specifies the
+        same password.
+
+        The --password option is mutually exclusive with the --passwordfile
+        option.
+
+    --passwordfile=<filename>
+        Specifies the file from which to obtain the password that the source
+        machine uses for the teleporting request. The request succeeds only if
+        the source machine specifies the same password.
+
+        When you specify a file name of stdin, you can read the password from
+        standard input.
+
+        The --passwordfile option is mutually exclusive with the --password
+        option.
+
+
+    Add a Virtual CPU to a Virtual Machine
+    --------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> plugcpu <ID>
+
+    The VBoxManage controlvm <vmname> plugcpu command adds a virtual CPU to the
+    specified VM if CPU hot-plugging is enabled. <ID> specifies the index of
+    the virtual CPU to be added and must be a number from 0 to the maximum
+    number of CPUs configured.
+
+
+    Remove a Virtual CPU From a Virtual Machine
+    -------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> unplugcpu <ID>
+
+    The VBoxManage controlvm <vmname> unplugcpu command removes a virtual CPU
+    from the specified VM if CPU hot-plugging is enabled. <ID> specifies the
+    index of the virtual CPU to be removed and must be a number from 0 to the
+    maximum number of CPUs configured. You cannot remove CPU 0.
+
+
+    Set the Maximum Amount of Physical CPU Time Used by a Virtual CPU
+    -----------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> cpuexecutioncap <num>
+
+    The VBoxManage controlvm <vmname> cpuexecutioncap command specifies the
+    maximum amount of physical CPU time used by a virtual CPU. Valid values are
+    a percentage between 1 and 100. A value of 50 specifies that a single
+    virtual CPU can use up to 50% of a physical CPU. The default value is 100.
+
+    Use this feature with caution, it can have unexpected results including
+    timekeeping problems and lower performance than specified. If you want to
+    limit the resource usage of a VM it is more reliable to pick an appropriate
+    number of VCPUs.
+
+
+    Change the Priority of a VM Process
+    -----------------------------------
+
+    VBoxManage controlvm <uuid | vmname> vm-process-priority <default | flat |
+        low | normal | high>
+
+    The VBoxManage controlvm <vmname> vm-process-priority command specifies the
+    priority scheme of the VM process to use when starting the specified VM and
+    while the VM runs.
+
+    Valid values are:
+      - default – Default process priority determined by the OS.
+      - flat – Uses a scheduling policy which puts the process at the default
+      priority and with all threads at the same priority.
+      - low – Uses a scheduling policy which puts the process mostly below
+      the default priority of the host OS.
+      - normal – Uses a scheduling policy which shares the CPU resources
+      fairly with other processes running with the default priority of the host
+      OS.
+      - high – Uses a scheduling policy which puts the task above the default
+      priority of the host OS. This policy might easily cause other tasks in
+      the system to starve.
+
+
+    Attach a Webcam to a Virtual Machine
+    ------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> webcam attach [pathname [settings]]
+
+    The VBoxManage controlvm <vmname> webcam attach command attaches a webcam
+    to a running VM. Specify the webcam as the absolute path of the webcam on
+    the host OS or as an alias. Use the VBoxManage list webcams command to
+    obtain the webcam alias.
+
+    Note that the .0 alias is the default video input device on the host OS. .1
+    is the first video input device, .2 is the second video input device, and
+    so on. The order of the devices is specific to the host system.
+
+    You can specify optional settings in the form of semicolon-separated (;)
+    name-value pairs. These properties enable you to configure the emulated
+    webcam device.
+
+    The following settings are supported:
+
+    MaxFramerate
+        Specifies the highest rate at which to send video frames to the VM. The
+        rate is in frames per second. Higher frame rates increase CPU load, so
+        you can use this setting to reduce CPU load. The default value is no
+        maximum limit. This value enables the VM to use any frame rate
+        supported by the webcam.
+
+    MaxPayloadTransferSize
+        Specifies the maximum number of bytes that the VM receives from the
+        emulated webcam in one buffer. The default setting is 3060 bytes, which
+        is used by some webcams. If the VM is able to use larger buffers,
+        higher values might reduce CPU load slightly. Note that some guest OSes
+        might not support higher MaxPayloadTransferSize values.
+
+
+    Detach a Webcam From a Virtual Machine
+    --------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> webcam detach [pathname]
+
+    The VBoxManage controlvm <vmname> webcam detach command detaches a webcam
+    from a running VM. Specify the webcam as the absolute path of the webcam on
+    the host OS or as an alias. Use the VBoxManage list webcams command to
+    obtain the webcam alias.
+
+    When a webcam device is detached from the host, the host OS determines how
+    the emulated webcam behaves.
+      - Windows hosts: The emulated webcam device is detached from the VM
+      automatically.
+      - Mac OS X hosts that run at least OS X 10.7: The emulated webcam device
+      remains attached to the VM and you must detach it manually by using the
+      VBoxManage controlvm webcam detach command.
+      - Linux hosts: The emulated webcam device is detached from the VM
+      automatically only if the webcam is actively streaming video. If the
+      emulated webcam is inactive, manually detach it by using the
+      VBoxManage controlvm <vmname> webcam detach command.
+
+
+    List the Webcams Attached to a Virtual Machine
+    ----------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> webcam list
+
+    The VBoxManage controlvm <vmname> webcam list command lists webcams that
+    are attached to the running VM. The output shows a list of absolute paths
+    or aliases of the webcams which were attached to the VM using the
+    VBoxManage controlvm <vmname> webcam attach command.
+
+
+    Starting a Virtual Machine with Encrypted Images
+    ------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> addencpassword <ID> <password-file |
+        -> [--removeonsuspend= yes | no]
+
+    You can encrypt the data stored in the hard disk images used by the VM.
+    Oracle VirtualBox uses the AES algorithm in XTS mode and supports 128-bit
+    or 256-bit data encryption keys (DEK). The encrypted DEK is stored in the
+    medium properties and is decrypted during VM startup when you provide the
+    encryption password.
+
+    Use the VBoxManage encryptmedium command to create a DEK encrypted medium.
+    See section "Encrypting Disk Images" in chapter 1 of the user manual.
+
+    When a VM which contains one or more encrypted disk images is started using
+    the Oracle VirtualBox GUI a dialog will open to prompt the user for the
+    password of each encrypted disk attached to the VM. If the VBoxHeadless
+    frontend is used, the VM will be paused as soon as the guest tries to
+    access an encrypted disk. The user needs to provide the passwords by using
+    addencpassword subcommand.
+
+    The VBoxManage controlvm <vmname> addencpassword command provides the
+    encryption password to the VM named <vmname> which contains encrypted disks
+    that has been started using the VBoxHeadless frontend. Specify the absolute
+    path of a password file on the host system. If <filename> is -, VBoxManage
+    prompts for the encryption password.
+
+    Use the --removeonsuspend option to specify whether to save the passsword
+    or clear it from VM memory when the VM is suspended.
+
+    If the VM is suspended and the password is cleared, use the
+    VBoxManage controlvm <vmname> addencpassword to provide the password to
+    resume execution on the VM. Use this feature when you do not want to store
+    the password in VM memory when the VM is suspended by a host suspend event.
+
+    The following is one way to perform a headless start of VM which contains
+    encrypted disk images:
+
+          $ VBoxManage startvm  --type headless
+        
+
+    The following command provides the encryption password to the VM so that it
+    can resume starting up:
+
+          $ VBoxManage  controlvm addencpassword  -
+          Password: 
+
+
+    Disable an Encryption Password for a Virtual Machine
+    ----------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> removeencpassword <ID>
+
+    The VBoxManage controlvm <vmname> removeencpassword command disables a
+    specific encryption password for all encrypted media attached to the VM.
+
+    <ID> is the password identifier for the encryption password that you want
+    to disable.
+
+
+    Disable All Encryption Passwords for a Virtual Machine
+    ------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> removeallencpasswords
+
+    The VBoxManage controlvm <vmname> removeallencpasswords command disables
+    all encryption passwords for all encrypted media attached to the VM.
+
+
+    Change the Connection Mode for a Virtual Serial Port on a Virtual Machine
+    -------------------------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> changeuartmodeN disconnected | server
+        pipe-name | client pipe-name | tcpserver port | tcpclient hostname:port
+        | file filename | device-name
+
+    The VBoxManage controlvm <vmname> changeuartmode command changes the
+    connection mode for the specified virtual serial port. Valid serial port
+    values are integers that start from 1.
+
+    disconnected
+        Disconnects the device.
+
+    server <pipe-name>
+        Specifies the pipe name of the server.
+
+    client <pipe-name>
+        Specifies the pipe name of the client.
+
+    tcpserver <port>
+        Specifies the port number of the TCP server.
+
+    tcpclient <hostname>:<port>
+        Specifies the host name and port number of the TCP client.
+
+    file <filename>
+        Specifies the name of the file.
+
+    <device-name>
+        Specifies the name of the device.
+
+
+    Enabling autostart the VM during host system boot
+    -------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> autostart-enabledN on | off
+
+    The VBoxManage controlvm <vmname> autostart-enabled command specifies
+    whether to enable or disable automatically starting of the VM at host
+    system boot-up. You must do some host system configuration before you can
+    use this feature. See section "Starting Virtual Machines During System
+    Boot" in chapter 1 of the user manual. Valid values are on, which enables
+    the autostart feature for the VM and off, which disables it. The default
+    value is off.
+
+
+    Setting the delay of starting the VM on host system boot
+    --------------------------------------------------------
+
+    VBoxManage controlvm <uuid | vmname> autostart-delay <seconds>
+
+    The VBoxManage controlvm <vmname> autostart-delay command specifies the
+    delay in seconds before the VM starts on host system boot-up. See section
+    "Starting Virtual Machines During System Boot" in chapter 1 of the user
+    manual.
+
+
+Examples
+========
+
+  The following command temporarily stops the execution of the ol7 VM.
+$ VBoxManage controlvm ol7 pause
+
+  The following command configures shared clipboard operation for the ol7 VM.
+  Copying of clipboard data is allowed in both directions between the host and
+  guest.
+$ VBoxManage controlvm ol7 clipboard mode bidirectional
+
+
+See Also
+========
+
+  "VBoxManage list", "VBoxManage modifyvm", "VBoxManage startvm"

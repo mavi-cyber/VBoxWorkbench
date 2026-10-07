@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VBoxWorkbench.App/VBoxWorkbench.App.csproj" />
+    <Project Path="src/VBoxWorkbench.Core/VBoxWorkbench.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VBoxWorkbench.Tests/VBoxWorkbench.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,57 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage showmediuminfo -- Show information about a medium.
+
+Usage
+=====
+
+  VBoxManage showmediuminfo [disk | dvd | floppy] <uuid | filename>
+
+Description
+===========
+
+  The VBoxManage showmediuminfo command shows the following information about a
+  medium:
+
+    - Size
+    - Size on disk
+    - Type
+    - In use by virtual machines (VMs)
+
+  The medium must be specified by either its UUID, if the medium is registered,
+  or by its filename. Registered images can be listed using
+  VBoxManage list hdds, VBoxManage list dvds, or VBoxManage list floppies, as
+  appropriate.
+
+  For backward compatibility, you can also use the showvdiinfo command to
+  obtain information about the medium.
+
+  disk | dvd | floppy
+      Specifies the type of medium. Valid values are disk (hard drive), dvd, or
+      floppy.
+
+  <uuid> | <filename>
+      Specifies the Universally Unique Identifier (UUID) or absolute path name
+      of the medium or image.
+
+      If the medium is registered, you can specify the UUID. You can also list
+      registered images by using the VBoxManage list hdds,
+      VBoxManage list dvds, or VBoxManage list floppies command.
+
+
+Examples
+========
+
+  The following command shows information about the disk01.vdi disk image:
+$ VBoxManage showmediuminfo disk01.vdi
+
+  The following command shows information about the floppy01.img floppy disk
+  image.
+$ VBoxManage showmediuminfo floppy floppy01.img
+
+
+See Also
+========
+
+  "VBoxManage list"

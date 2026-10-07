@@ -1,0 +1,49 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage unregistervm -- Unregister a virtual machine.
+
+Usage
+=====
+
+  VBoxManage unregistervm <uuid | vmname> [--delete] [--delete-all]
+
+Description
+===========
+
+  The VBoxManage unregistervm command unregisters a virtual machine (VM).
+
+  <uuid> | <vmname>
+      Specifies the name or Universally Unique Identifier (UUID) of the VM.
+
+  --delete
+      Deletes the following files related to the VM automatically:
+
+        - All hard disk image files, including differencing files.
+        - All saved state files that the machine created, including one for
+        each snapshot.
+        - XML VM machine definition file and its backups.
+        - VM log files.
+        - The empty directory associated with the unregistered VM.
+
+  --delete-all
+      Deletes the files described in the --delete option, as well as all DVDs
+      and Floppy disks located in the VM folder and attached only to this VM.
+
+
+Examples
+========
+
+  The following command unregisters a VM called vm2.
+$ VBoxManage unregistervm vm2
+
+  The following command unregisters a VM called vm3. All files associated with
+  the VM are deleted.
+$ VBoxManage unregistervm vm3 --delete
+%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+
+
+See Also
+========
+
+  "VBoxManage registervm"

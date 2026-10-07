@@ -1,0 +1,156 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage sharedfolder -- Add and remove shared folders, configure security
+policy for shared folders.
+
+Usage
+=====
+
+  VBoxManage sharedfolder add <global | uuid | vmname> <--name=share-name>
+      <--hostpath=hostpath> [--readonly] [--transient] [--automount]
+      [--auto-mount-point=path]
+  VBoxManage sharedfolder remove <global | uuid | vmname> <--name=share-name>
+      [--transient]
+  VBoxManage sharedfolder modify <uuid | vmname> <--name=share-name>
+      <--readonly=  true | false> <--automount=  true | false>
+      <--auto-mount-point=path> <--symlink-policy=  forbidden | subtree |
+      relative | any>
+
+Description
+===========
+
+  Shared folders enable you to share data between the host system and guest
+  VMs. To use shared folders you must first install the Oracle VirtualBox Guest
+  Additions software in the guest VM.
+
+  The shared folder is associated with a share name and the full path name of
+  the folder or directory on the host system. The share name is a unique name
+  within the namespace of the host OS.
+
+    Add a Shared Folder
+    -------------------
+
+    VBoxManage sharedfolder add <global | uuid | vmname> <--name=share-name>
+        <--hostpath=hostpath> [--readonly] [--transient] [--automount]
+        [--auto-mount-point=path]
+
+    The VBoxManage sharedfolder add command creates a shared folder. The folder
+    you specify is on the host computer. Once created the contents of the
+    folder on the host system can be accessed from within the guest OS.
+
+    global
+        Specifies that the share is global which means that it is available to
+        all virtual machines.
+
+    <uuid> | <vmname>
+        Specifies the name or UUID of the guest VM that shares a folder with
+        the host system.
+
+    --name=<share-name>
+        Specifies the name of the share, which is a unique name within the
+        namespace of the host OS.
+
+    --hostpath=<hostpath>
+        Specifies the absolute path of the folder or directory on the host OS
+        to share with the guest OS.
+
+    --readonly
+        Specifies that the share has only read-only access to files at the host
+        path.
+
+        By default, shared folders have read-write access to the files mounted
+        from the host. However on Solaris and Linux distributions shared
+        folders are mounted with 770 file permissions with the files owned by
+        the root user and the vboxsf group which means the files are restricted
+        to members of the vboxsf group and the root user. If the --readonly
+        option is specified the file permissions become 700 and the files are
+        accessible only to the root user.
+
+    --transient
+        Specifies that the share is transient which means that it is added and
+        removed to a running VM and does not persist after the VM stops.
+
+    --automount
+        Specifies that the share is automatically mounted.
+
+    --auto-mount-point=<path>
+        Specifies the mount point of the share. This is guest OS specific.
+
+        For Windows and OS/2 guests this must be an unused drive letter. If
+        left blank (or if the drive letter is already in use), the last unused
+        drive letter is used instead (i.e. searching from Z: through A:).
+
+        For Linux, Solaris and other Unix guests, it must be an absolute path
+        such as /mnt/mysharedfolder. If left empty the default location is
+        /media/sf_<sharename>.
+
+
+    Remove a Shared Folder
+    ----------------------
+
+    VBoxManage sharedfolder remove <global | uuid | vmname> <--name=share-name>
+        [--transient]
+
+    The VBoxManage sharedfolder remove command removes a shared folder.
+
+    global
+        Specifies that the share is global which means that it is accessible
+        from all applicable guest VMs.
+
+    <uuid> | <vmname>
+        Specifies the name or UUID of the guest VM that shares a folder with
+        the host system.
+
+    --name=<share-name>
+        Specifies the name of the share to remove.
+
+    --transient
+        Specifies that the share is transient which means that it is added and
+        removed to a running VM and does not persist after the VM stops.
+
+
+    Modify a Shared Folder's Configuration
+    --------------------------------------
+
+    VBoxManage sharedfolder modify <uuid | vmname> <--name=share-name>
+        <--readonly=  true | false> <--automount=  true | false>
+        <--auto-mount-point=path> <--symlink-policy=  forbidden | subtree |
+        relative | any>
+
+    The VBoxManage sharedfolder modify command modifies the configuration of a
+    Shared Folder.
+
+    <uuid> | <vmname>
+        Specifies the name or UUID of the guest VM that shares a folder with
+        the host system.
+
+    --name=<share-name>
+        Specifies the name of the shared folder to modify.
+
+    --readonly=<true | false>
+        Specifies whether the shared folder is to be mounted as read-only.
+
+    --automount=<true | false>
+        Specifies whether the shared folder is to be mounted automatically when
+        the VM boots.
+
+    --auto-mount-point=<path>
+        Specifies where to mount the shared folder if it is configured to be be
+        mounted automatically when the VM boots.
+
+    --symlink-policy=<policy-name>
+        Specifies the symbolic link security policy of the shared folder. Valid
+        symlink security policies are: forbidden, subtree, relative, and any.
+
+
+Examples
+========
+
+  The following command creates a shared folder named o7share for the ol7 VM
+  and configures the share to be mounted automatically when the VM is started.
+$ VBoxManage sharedfolder add ol7 --name ol7share --hostpath "/home/user/ol7share" --automount
+
+  The following command removes the shared folder named o7share from the ol7
+  VM.
+$ VBoxManage sharedfolder remove ol7 --name ol7share

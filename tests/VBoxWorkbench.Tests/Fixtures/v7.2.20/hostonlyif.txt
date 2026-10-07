@@ -1,0 +1,108 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage hostonlyif -- Manage host-only network interfaces.
+
+Usage
+=====
+  VBoxManage hostonlyif ipconfig <ifname> [--dhcp | --ip=IPv4-address
+      --netmask=IPv4-netmask | --ipv6=IPv6-address --netmasklengthv6=length]
+  VBoxManage hostonlyif create
+  VBoxManage hostonlyif remove <ifname>
+
+Description
+===========
+
+  The VBoxManage hostonlyif command enables you to change the IP configuration
+  of a host-only network interface. For a description of host-only networking,
+  see section "Host-Only Networking" in chapter 1 of the user manual. Each
+  host-only network interface is identified by a name and can either use the
+  internal DHCP server or a manual IP configuration, both IPv4 and IPv6.
+
+    Configure a Host-Only Interface
+    -------------------------------
+
+    VBoxManage hostonlyif ipconfig <ifname> [--dhcp | --ip=IPv4-address
+        --netmask=IPv4-netmask | --ipv6=IPv6-address --netmasklengthv6=length]
+
+    The VBoxManage hostonlyif ipconfig command configures a host-only
+    interface.
+
+    <ifname>
+        Specifies the name of the network interface. The name is of the form
+        vboxnet<N> where <N> is the interface instance.
+
+    --dhcp
+        Uses DHCP for the network interface.
+
+        You cannot use this option with the --ip, --ipv6, --netmask, or
+        --netmasklengthv6 options.
+
+    --ip=<IPv4-address>
+        Specifies the IPv4 IP address for the network interface.
+
+        You cannot use this option with the --dhcp, --ipv6, or
+        --netmasklengthv6 options.
+
+    --netmask=<IPv4-netmask>
+        Specifies the IPv4 netmask of the network interface. The default value
+        is 255.255.255.0.
+
+        You can only use this option with the --ip option.
+
+    --ipv6=<IPv6-address>
+        Specifies the IPv6 IP address for the network interface.
+
+        You cannot use this option with the --dhcp, --ip, or --netmask options.
+
+    --netmasklengthv6=<length>
+        Specifies the length of the IPv6 network interface. The default value
+        is 64.
+
+        You can only use this option with the --ipv6 option.
+
+
+    Create a Network Interface on the Host System
+    ---------------------------------------------
+
+    VBoxManage hostonlyif create
+
+    The VBoxManage hostonlyif create command creates a new host-only network
+    interface on the host operating system (OS). The network interface name is
+    of the form vboxnet<N> where <N> is the interface instance. You must run
+    this command before you can attach virtual machines (VMs) to the host-only
+    network.
+
+    This command is currently unavailable on Solaris hosts but the equivalent
+    functionality is to run ifconfig vboxnet0 plumb as root or with sufficient
+    privileges.
+
+
+    Remove a Network Interface From the Host System
+    -----------------------------------------------
+
+    VBoxManage hostonlyif remove <ifname>
+
+    The VBoxManage hostonlyif remove command removes the specified host-only
+    network interface from the host OS.
+
+    This command is currently unavailable on Solaris hosts but the equivalent
+    functionality is to run ifconfig vboxnet0 unplumb as root or with
+    sufficient privileges.
+
+    <ifname>
+        Specifies the name of the network interface. The name is of the form
+        vboxnet<N> where <N> is the interface instance.
+
+
+Examples
+========
+
+  The following command creates a new host-only network interface.
+$ VBoxManage hostonlyif create
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+Interface 'vboxnet2' was successfully created
+
+  The following command configures the IPv4 address for the vboxnet2 host-only
+  network interface.
+$ VBoxManage hostonlyif ipconfig vboxnet2 --ip 10.0.2.18

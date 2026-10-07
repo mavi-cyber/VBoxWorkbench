@@ -1,0 +1,154 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage modifynvram -- List and modify the NVRAM content of a virtual
+machine.
+
+Usage
+=====
+
+  VBoxManage modifynvram <uuid | vmname> inituefivarstore
+  VBoxManage modifynvram <uuid | vmname> enrollmssignatures
+  VBoxManage modifynvram <uuid | vmname> enrollorclpk
+  VBoxManage modifynvram <uuid | vmname> enrollpk [--platform-key=filename]
+      [--owner-uuid=uuid]
+  VBoxManage modifynvram <uuid | vmname> enrollmok [--mok=filename]
+      [--owner-uuid=uuid]
+  VBoxManage modifynvram <uuid | vmname> secureboot <--enable | --disable>
+  VBoxManage modifynvram <uuid | vmname> listvars
+  VBoxManage modifynvram <uuid | vmname> queryvar [--name=name]
+      [--filename=filename]
+  VBoxManage modifynvram <uuid | vmname> deletevar [--name=name]
+      [--owner-uuid=uuid]
+  VBoxManage modifynvram <uuid | vmname> changevar [--name=name]
+      [--filename=filename]
+
+Description
+===========
+
+  The "modifynvram" commands are for experts who want to inspect and modify the
+  UEFI variable store of a virtual machine. Any mistakes made here can result
+  in a non-bootable virtual machine.
+
+    Common options
+    --------------
+
+    The subcommands of modifynvram all operate on a running virtual machine:
+
+    <uuid> | <vmname>
+        Either the UUID or the name (case sensitive) of a VM.
+
+
+    modifynvram inituefivarstore
+    ----------------------------
+
+    VBoxManage modifynvram <uuid | vmname> inituefivarstore
+
+    Initalizes the UEFI variable store to a default state. Any previous
+    existing variable store is deleted. Use with extreme caution!
+
+
+    modifynvram enrollmssignatures
+    ------------------------------
+
+    VBoxManage modifynvram <uuid | vmname> enrollmssignatures
+
+    Enrolls the default Microsoft KEK and DB signatures required for UEFI
+    secure boot.
+
+
+    modifynvram enrollorclpk
+    ------------------------
+
+    VBoxManage modifynvram <uuid | vmname> enrollorclpk
+
+    Enrolls the default platform key provided by Oracle required for UEFI
+    secure boot.
+
+
+    modifynvram enrollpk
+    --------------------
+
+    VBoxManage modifynvram <uuid | vmname> enrollpk [--platform-key=filename]
+        [--owner-uuid=uuid]
+
+    Enrolls a custom platform key provided by the user required for UEFI secure
+    boot. The following commands use openssl to generate a new platform key:
+$ openssl req -new -x509 -newkey rsa:2048 -keyout PK.key -out PK.crt
+$ openssl x509 -in PK.crt -out PK.cer -outform DER
+
+    --platform-key=<filename>
+        The platform key provided as a DER encoded X.509 signature.
+
+    --owner-uuid=<uuid>
+        The UUID identifying the owner of the platform key.
+
+
+    modifynvram secureboot
+    ----------------------
+
+    VBoxManage modifynvram <uuid | vmname> secureboot <--enable | --disable>
+
+    Enables or disables UEFI secure boot.
+
+    --enable
+        Enables UEFI secure boot if the state of the key enrolment permits.
+
+    --disable
+        Disables UEFI secure boot.
+
+
+    modifynvram listvars
+    --------------------
+
+    VBoxManage modifynvram <uuid | vmname> listvars
+
+    Lists all UEFI variables in the virtual machine's store along with their
+    owner UUID.
+
+
+    modifynvram queryvar
+    --------------------
+
+    VBoxManage modifynvram <uuid | vmname> queryvar [--name=name]
+        [--filename=filename]
+
+    Queries the content of a given UEFI variable identified by its name.
+
+    --name=<name>
+        UEFI variable name to query.
+
+    --filename=<filename>
+        Where to store the content of the variable upon success. This is
+        optional, if omitted the content will be dumped to the terminal as a
+        hex dump.
+
+
+    modifynvram deletevar
+    ---------------------
+
+    VBoxManage modifynvram <uuid | vmname> deletevar [--name=name]
+        [--owner-uuid=uuid]
+
+    Deletes the given variable identified by its name and owner UUID.
+
+    --name=<name>
+        UEFI variable name to delete.
+
+    --owner-uuid=<uuid>
+        The UUID identifying the owner of the variable to delete.
+
+
+    modifynvram changevar
+    ---------------------
+
+    VBoxManage modifynvram <uuid | vmname> changevar [--name=name]
+        [--filename=filename]
+
+    Changes the UEFI variable content to the one form the given file.
+
+    --name=<name>
+        UEFI variable name to change the data for.
+
+    --filename=<filename>
+        The file to read the data from.

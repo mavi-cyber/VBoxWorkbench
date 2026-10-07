@@ -1,0 +1,192 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage natnetwork -- Create, modify, and manage a NAT network.
+
+Usage
+=====
+
+  VBoxManage natnetwork add [--disable | --enable] <--netname=name>
+      <--network=network> [--dhcp=on|off] [--ipv6=on|off] [--loopback-4=rule]
+      [--loopback-6=rule] [--port-forward-4=rule] [--port-forward-6=rule]
+  VBoxManage natnetwork list [filter-pattern]
+  VBoxManage natnetwork modify [--dhcp=on|off] [--disable | --enable]
+      <--netname=name> <--network=network> [--ipv6=on|off] [--loopback-4=rule]
+      [--loopback-6=rule] [--port-forward-4=rule] [--port-forward-6=rule]
+  VBoxManage natnetwork remove <--netname=name>
+  VBoxManage natnetwork start <--netname=name>
+  VBoxManage natnetwork stop <--netname=name>
+
+Description
+===========
+
+  The VBoxManage natnetwork command enables you to create, modify, and manage a
+  NAT network.
+
+  NAT networks use the Network Address Translation (NAT) service. The service
+  groups systems into a network and prevents external systems from directly
+  accessing the systems in the network. The service also enables the systems in
+  the network to communicate with each other and with external systems by means
+  of TCP and UDP over IPv4 and IPv6.
+
+  A NAT service is attached to an internal network. For a VM to use the NAT
+  service, you must attach the VM to the internal network. Specify the name of
+  the internal network when you create the NAT service. Note that the internal
+  network is created if it does not already exist.
+
+    Add a NAT Network Service
+    -------------------------
+
+    VBoxManage natnetwork add [--disable | --enable] <--netname=name>
+        <--network=network> [--dhcp=on|off] [--ipv6=on|off] [--loopback-4=rule]
+        [--loopback-6=rule] [--port-forward-4=rule] [--port-forward-6=rule]
+
+    The VBoxManage natnetwork add command creates a new internal network
+    interface and adds a NAT network service. You must use this command before
+    you can attach the VM to the NAT network.
+
+    --disable
+        Disables the NAT network service.
+
+    --enable
+        Enables the NAT network service.
+
+    --netname=<name>
+        Specifies the name of the new internal network interface on the host
+        OS.
+
+    --network
+        Specifies the static or DHCP network address and mask of the NAT
+        service interface. By default, this value specifies the static network
+        address.
+
+    --dhcp
+        Enables or disables the DHCP server specified with the --netname
+        option.
+
+    --ipv6
+        Enables or disables IPv6. By default, IPv6 is disabled and IPv4 is
+        enabled.
+
+    --loopback-4=<rule>
+        Enables an IPv4 loopback interface using the specified rule.
+
+    --loopback-6=<rule>
+        Enables an IPv6 loopback interface using the specified rule.
+
+    --port-forward-4=<rule>
+        Enables IPv4 port forwarding using the specified rule.
+
+    --port-forward-6=<rule>
+        Enables IPv6 port forwarding using the specified rule.
+
+
+    Remove a NAT Network Service
+    ----------------------------
+
+    VBoxManage natnetwork remove <--netname=name>
+
+    The VBoxManage natnetwork remove command removes the specified NAT network
+    service.
+
+    --netname=<name>
+        Specifies the name of the NAT network service to remove.
+
+
+    Start a NAT Network Service
+    ---------------------------
+
+    VBoxManage natnetwork start <--netname=name>
+
+    The VBoxManage natnetwork start command starts a NAT network service and
+    any associated DHCP server.
+
+    --netname=<name>
+        Specifies the name of the NAT network service to start.
+
+
+    Stop a NAT Network Service
+    --------------------------
+
+    VBoxManage natnetwork stop <--netname=name>
+
+    The VBoxManage natnetwork stop command stops a NAT network service and any
+    associated DHCP server.
+
+    --netname=<name>
+        Specifies the name of the NAT network service to stop.
+
+
+    List All NAT Network Services
+    -----------------------------
+
+    VBoxManage natnetwork list [filter-pattern]
+
+    The VBoxManage natnetwork list command lists all NAT network services. You
+    can use a pattern to show a subset of the NAT network services.
+
+    <filter-pattern>
+        Specifies an optional filtering pattern.
+
+
+    Modify the Settings of a NAT Network Service
+    --------------------------------------------
+
+    VBoxManage natnetwork modify [--dhcp=on|off] [--disable | --enable]
+        <--netname=name> <--network=network> [--ipv6=on|off]
+        [--loopback-4=rule] [--loopback-6=rule] [--port-forward-4=rule]
+        [--port-forward-6=rule]
+
+    The VBoxManage natnetwork modify command modifies the settings of an
+    existing internal network interface.
+
+    --disable
+        Disables the NAT network service.
+
+    --enable
+        Enables the NAT network service.
+
+    --netname=<name>
+        Specifies the name of the new internal network interface on the host
+        OS.
+
+    --network
+        Specifies the static or DHCP network address and mask of the NAT
+        service interface. By default, this value specifies the static network
+        address.
+
+    --dhcp
+        Enables or disables the DHCP server specified with the --netname
+        option.
+
+    --ipv6
+        Enables or disables IPv6. By default, IPv6 is disabled and IPv4 is
+        enabled.
+
+    --loopback-4=<rule>
+        Enables an IPv4 loopback interface using the specified rule.
+
+    --loopback-6=<rule>
+        Enables an IPv6 loopback interface using the specified rule.
+
+    --port-forward-4=<rule>
+        Enables IPv4 port forwarding using the specified rule.
+
+    --port-forward-6=<rule>
+        Enables IPv6 port forwarding using the specified rule.
+
+
+Examples
+========
+
+  The following command shows how to create a NAT network for the natnet1
+  internal network that uses the 192.168.15.0/24 network address and mask of
+  the NAT service interface. In this static configuration, the gateway is
+  assigned the 192.168.15.1 IP address by default. Note that this IP address is
+  the next address after the network address that you specify with the
+  --network option.
+$ VBoxManage natnetwork add --netname natnet1 --network "192.168.15.0/24" --enable
+
+  The following command shows how to add a DHCP server to the natnet1 NAT
+  network after creation:
+$ VBoxManage natnetwork modify --netname natnet1 --dhcp on

@@ -1,0 +1,97 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage mediumproperty -- Manage medium properties.
+
+Usage
+=====
+
+  VBoxManage mediumproperty [disk | dvd | floppy] set <uuid | filename>
+      <property-name> <property-value>
+  VBoxManage mediumproperty [disk | dvd | floppy] get <uuid | filename>
+      <property-name>
+  VBoxManage mediumproperty [disk | dvd | floppy] delete <uuid | filename>
+      <property-name>
+
+Description
+===========
+
+  The VBoxManage mediumproperty command enables you to set, retrieve, or delete
+  a medium property.
+
+    Set a Medium Property
+    ---------------------
+
+    VBoxManage mediumproperty [disk | dvd | floppy] set <uuid | filename>
+        <property-name> <property-value>
+
+    The VBoxManage mediumproperty set command enables you to set a medium
+    property.
+
+    disk | dvd | floppy
+        Specifies the type of medium. Valid values are disk (hard drive), dvd,
+        or floppy.
+
+    <uuid> | <filename>
+        Specifies the Universally Unique Identifier (UUID) or absolute path
+        name of the medium or image.
+
+    <property-name>
+        Specifies the name of the property.
+
+    <property-value>
+        Specifies the value of the specified property.
+
+
+    Retrieve a Medium Property Value
+    --------------------------------
+
+    VBoxManage mediumproperty [disk | dvd | floppy] get <uuid | filename>
+        <property-name>
+
+    The VBoxManage mediumproperty get command enables you to retrieve the value
+    of a medium property.
+
+    disk | dvd | floppy
+        Specifies the type of medium. Valid values are disk (hard drive), dvd,
+        or floppy.
+
+    <uuid> | <filename>
+        Specifies the Universally Unique Identifier (UUID) or absolute path
+        name of the medium or image.
+
+    <property-name>
+        Specifies the name of the property.
+
+
+    Delete a Medium Property
+    ------------------------
+
+    VBoxManage mediumproperty [disk | dvd | floppy] delete <uuid | filename>
+        <property-name>
+
+    The VBoxManage mediumproperty delete command enables you to delete a medium
+    property.
+
+    disk | dvd | floppy
+        Specifies the type of medium. Valid values are disk (hard drive), dvd,
+        or floppy.
+
+    <uuid> | <filename>
+        Specifies the Universally Unique Identifier (UUID) or absolute path
+        name of the medium or image.
+
+    <property-name>
+        Specifies the name of the property.
+
+
+Examples
+========
+
+  The following command sets the property called prop1 to val1 for the ol7.vdi
+  disk image.
+$ VBoxManage mediumproperty disk set ol7.vdi prop1 val1
+
+  The following command gets the value of the property called prop1 for the
+  ol7.vdi disk image.
+$ VBoxManage mediumproperty disk get ol7.vdi prop1

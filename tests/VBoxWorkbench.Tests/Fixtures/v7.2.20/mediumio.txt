@@ -1,0 +1,97 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage mediumio -- Medium content access.
+
+Usage
+=====
+
+  VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+      --floppy=uuid|filename> [--password-file=-|filename] formatfat [--quick]
+  VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+      --floppy=uuid|filename> [--password-file=-|filename] cat [--hex]
+      [--offset=byte-offset] [--size=bytes] [--output=-|filename]
+  VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+      --floppy=uuid|filename> [--password-file=-|filename] stream
+      [--format=image-format] [--variant=image-variant] [--output=-|filename]
+
+Description
+===========
+
+    Common options
+    --------------
+
+    The subcommands of mediumio all operate on a medium which must be specified
+    using one of the following options along with an optional encryption
+    password. The following common options can be placed before or after the
+    sub-command:
+
+    --disk=<uuid|filename>
+        Either the UUID or filename of a harddisk image, e.g. VDI, VMDK, VHD,
+        ++.
+
+    --dvd=<uuid|filename>
+        Either the UUID or filename of a DVD image, e.g. ISO, DMG, CUE.
+
+    --floppy=<uuid|filename>
+        Either the UUID or filename of a floppy image, e.g. IMG.
+
+    --password-file=<-|filename>
+        The name of a file containing the medium encryption password. If - is
+        specified, the password will be read from stdin.
+
+
+    mediumio formatfat
+    ------------------
+
+    VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+        --floppy=uuid|filename> [--password-file=-|filename] formatfat
+        [--quick]
+
+    Formats a medium with the FAT file system. This will erase the contents of
+    the medium.
+
+    --quick
+        Quickformat the medium.
+
+
+    mediumio cat
+    ------------
+
+    VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+        --floppy=uuid|filename> [--password-file=-|filename] cat [--hex]
+        [--offset=byte-offset] [--size=bytes] [--output=-|filename]
+
+    Dumps the contents of the medium to stdout or the specified file.
+
+    --hex
+        Dump as hex bytes.
+
+    --offset
+        The byte offset in the medium to start.
+
+    --size
+        The number of bytes to dump.
+
+    --output
+        The output filename. As usual - is take to mean stdout.
+
+
+    mediumio stream
+    ---------------
+
+    VBoxManage mediumio <--disk=uuid|filename | --dvd=uuid|filename |
+        --floppy=uuid|filename> [--password-file=-|filename] stream
+        [--format=image-format] [--variant=image-variant] [--output=-|filename]
+
+    Converts the medium to a streamable format and dumps it to the given
+    output.
+
+    --format
+        The format of the destination image.
+
+    --variant
+        The medium variant for the destination.
+
+    --output
+        The output filename. As usual - is take to mean stdout.

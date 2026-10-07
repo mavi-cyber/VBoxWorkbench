@@ -1,0 +1,114 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage setproperty -- Change global settings.
+
+Usage
+=====
+  VBoxManage setproperty <property-name> <property-value>
+
+Description
+===========
+
+  The VBoxManage setproperty command enables you to change global settings that
+  affect the entire Oracle VirtualBox installation. Some of these settings
+  correspond to the settings in the Preferences dialog in the VirtualBox
+  Manager.
+
+  The following properties are available:
+
+  autostartdbpath
+      Specifies the path to the autostart database. Valid values are null,
+      which disables the autostart database, or the name of the folder that
+      contains the database. See section "Starting Virtual Machines During
+      System Boot" in chapter 1 of the user manual.
+
+  defaultfrontend
+      Specifies the global default VM frontend. Valid values are default, which
+      specifies the default frontend, or the name of the frontend to use.
+
+  hwvirtexclusive
+      Specifies whether Oracle VirtualBox makes exclusive use of the Intel VT-x
+      or AMD-V hardware virtualization extensions of the host system's
+      processor.
+
+      Valid values are as follows:
+
+        - on enables Oracle VirtualBox to make exclusive use of these
+        extensions. This is the default value.
+        - off shares these extensions with other hypervisors that run
+        simultaneously. Note that sharing these extensions has negative
+        performance implications.
+
+  language
+      Specifies the user language used to translate API messages. Valid values
+      are C, which means no translation or a language code in the form of
+      either ll or ll_CC, where ll is an ISO 639 two-letter language code and
+      CC an ISO 3166 two-letter country code. For example, for Greek in Greece,
+      ll is el, and CC is GR.
+
+  logginglevel
+      Specifies the VBoxSVC release logging details. See
+      http://www.virtualbox.org/wiki/VBoxLogging.
+
+  loghistorycount
+      Specifies the number of rotated VM logs to retain.
+
+  machinefolder
+      Specifies the default folder in which virtual machine (VM) definitions
+      are stored. Valid values are default, which specifies the default storage
+      folder, or the name of the folder to use. See section "Where Stores its
+      Files" in chapter 1 of the user manual.
+
+  proxymode
+      Configures the mode for an HTTP proxy server. Valid values are as
+      follows:
+
+      manual
+          Configure the URL of a HTTP proxy server manually, using the proxyurl
+          property value.
+
+      noproxy
+          Do not use an HTTP proxy server. A direct connection to the Internet
+          is used.
+
+      system
+          Detect the proxy settings automatically for the host network. This is
+          the default value.
+
+  proxyurl
+      Specifies the URL for an HTTP proxy server when you specify a manual
+      proxy by setting the proxymode property to manual.
+
+  vrdeauthlibrary
+      Specifies which library to use when external authentication has been
+      configured for a particular VM. Valid values are default, which specifies
+      the default library, or the name of the library to use. See section "RDP
+      Authentication" in chapter 1 of the user manual.
+
+  vrdeextpack
+      Specifies the library that implements the VirtualBox Remote Desktop
+      Extension (RDE). Valid values are null, which disables the RDE, or the
+      name of the library to use.
+
+  websrvauthlibrary
+      Specifies which library the web service uses to authenticate users. Valid
+      values are default, which specifies the default library, null, which
+      disables authentication, or the name of the library to use. For
+      information about the Oracle VirtualBox web service, see section
+      "Programming Interfaces" in chapter 1 of the user manual.
+
+
+Examples
+========
+
+  The following command configures Oracle VirtualBox to use the specified HTTP
+  proxy server.
+$ VBoxManage setproperty proxymode manual
+$ VBoxManage setproperty proxyurl "http://myproxy.com:8080"
+
+
+See Also
+========
+
+  "VBoxManage startvm"

@@ -1,0 +1,44 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage closemedium -- Remove a hard disk, DVD, or floppy image from the
+media registry.
+
+Usage
+=====
+
+  VBoxManage closemedium [disk | dvd | floppy] <uuid | filename> [--delete]
+
+Description
+===========
+
+  The VBoxManage closemedium command removes a hard disk, DVD, or floppy image
+  from the list of known media used by Oracle VirtualBox. The image is then
+  unavailable for selection in the Virtual Media Manager.
+
+  To use this command, the image must not be attached to any VMs.
+
+  Optionally, you can request that the image be deleted.
+
+  disk|dvd|floppy
+      Specifies the type of medium. Valid values are disk (hard drive), dvd, or
+      floppy.
+
+  <uuid>|<filename>
+      Specifies the Universally Unique Identifier (UUID) or absolute path name
+      of the medium or image.
+
+  --delete
+      Deletes the image file.
+
+
+Examples
+========
+
+  The following command removes the disk image file called disk01.vdi from the
+  registry.
+$ VBoxManage closemedium disk01.vdi
+
+  The following command removes the disk image file called disk01.vdi from the
+  registry and deletes the image file.
+$ VBoxManage closemedium disk01.vdi --delete

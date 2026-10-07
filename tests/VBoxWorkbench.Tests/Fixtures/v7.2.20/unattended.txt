@@ -1,0 +1,172 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage unattended -- Unattended guest OS installation.
+
+Usage
+=====
+
+  VBoxManage unattended detect <--iso=install-iso> [--machine-readable]
+  VBoxManage unattended install <uuid | vmname> <--iso=install-iso>
+      [--user=login] [--user-password=password] [--user-password-file=file]
+      [--admin-password=password] [--admin-password-file=file]
+      [--full-user-name=name] [--key=product-key] [--install-additions]
+      [--no-install-additions] [--additions-iso=add-iso] [--install-txs]
+      [--no-install-txs] [--validation-kit-iso=testing-iso] [--locale=ll_CC]
+      [--country=CC] [--time-zone=tz] [--proxy=url] [--hostname=fqdn]
+      [--package-selection-adjustment=keyword] [--dry-run]
+      [--auxiliary-base-path=path] [--image-index=number]
+      [--script-template=file] [--post-install-template=file]
+      [--post-install-command=command]
+      [--extra-install-kernel-parameters=params] [--language=lang]
+      [--start-vm=session-type]
+
+Description
+===========
+
+    unattended detect
+    -----------------
+
+    VBoxManage unattended detect <--iso=install-iso> [--machine-readable]
+
+    Detects the guest operating system (OS) on the specified installation ISO
+    and displays the result. This can be used as input when creating a VM for
+    the ISO to be installed in.
+
+    --iso=<install-iso>
+        The installation ISO to run the detection on.
+
+    --machine-readable
+        Produce output that is simpler to parse from a script.
+
+
+    unattended install
+    ------------------
+
+    VBoxManage unattended install <uuid | vmname> <--iso=install-iso>
+        [--user=login] [--user-password=password] [--user-password-file=file]
+        [--admin-password=password] [--admin-password-file=file]
+        [--full-user-name=name] [--key=product-key] [--install-additions]
+        [--no-install-additions] [--additions-iso=add-iso] [--install-txs]
+        [--no-install-txs] [--validation-kit-iso=testing-iso] [--locale=ll_CC]
+        [--country=CC] [--time-zone=tz] [--proxy=url] [--hostname=fqdn]
+        [--package-selection-adjustment=keyword] [--dry-run]
+        [--auxiliary-base-path=path] [--image-index=number]
+        [--script-template=file] [--post-install-template=file]
+        [--post-install-command=command]
+        [--extra-install-kernel-parameters=params] [--language=lang]
+        [--start-vm=session-type]
+
+    Reconfigures the specified VM for installation and optionally starts it up.
+
+    <uuid> | <vmname>
+        Either the UUID or the name (case sensitive) of a VM.
+
+    --iso=<install-iso>
+        The installation ISO to run the detection on.
+
+    --user=<login>
+        The login name. (default: vboxuser)
+
+    --user-password=<password>
+        The user login password. This is used for the user given by --user
+        (default: changeme)
+
+    --user-password-file=<file>
+        Alternative to --user-password for providing the user password. Special
+        filename stdin can be used to read the password from standard input.
+
+    --admin-password=<password>
+        The admin / root login password. If not specified, the password from
+        --user-password will be used.
+
+    --admin-password-file=<file>
+        Alternative to --admin-password for providing the admin / root
+        password. Special filename stdin can be used to read the password from
+        standard input.
+
+    --full-user-name=<name>
+        The full user name. (default: --user)
+
+    --key=<product-key>
+        The guest OS product key. Not all guest OSes requires this.
+
+    --install-additions, --no-install-additions
+        Whether to install the VirtualBox guest additions. (default:
+        --no-install-additions)
+
+    --additions-iso=<add-iso>
+        Path to the VirtualBox guest additions ISO. (default:
+        installed/downloaded GAs)
+
+    --install-txs, --no-install-txs
+        Whether to install the Test eXecution Service (TXS) from the VirtualBox
+        ValidationKit. This is useful when preparing VMs for testing or
+        similar. (default: --no-install-txs)
+
+    --validation-kit-iso=<testing-iso>
+        Path to the VirtualBox ValidationKit ISO. This is required if
+        --install-txs is specified.
+
+    --locale=<ll_CC>
+        The base locale specification for the guest, like en_US, de_CH, or
+        nn_NO. (default: host or en_US)
+
+    --country=<CC>
+        The two letter country code if it differs from the specified by
+        --location.
+
+    --time-zone=<tz>
+        The time zone to set up the guest OS with. (default: host time zone or
+        UTC)
+
+    --proxy=<url>
+        Proxy URL to use.
+
+    --hostname=<fqdn>
+        The fully qualified domain name of the guest machine. (default:
+        <vmname>.myguest.virtualbox.org)
+
+    --package-selection-adjustment=<keyword>
+        Adjustments to the guest OS packages/components selection. This can be
+        specified more than once. Currently the only recognized keyword is
+        minimal which triggers a minimal installation for some of the guest
+        OSes.
+
+    --dry-run
+        Do not create any files or make any changes to the VM configuration.
+
+    --start-vm=<session-type>
+        Start the VM using the front end given by <session-type>. This is the
+        same as the --type option for the startvm command, but we have add none
+        for indicating that the VM should not be started. (default: none)
+
+    Advanced options:
+
+    --auxiliary-base-path=<path>
+        The path prefix to the media related files generated for the
+        installation. (default: <vm-config-dir>/Unattended-<vm-uuid>-)
+
+    --image-index=<number>
+        Windows installation image index. (default: 1)
+
+    --script-template=<file>
+        The unattended installation script template. (default:
+        IMachine::OSTypeId dependent)
+
+    --post-install-template=<file>
+        The post installation script template. (default: IMachine::OSTypeId
+        dependent)
+
+    --post-install-command=<command>
+        A single command to run after the installation is completed. The exact
+        format and exactly when this is run is guest OS installer dependent.
+
+    --extra-install-kernel-parameters=<params>
+        List of extra Linux kernel parameters to use during the installation.
+        (default: IMachine::OSTypeId dependent)
+
+    --language=<lang>
+        Specifies the UI language for a Windows installation. The <lang> is
+        generally of the form {ll}-{CC}. See the detectedOSLanguages results
+        from VBoxManage unattended detect. (default: detectedOSLanguages[0])

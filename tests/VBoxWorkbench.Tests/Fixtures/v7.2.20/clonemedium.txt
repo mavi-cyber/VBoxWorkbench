@@ -1,0 +1,93 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage clonemedium -- Create a clone of a medium.
+
+Usage
+=====
+
+  VBoxManage clonemedium <uuid | source-medium> <uuid | target-medium> [disk |
+      dvd | floppy] [--existing] [--format= VDI | VMDK | VHD | RAW | other]
+      [--variant=Standard|Fixed|Split2G|Stream|ESX...]
+
+Description
+===========
+
+  The VBoxManage clonemedium command enables you to clone an existing medium
+  (virtual disk, DVD, or floppy), which is typically an image file. Only the
+  Universally Unique Identifier (UUID) differs between the original image and
+  the cloned image.
+
+  You can use the Virtual Media Manager to transfer the cloned image to another
+  host system or reimport it into Oracle VirtualBox. See section "The Virtual
+  Media Manager" in chapter 1 of the user manual and section "Cloning Disk
+  Images" in chapter 1 of the user manual.
+
+  <uuid> | <source-medium>
+      Specifies the UUID or the absolute or relative pathname of the source
+      medium to clone. You can specify the UUID of the medium only if it is
+      registered. Use the VBoxManage list hdds command to list registered
+      images.
+
+  <uuid> | <target-medium>
+      Specifies the UUID or the absolute or relative pathname of the target
+      (clone) medium. You can specify the UUID of the target medium only if it
+      is registered. Use the VBoxManage list hdds command to list registered
+      images.
+
+  disk | dvd | floppy
+      Specifies the type of the medium to clone. Valid values are disk, dvd,
+      and floppy. The default value is disk.
+
+  --existing
+      Performs the clone operation by overwriting an existing target medium.
+      The result is that only the portion of the source medium that fits into
+      the existing target medium is copied.
+
+      If the target medium is smaller than the source, only the portion of the
+      source medium up to the size of the target medium is copied.
+
+      If the target medium is larger than the source, the remaining part of the
+      target medium is unchanged.
+
+  --format
+      Specifies the file format of the target medium if it differs from the
+      format of the source medium. Valid values are VDI, VMDK, VHD, RAW, and
+      <other>.
+
+  --variant=Standard | Fixed | Split2G | Stream | ESX [,...]
+      Specifies the file format variant for the target medium, which is a
+      comma-separated list of variants. Following are the valid values:
+
+        - Standard is the default disk image type, which has a dynamically
+        allocated file size.
+        - Fixed uses a disk image that has a fixed file size.
+        - Split2G indicates that the disk image is split into 2GB segments.
+        This value is for VMDK only.
+        - Stream optimizes the disk image for downloading. This value is for
+        VMDK only.
+        - ESX is used for some VMWare products. This value is for VMDK only.
+
+      Note that not all variant combinations are valid. Specifying incompatible
+      variant values in the list will produce an error message.
+
+  For compatibility with earlier versions of Oracle VirtualBox, you can use the
+  clonevdi and clonehd commands instead of the clonemedium command.
+
+
+Examples
+========
+
+  The following command creates a clone of the disk01.vdi disk image file. The
+  clone is called disk02.vdi.
+$ VBoxManage clonemedium disk01.vdi disk02.vdi
+
+  The following command creates a clone of the disk01.vdi disk image file. The
+  clone is in VMDK format and is called disk02.vmdk.
+$ VBoxManage clonemedium disk01.vdi disk02.vmdk --format VMDK
+
+
+See Also
+========
+
+  "VBoxManage list"

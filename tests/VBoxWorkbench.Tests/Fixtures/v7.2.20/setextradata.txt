@@ -1,0 +1,47 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage setextradata -- Set a keyword value that is associated with a
+virtual machine or configuration.
+
+Usage
+=====
+
+  VBoxManage setextradata <global | uuid | vmname> <keyword> [value]
+
+Description
+===========
+
+  The VBoxManage setextradata command enables you to set a keyword value that
+  is associated with a virtual machine (VM) or with an Oracle VirtualBox
+  configuration.
+
+  global
+      Sets information about the configuration rather than a VM.
+
+  <uuid> | <vmname>
+      Specifies the Universally Unique Identifier (UUID) or name of the VM.
+
+  <keyword>
+      Specifies the keyword for which to set its value.
+
+  <value>
+      Specifies the keyword value. Specifying no value removes the keyword.
+
+
+Examples
+========
+
+  The following command sets the installdate keyword value for the Fedora5 VM
+  to 2019.01.01:
+$ VBoxManage setextradata Fedora5 installdate 2019.01.01
+
+  The following command unsets the value of the installdate keyword for the
+  Fedora5 VM:
+$ VBoxManage setextradata Fedora5 installdate
+
+
+See Also
+========
+
+  "VBoxManage getextradata"

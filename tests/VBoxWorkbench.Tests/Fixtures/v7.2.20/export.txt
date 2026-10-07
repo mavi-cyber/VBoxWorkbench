@@ -1,0 +1,227 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage export -- Export one or more virtual machines to a virtual appliance
+or to a cloud service.
+
+Usage
+=====
+
+  VBoxManage export <machines> <--output=name> [--legacy09 | --ovf09 | --ovf10
+      | --ovf20] [--manifest] [--options=  | manifest | iso | nomacs |
+      nomacsbutnat...] [--vsys=virtual-system-number]
+      [--description=description-info] [--eula=license-text]
+      [--eulafile=filename] [--product=product-name] [--producturl=product-URL]
+      [--vendor=vendor-name] [--vendorurl=vendor-URL] [--version=version-info]
+      [--vmname=vmname]
+  VBoxManage export <machine> <--output=cloud-service-provider> [--opc10]
+      [--vmname=vmname] [--cloud=virtual-system-number]
+      [--cloudprofile=cloud-profile-name] [--cloudshape=cloud-shape-name]
+      [--clouddomain=cloud-domain] [--clouddisksize=disk-size-in-GB]
+      [--cloudbucket=bucket-name] [--cloudocivcn=OCI-VCN-ID]
+      [--cloudocisubnet=OCI-subnet-ID] [--cloudkeepobject= true | false]
+      [--cloudlaunchinstance= true | false] [--cloudlaunchmode= EMULATED |
+      PARAVIRTUALIZED] [--cloudpublicip= true | false]
+
+Description
+===========
+
+  The VBoxManage export command enables you to export one or more virtual
+  machines (VMs) from Oracle VirtualBox into to one of the following formats:
+
+    - A virtual appliance in OVF format. This includes copying the VM's virtual
+    disk images to compressed VMDK.
+    - A cloud service such as Oracle Cloud Infrastructure. Exports a single VM.
+
+  For more information about exporting VMs from Oracle VirtualBox, see section
+  "Importing and Exporting Virtual Machines" in chapter 1 of the user manual.
+
+    Export a Virtual Machine to an OVF Virtual Appliance
+    ----------------------------------------------------
+
+    VBoxManage export <machines> <--output=name> [--legacy09 | --ovf09 |
+        --ovf10 | --ovf20] [--manifest] [--options=  | manifest | iso | nomacs
+        | nomacsbutnat...] [--vsys=virtual-system-number]
+        [--description=description-info] [--eula=license-text]
+        [--eulafile=filename] [--product=product-name]
+        [--producturl=product-URL] [--vendor=vendor-name]
+        [--vendorurl=vendor-URL] [--version=version-info] [--vmname=vmname]
+
+    The VBoxManage export command enables you to export a VM as a virtual
+    appliance in OVF format.
+
+    <machines>
+        Specifies a comma-separated list of one or more machines to export to
+        the same OVF file.
+
+    --output=<filename>
+        Specifies the target OVF file. The file can be OVF, OVA, or a ZIP file
+        compressed with the gzip command. Because the directory that contains
+        the target OVF file will also store the exported disk images in the
+        compressed VMDK format, ensure that this directory has sufficient disk
+        space in which to store the images.
+
+        The short form of this option is -o.
+
+    --legacy09
+        Exports in OVF 0.9 legacy mode if the virtualization product is not
+        fully compatible with the OVF 1.0 standard.
+
+    --ovf09
+        Exports in OVF 0.9 format.
+
+    --ovf10
+        Exports in OVF 1.0 format.
+
+    --ovf20
+        Exports in OVF 2.0 format.
+
+    --manifest
+        Creates a manifest of the exported files.
+
+    --options=<argument>,...
+        Specifies information to control the exact content of the appliance
+        file. Specify one or more comma-separated arguments:
+
+        manifest
+            Produces a manifest file that detects corrupted appliances on
+            import.
+
+        iso
+            Exports DVD images in an ISO file.
+
+        nomacs
+            Excludes all MAC addresses.
+
+        nomacsbutnat
+            Excludes all MAC addresses except for those in a NAT network.
+
+    --description=<description-info>
+        Specifies a description of the VM.
+
+    --eula=<license-text>
+        Specifies an end-user license text.
+
+    --eulafile=<filename>
+        Specifies an end-user license file.
+
+    --product=<product-name>
+        Specifies a product name.
+
+    --producturl=<product-URL>
+        Specifies a product URL.
+
+    --vendor=<vendor-name>
+        Specifies a vendor name.
+
+    --vendorurl=<vendor-URL>
+        Specifies a vendor URL.
+
+    --version=<version-info>
+        Specifies version information.
+
+    --vmname=<vmname>
+        Specifies the name of the VM to export.
+
+    --vsys=<virtual-system-number>
+        Specifies the number of the virtual system.
+
+
+    Export a Virtual Machine to Oracle Cloud Infrastructure
+    -------------------------------------------------------
+
+    VBoxManage export <machine> <--output=cloud-service-provider> [--opc10]
+        [--vmname=vmname] [--cloud=virtual-system-number]
+        [--cloudprofile=cloud-profile-name] [--cloudshape=cloud-shape-name]
+        [--clouddomain=cloud-domain] [--clouddisksize=disk-size-in-GB]
+        [--cloudbucket=bucket-name] [--cloudocivcn=OCI-VCN-ID]
+        [--cloudocisubnet=OCI-subnet-ID] [--cloudkeepobject= true | false]
+        [--cloudlaunchinstance= true | false] [--cloudlaunchmode= EMULATED |
+        PARAVIRTUALIZED] [--cloudpublicip= true | false]
+
+    The VBoxManage export command enables you to export a VM to a cloud service
+    provider such as Oracle Cloud Infrastructure. By default, the exported disk
+    image is converted into compressed VMDK format. This minimizes the amount
+    of data to transfer to the cloud service.
+
+    Some of the following options are configuration settings for the VM
+    instance. As a result, specify an Oracle Cloud Identifier (OCID) for a
+    resource. Use the Oracle Cloud Infrastructure Console to view OCIDs.
+
+    --output=<cloud-service-provider>
+        Specifies the short name of the cloud service provider to which you
+        export the VM. For Oracle Cloud Infrastructure, specify OCI://.
+
+        The short form of this option is -o.
+
+    --opc10
+        Exports in Oracle Cloud Infrastructure format.
+
+    --cloud=<number-of-virtual-system>
+        Specifies a number that identifies the VM to export. Numbering starts
+        at 0 for the first VM.
+
+    --vmname=<vmname>
+        Specifies the name of the exported VM, which is used as the VM instance
+        name in Oracle Cloud Infrastructure.
+
+    --cloudprofile=<cloud-profile-name>
+        Specifies the cloud profile to use to connect to the cloud service
+        provider. The cloud profile contains your Oracle Cloud Infrastructure
+        account details, such as your user OCID and the fingerprint for your
+        public key.
+
+        To use a cloud profile, you must have the required permissions on
+        Oracle Cloud Infrastructure.
+
+    --cloudshape=<cloud-shape-name>
+        Specifies the shape used by the VM instance. The shape defines the
+        number of CPUs and the amount of memory that is allocated to the VM
+        instance. Ensure that the shape is compatible with the exported image.
+
+    --clouddomain=<cloud-domain>
+        Specifies the availability domain to use for the VM instance. Enter the
+        full name of the availability domain.
+
+    --clouddisksize=<disk-size-in-GB>
+        Specifies the amount of disk space, in gigabytes, to use for the
+        exported disk image. Valid values are from 50 GB to 300 GB.
+
+    --cloudbucket=<bucket-name>
+        Specifies the bucket in which to store uploaded files. In Oracle Cloud
+        Infrastructure, a bucket is a logical container for storing objects.
+
+    --cloudocivcn=<OCI-VCN-ID>
+        Specifies the OCID of the virtual cloud network (VCN) to use for the VM
+        instance.
+
+    --cloudocisubnet=<OCI-subnet-ID>
+        Specifies the OCID of the VCN subnet to use for the VM instance.
+
+    --cloudkeepobject=true | false
+        Specifies whether to store the exported disk image in Oracle Object
+        Storage.
+
+    --cloudlaunchinstance=true | false
+        Specifies whether to start the VM instance after the export to Oracle
+        Cloud Infrastructure completes.
+
+    --cloudlaunchinstance=EMULATED | PARAVIRTUALIZED
+        Specifies the launch mode used for the instance. Paravirtualized mode
+        gives improved performance.
+
+    --cloudpublicip=true | false
+        Specifies whether to enable a public IP address for the VM instance.
+
+
+Example
+=======
+
+  The following example shows how to export the myVM VM to Oracle Cloud
+  Infrastructure. The command's option arguments describe the configuration of
+  the myVM_Cloud VM in Oracle Cloud Infrastructure.
+# VBoxManage export myVM --output=OCI:// --cloud=0 --vmname=myVM_Cloud \
+--cloudprofile="standard user" --cloudbucket=myBucket \
+--cloudshape=VM.Standard2.1 --clouddomain=US-ASHBURN-AD-1 --clouddisksize=50  \
+--cloudocivcn=ocid1.vcn.oc1.iad.aaaa... --cloudocisubnet=ocid1.subnet.oc1.iad.aaaa... \
+--cloudkeepobject=true --cloudlaunchinstance=true --cloudpublicip=true

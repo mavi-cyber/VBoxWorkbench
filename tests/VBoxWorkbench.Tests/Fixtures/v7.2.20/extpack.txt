@@ -1,0 +1,87 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage extpack -- Extension package management.
+
+Usage
+=====
+
+  VBoxManage extpack install [--replace] [--accept-license=sha256] <tarball>
+  VBoxManage extpack uninstall [--force] <name>
+  VBoxManage extpack cleanup
+
+Description
+===========
+
+    extpack install
+    ---------------
+
+    VBoxManage extpack install [--replace] [--accept-license=sha256] <tarball>
+
+    Installs a new extension pack on the system. This command will fail if an
+    older version of the same extension pack type is already installed and the
+    --replace isn't supplied. The --replace option uninstalls any previously
+    installed extension packs of the same type being installed before the new
+    extension pack is installed.
+
+    --replace
+        Uninstall existing extension pack before installing the specified
+        extension pack.
+
+    --accept-license=<sha256>
+        Accept the license text with the given SHA-256 hash value.
+
+        VBoxManage will display the SHA-256 value when performing a manual
+        installation. The hash can be calculated manually by extracting the
+        license file from the extension pack using tar(1) and running sha256sum
+        or similar to generate the hash value.
+
+    <tarball>
+        The file containing the extension pack to be installed.
+
+
+    extpack uninstall
+    -----------------
+
+    VBoxManage extpack uninstall [--force] <name>
+
+    Uninstalls an extension pack from the system. The subcommand will also
+    succeed in the case where the specified extension pack is not present on
+    the system. You can use VBoxManage list extpacks to list the names of the
+    extension packs which are currently installed.
+
+    --force
+        Overrides most refusals to uninstall an extension pack
+
+    <name>
+        The name of the extension pack to be uninstalled.
+
+
+    extpack cleanup
+    ---------------
+
+    VBoxManage extpack cleanup
+
+    Used to remove temporary files and directories that may have been left
+    behind if a previous install or uninstall command failed.
+
+
+Examples
+========
+
+  How to list extension packs: 
+$ VBoxManage list extpacks
+Extension Packs: 1
+Pack no. 0:   Oracle VirtualBox Extension Pack
+Version:      4.1.12
+Revision:     77218
+Edition:
+Description:  USB 2.0 Host Controller, VirtualBox RDP, PXE ROM with E1000 support.
+VRDE Module:  VBoxVRDP
+Usable:       true
+Why unusable:
+
+  How to remove an extension pack: 
+$ VBoxManage extpack uninstall "Oracle VirtualBox Extension Pack"
+0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+Successfully uninstalled "Oracle VirtualBox Extension Pack".

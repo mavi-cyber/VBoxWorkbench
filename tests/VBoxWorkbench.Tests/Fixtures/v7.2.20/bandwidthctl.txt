@@ -1,0 +1,148 @@
+Oracle VirtualBox Command Line Management Interface Version 7.2.20
+Copyright (C) 2005-2026 Oracle and/or its affiliates
+
+VBoxManage bandwidthctl -- Manage bandwidth groups.
+
+Usage
+=====
+
+  VBoxManage bandwidthctl <uuid | vmname> add <bandwidth-group-name>
+      <--limit=bandwidth-limit[k|m|g|K|M|G]> <--type= disk | network>
+  VBoxManage bandwidthctl <uuid | vmname> list [--machinereadable]
+  VBoxManage bandwidthctl <uuid | vmname> remove <bandwidth-group-name>
+  VBoxManage bandwidthctl <uuid | vmname> set <bandwidth-group-name>
+      <--limit=bandwidth-limit[k|m|g|K|M|G]>
+
+Description
+===========
+
+  The VBoxManage bandwidthctl command enables you to manage bandwidth groups
+  for virtual machines (VMs). A bandwidth group specifies the bandwidth limit
+  for the disks or for the network adapters of a VM.
+
+  Note that a network bandwidth limit applies only to the outbound traffic from
+  the VM. The inbound traffic is unlimited.
+
+    Create a Bandwidth Group
+    ------------------------
+
+    VBoxManage bandwidthctl <uuid | vmname> add <bandwidth-group-name>
+        <--limit=bandwidth-limit[k|m|g|K|M|G]> <--type= disk | network>
+
+    The VBoxManage bandwidthctl add command creates a bandwidth group for the
+    specified VM. You must specify whether the bandwidth group is for disks or
+    for networks and specify the bandwidth limit.
+
+    <uuid> | <vmname>
+        Specifies the Universally Unique Identifier (UUID) or the name of the
+        VM.
+
+    <bandwidth-group-name>
+        Specifies the name of the bandwidth group.
+
+    --type=disk|network
+        Specifies the type of the bandwidth group: disk or network. For more
+        information, see section "Limiting Bandwidth for Disk Images" in
+        chapter 1 of the user manual or section "Limiting Bandwidth for Network
+        Input/Output" in chapter 1 of the user manual.
+
+    --limit=<bandwidth-limit[k|m|g|K|M|G]>
+        Specifies the bandwidth limit for a bandwidth group. The default unit
+        is megabytes per second. You can modify this value while the VM is
+        running.
+
+        You can change the unit by appending one of the following unit
+        specifiers to the bandwidth limit:
+
+          - k – kilobits per second
+          - m – megabits per second
+          - g – gigabits per second
+          - K – kilobytes per second
+          - M – megabytes per second
+          - G – gigabytes per second
+
+
+    List Bandwidth Groups
+    ---------------------
+
+    VBoxManage bandwidthctl <uuid | vmname> list [--machinereadable]
+
+    The VBoxManage bandwidthctl list command lists the all the bandwidth groups
+    that have been defined for the specified VM. Use the --machinereadable
+    option to produce the output in a machine-readable format, which uses
+    name-value pairs.
+
+    <uuid> | <vmname>
+        Specifies the UUID or the name of the VM.
+
+    --machinereadable
+        Outputs the information about the bandwidth groups in name-value pairs.
+
+
+    Remove a Bandwidth Group
+    ------------------------
+
+    VBoxManage bandwidthctl <uuid | vmname> remove <bandwidth-group-name>
+
+    The VBoxManage bandwidthctl remove command removes a bandwidth group.
+
+    To successfully remove a bandwidth group, ensure that it is not referenced
+    by any disk or adapter in the running VM.
+
+    <uuid> | <vmname>
+        Specifies the UUID or the name of the VM.
+
+    <bandwidth-group-name>
+        Specifies the name of the bandwidth group.
+
+
+    Modify the Bandwidth Limit of a Bandwidth Group
+    -----------------------------------------------
+
+    VBoxManage bandwidthctl <uuid | vmname> set <bandwidth-group-name>
+        <--limit=bandwidth-limit[k|m|g|K|M|G]>
+
+    The VBoxManage bandwidthctl set command modifies the bandwidth limit for a
+    bandwidth group.
+
+    <uuid> | <vmname>
+        Specifies the UUID or the name of the VM.
+
+    <bandwidth-group-name>
+        Specifies the name of the bandwidth group.
+
+    --limit=<bandwidth-limit[k|m|g|K|M|G]>
+        Specifies the bandwidth limit for a bandwidth group. The default unit
+        is megabytes per second. You can modify this value while the VM is
+        running.
+
+        You can change the unit by appending one of the following unit
+        specifiers to the bandwidth limit:
+
+          - k – kilobits per second
+          - m – megabits per second
+          - g – gigabits per second
+          - K – kilobytes per second
+          - M – megabytes per second
+          - G – gigabytes per second
+
+
+Examples
+========
+
+  The following example shows how to use the VBoxManage bandwidthctl command to
+  create the Limit bandwidth group and set the limit to 20 Mbps. Then use the
+  VBoxManage modifyvm command to assign this bandwidth group to the first and
+  second adapters of the vm1 VM.
+$ VBoxManage bandwidthctl "vm1" add Limit --type network --limit 20m
+$ VBoxManage modifyvm "vm1" --nicbandwidthgroup1 Limit
+$ VBoxManage modifyvm "vm1" --nicbandwidthgroup2 Limit
+
+  You can dynamically modify the limit of a bandwidth group while the VM is
+  running. The following example shows how to modify the limit for the Limit
+  bandwidth group from 20 Mbps to 100 kbps:
+$ VBoxManage bandwidthctl "vm1" set Limit --limit 100k
+
+  The following command disables shaping for all adapters in the Limit
+  bandwidth group by specifying a limit of zero (0):
+$ VBoxManage bandwidthctl "vm1" set Limit --limit 0
