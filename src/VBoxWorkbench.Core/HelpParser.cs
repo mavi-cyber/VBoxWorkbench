@@ -47,6 +47,19 @@ public static partial class HelpParser
     [GeneratedRegex(@"^\s*[=\-~]{3,}\s*$")]
     private static partial Regex Underline();
 
+    /// <summary>Like <see cref="ParseCommandHelp"/>, but help text the parser cannot cope with yields an empty entry instead of an error.</summary>
+    public static CommandDoc TryParseCommandHelp(string name, string text)
+    {
+        try
+        {
+            return ParseCommandHelp(name, text);
+        }
+        catch (Exception ex) when (ex is ArgumentException or InvalidOperationException or IndexOutOfRangeException or FormatException or RegexMatchTimeoutException)
+        {
+            return new CommandDoc { Name = name };
+        }
+    }
+
     public static CommandDoc ParseCommandHelp(string name, string text)
     {
         var doc = new CommandDoc { Name = name, FullText = text.Replace("\r", "") };
@@ -85,7 +98,8 @@ public static partial class HelpParser
         var result = new Dictionary<string, List<Synopsis>>(StringComparer.OrdinalIgnoreCase);
         foreach (var raw in SplitSynopses(text.Replace("\r", "").Split('\n')))
         {
-            var syn = SynopsisParser.Parse(raw);
+            var syn = SynopsisParser.TryParse(raw);
+            if (syn == null) continue;
             if (syn.Command.Length == 0 || syn.Command.StartsWith('[') || syn.Command.StartsWith('-')) continue;
             if (!result.TryGetValue(syn.Command, out var list)) result[syn.Command] = list = [];
             list.Add(syn);

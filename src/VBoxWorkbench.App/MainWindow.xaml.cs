@@ -59,8 +59,9 @@ public partial class MainWindow : Window
             var progress = new Progress<string>(s => StatusText.Text = s);
             _catalog = await Catalog.LoadAsync(_runner, DataDir, progress);
         }
-        catch (Exception ex) when (ex is IOException or InvalidOperationException)
+        catch (Exception ex) when (ex is not OutOfMemoryException)
         {
+            App.Log(ex);
             StatusText.Text = "Couldn't read the command list from VBoxManage.\n" + ex.Message;
             return;
         }
@@ -148,7 +149,20 @@ public partial class MainWindow : Window
 
     private void GoBack()
     {
-        if (_back.Count > 0) _back.Pop()();
+        if (_back.Count == 0) return;
+        var show = _back.Pop();
+        try
+        {
+            show();
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException)
+        {
+            // A view that can't be shown again must not take the app down: fall back to a fresh screen.
+            App.Log(ex);
+            _back.Clear();
+            if (_currentVm != null) _ = ShowWorkbenchAsync(_currentVm);
+            else ShowRoom(Room.Machines);
+        }
     }
 
     private FrameworkElement WithBack(FrameworkElement view)
@@ -183,7 +197,10 @@ public partial class MainWindow : Window
         form.RunNow += async c => { GoBack(); await RunAsync([c]); };
         form.ShowManual += () => ShowManual(doc);
         Push();
-        void Show() => SetContent(WithBack(form), Show);
+        // Wrap once and keep it: coming back to this form (from its manual page, say) must reuse the same
+        // wrapper, because an element can only ever sit inside one parent.
+        var view = WithBack(form);
+        void Show() => SetContent(view, Show);
         Show();
     }
 
@@ -209,7 +226,8 @@ public partial class MainWindow : Window
             Background = Ui.Brush("Panel"), VerticalContentAlignment = VerticalAlignment.Top, Padding = new Thickness(12),
         };
         Push();
-        void Show() => SetContent(WithBack(box), Show);
+        var view = WithBack(box);
+        void Show() => SetContent(view, Show);
         Show();
     }
 
@@ -296,7 +314,8 @@ public partial class MainWindow : Window
 
     private void QueueCopy_Click(object sender, RoutedEventArgs e)
     {
-        if (_queue.Count > 0) Clipboard.SetText(string.Join(Environment.NewLine, _queue.Select(c => c.Display)));
+        if (_queue.Count > 0 && !Ui.Copy(string.Join(Environment.NewLine, _queue.Select(c => c.Display))))
+            AppendOutput("Couldn't copy: another program is using the clipboard. Try again.");
     }
 
     private void QueueSave_Click(object sender, RoutedEventArgs e)

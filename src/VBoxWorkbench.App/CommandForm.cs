@@ -110,7 +110,7 @@ internal sealed class CommandForm : UserControl
         var buttons = Ui.Row(
             Ui.Button("Add to queue", () => Emit(Queue), "PrimaryButton", Ui.IcoAdd),
             Ui.Button("Run now", () => Emit(RunNow), glyph: Ui.IcoPlay).With(b => b.IsEnabled = ctx.Doc.Runnable),
-            Ui.Button("Copy", () => { if (TryBuild(out var c)) Clipboard.SetText(c.Display); }, glyph: Ui.IcoCopy),
+            Ui.Button("Copy", () => { if (TryBuild(out var c) && !Ui.Copy(c.Display)) _error.Text = "Couldn't copy: another program is using the clipboard. Try again."; }, glyph: Ui.IcoCopy),
             Ui.Button("Read the manual page", () => ShowManual?.Invoke(), glyph: Ui.IcoBook));
         root.Children.Add(buttons);
 

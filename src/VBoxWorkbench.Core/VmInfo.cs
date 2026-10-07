@@ -65,7 +65,8 @@ public sealed partial class VmInfo
             foreach (var key in KeysInOrder)
             {
                 var m = rx.Match(key);
-                if (m.Success) slots.Add(new StorageSlot(name, int.Parse(m.Groups[1].Value), int.Parse(m.Groups[2].Value), Props[key]));
+                if (m.Success && int.TryParse(m.Groups[1].Value, out int port) && int.TryParse(m.Groups[2].Value, out int device))
+                    slots.Add(new StorageSlot(name, port, device, Props[key]));
             }
             list.Add(new StorageController(name, Get("storagecontrollertype" + i), GetInt("storagecontrollerportcount" + i), slots));
         }

@@ -86,6 +86,19 @@ public static partial class SynopsisParser
     [GeneratedRegex(@"^([a-z][a-z0-9-]*)N([a-z]+)$")]
     private static partial Regex GluedKeyword();
 
+    /// <summary>Parses a usage line, or returns null for one the grammar cannot make sense of.</summary>
+    public static Synopsis? TryParse(string raw)
+    {
+        try
+        {
+            return Parse(raw);
+        }
+        catch (Exception ex) when (ex is ArgumentException or InvalidOperationException or IndexOutOfRangeException or FormatException)
+        {
+            return null;
+        }
+    }
+
     public static Synopsis Parse(string raw)
     {
         string line = Regex.Replace(raw.Replace(' ', ' '), @"\s+", " ").Trim();

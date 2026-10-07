@@ -64,12 +64,13 @@ internal static class Theme
     {
         try
         {
+            // A settings file that was edited by hand or cut short must never stop the app from starting.
             if (File.Exists(SettingsFile) &&
-                JsonSerializer.Deserialize<Settings>(File.ReadAllText(SettingsFile)) is { } s &&
-                Enum.TryParse<ThemeChoice>(s.Theme, out var saved))
+                JsonSerializer.Deserialize<Settings>(File.ReadAllText(SettingsFile)) is { Theme: not null } s &&
+                Enum.TryParse<ThemeChoice>(s.Theme, true, out var saved) && Enum.IsDefined(saved))
                 Choice = saved;
         }
-        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException) { }
+        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException or NotSupportedException) { }
 
         Apply();
         // Follow Windows live when the choice is "System".
@@ -117,7 +118,15 @@ internal static class Theme
             app.Resources[key] = new SolidColorBrush(color);
         }
 #pragma warning disable WPF0001 // ThemeMode is the supported way to get themed standard controls; the API is still marked experimental.
-        app.ThemeMode = IsDark ? ThemeMode.Dark : ThemeMode.Light;
+        try
+        {
+            app.ThemeMode = IsDark ? ThemeMode.Dark : ThemeMode.Light;
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or ArgumentException or NotSupportedException)
+        {
+            // The palettes above are already applied; only the standard controls keep their previous look.
+            App.Log(ex);
+        }
 #pragma warning restore WPF0001
     }
 }

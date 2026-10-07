@@ -74,7 +74,7 @@ public sealed class VBoxRunner(string exePath)
         {
             p.Start();
         }
-        catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or FileNotFoundException)
+        catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or FileNotFoundException or InvalidOperationException or UnauthorizedAccessException)
         {
             return new RunResult(-1, "", "Couldn't start " + psi.FileName + ": " + ex.Message);
         }
@@ -86,7 +86,8 @@ public sealed class VBoxRunner(string exePath)
         }
         catch (OperationCanceledException)
         {
-            try { p.Kill(entireProcessTree: true); } catch (InvalidOperationException) { }
+            try { p.Kill(entireProcessTree: true); }
+            catch (Exception ex) when (ex is InvalidOperationException or System.ComponentModel.Win32Exception or NotSupportedException) { }
             return new RunResult(-2, stdout.ToString(), "Cancelled.");
         }
         p.WaitForExit();

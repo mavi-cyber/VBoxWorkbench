@@ -63,6 +63,20 @@ internal static class Ui
         return b;
     }
 
+    /// <summary>Copies text. Returns false when another program holds the clipboard, which Windows reports as an error.</summary>
+    public static bool Copy(string text)
+    {
+        try
+        {
+            Clipboard.SetDataObject(text, true);
+            return true;
+        }
+        catch (System.Runtime.InteropServices.ExternalException)
+        {
+            return false;
+        }
+    }
+
     /// <summary>A tooltip that wraps, for the long option descriptions.</summary>
     public static ToolTip Tip(string text) => new()
     {

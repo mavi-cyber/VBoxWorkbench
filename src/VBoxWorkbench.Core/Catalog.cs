@@ -18,6 +18,12 @@ public sealed class Catalog
 
     private static readonly HashSet<string> MetaCommands = new(StringComparer.OrdinalIgnoreCase) { "help", "commands" };
 
+    /// <summary>A cached entry is only trusted when nothing the views rely on is missing.</summary>
+    private static bool Usable(CommandDoc? d) =>
+        d is { Name: not null, Synopses: not null, OptionHelp: not null, Titles: not null, FullText: not null, Summary: not null } &&
+        d.Synopses.All(s => s is { Command: not null, Raw: not null, Elements: not null } &&
+                            s.Elements.All(e => e is { Name: not null, Placeholder: not null, Choices: not null }));
+
     public CommandDoc? Find(string name) =>
         Commands.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
@@ -36,9 +42,10 @@ public sealed class Catalog
             try
             {
                 var cached = JsonSerializer.Deserialize<Catalog>(await File.ReadAllTextAsync(cacheFile, ct));
-                if (cached is { Format: FormatVersion, Commands.Count: > 0 }) return cached;
+                if (cached is { Format: FormatVersion, Commands.Count: > 0 } && cached.Commands.All(Usable)) return cached;
             }
-            catch (JsonException) { }
+            // A cache that is damaged, half-written or unreadable is simply rebuilt.
+            catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException or NotSupportedException) { }
         }
 
         progress?.Report("Reading the command list from VirtualBox " + version);
@@ -48,8 +55,7 @@ public sealed class Catalog
             Directory.CreateDirectory(cacheDir);
             await File.WriteAllTextAsync(cacheFile, JsonSerializer.Serialize(catalog), ct);
         }
-        catch (IOException) { }
-        catch (UnauthorizedAccessException) { }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or NotSupportedException) { }
         return catalog;
     }
 
@@ -72,7 +78,7 @@ public sealed class Catalog
         {
             // The exit code says nothing here: 7.2 returns 1 from "help" even when it prints the page.
             var probe = await runner.RunAsync(["help", names[0]], ct);
-            hasHelp = HelpParser.ParseCommandHelp(names[0], probe.Output).Synopses.Count > 0;
+            hasHelp = HelpParser.TryParseCommandHelp(names[0], probe.Output).Synopses.Count > 0;
         }
 
         var docs = new CommandDoc[names.Count];
@@ -87,7 +93,7 @@ public sealed class Catalog
                 if (hasHelp)
                 {
                     var help = await runner.RunAsync(["help", name], ct);
-                    doc = HelpParser.ParseCommandHelp(name, help.Output);
+                    doc = HelpParser.TryParseCommandHelp(name, help.Output);
                     progress?.Report($"Reading help: {Interlocked.Increment(ref done)} of {names.Count}");
                 }
                 // Some commands (hostonlynet in 7.2) are only described in the all-commands usage dump,

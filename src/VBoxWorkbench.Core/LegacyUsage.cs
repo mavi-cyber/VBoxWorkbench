@@ -49,8 +49,8 @@ public static partial class LegacyUsage
             if (name == null) return;
             foreach (var raw in Rewrite(name, block))
             {
-                var syn = SynopsisParser.Parse(raw);
-                if (syn.Command.Length == 0) continue;
+                var syn = SynopsisParser.TryParse(raw);
+                if (syn == null || syn.Command.Length == 0) continue;
                 if (!result.TryGetValue(syn.Command, out var list)) result[syn.Command] = list = [];
                 if (!list.Any(s => s.Raw == syn.Raw)) list.Add(syn);
             }
