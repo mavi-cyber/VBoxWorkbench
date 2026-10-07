@@ -24,6 +24,8 @@
                     <Button x:Name="RefreshButton" Margin="0" ToolTip="Reload machines and parts (F5)" Click="Refresh_Click">
                         <TextBlock Text="&#xE72C;" FontFamily="{StaticResource Icons}"/>
                     </Button>
+                    <Button x:Name="AboutButton" Content="About" Margin="6,0,0,0" Click="About_Click"
+                            ToolTip="Version, website and license"/>
                     <Button x:Name="ThemeButton" Content="Theme" Margin="6,0,0,0" Click="Theme_Click"
                             ToolTip="Light, dark, or follow Windows"/>
                     <Button x:Name="RunOptionsButton" Content="Run options" Margin="6,0,0,0" Click="RunOptions_Click"

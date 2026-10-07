@@ -25,6 +25,7 @@ VBox Workbench is an independent project. It is not made, endorsed or supported 
 - **Queue** - add several commands and run them in order, copy them, or save them as a `.cmd`, `.ps1`
   or `.sh` script. Destructive commands ask first.
 - **Themes** - Light, Dark, or Follow Windows.
+- **About box** - version, commit, project link, copyright and license, from the About button.
 
 ## Works with your VirtualBox version
 
@@ -105,7 +106,7 @@ number comes from `<Version>` in `src/VBoxWorkbench.App/VBoxWorkbench.App.csproj
 Compare the file's hash with the line for it in `SHA256SUMS.txt`:
 
 ```
-Get-FileHash .\VBoxWorkbench-0.1.0-win-x64.exe -Algorithm SHA256
+Get-FileHash .\VBoxWorkbench-0.1.1-win-x64.exe -Algorithm SHA256
 ```
 
 or, on Linux and macOS, `sha256sum -c SHA256SUMS.txt`.

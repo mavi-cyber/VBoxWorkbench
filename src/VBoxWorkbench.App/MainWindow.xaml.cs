@@ -79,6 +79,7 @@ public partial class MainWindow : Window
     private void ApplyStartupArguments()
     {
         var args = Environment.GetCommandLineArgs();
+        if (args.Contains("--about")) Dispatcher.BeginInvoke(() => new AboutWindow(this, _catalog.Version).Show());
         for (int i = 1; i + 1 < args.Length; i += 2)
         {
             switch (args[i])
@@ -408,6 +409,10 @@ public partial class MainWindow : Window
     }
 
     private void OutputToggle_Click(object sender, RoutedEventArgs e) => ShowOutput(OutputBox.Visibility != Visibility.Visible);
+
+    // ---------- about ----------
+
+    private void About_Click(object sender, RoutedEventArgs e) => new AboutWindow(this, _catalog.Version).ShowDialog();
 
     // ---------- theme ----------
 
