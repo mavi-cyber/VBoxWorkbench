@@ -4,6 +4,10 @@
 
 # VBox Workbench
 
+[![Latest release](https://img.shields.io/github/v/release/mavi-cyber/VBoxWorkbench?label=release)](https://github.com/mavi-cyber/VBoxWorkbench/releases/latest)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+![Platform: Windows x64](https://img.shields.io/badge/platform-Windows%20x64-informational)
+
 A graphical front end for `VBoxManage`, the VirtualBox command line. You open a virtual machine like a
 PC on a workbench, click or drop parts onto it, and the app writes the `VBoxManage` commands for you.
 
@@ -12,6 +16,57 @@ PC on a workbench, click or drop parts onto it, and the app writes the `VBoxMana
 ![The workbench: a virtual machine shown as a circuit board, with the parts shelf on the right and the command queue at the bottom](docs/img/workbench-dark.png)
 
 VBox Workbench is an independent project. It is not made, endorsed or supported by Oracle.
+
+## Contents
+
+- [Get started](#get-started)
+- [Using it](#using-it)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Works with your VirtualBox version](#works-with-your-virtualbox-version)
+- [Known limitations](#known-limitations)
+- [Build and run from source](#build-and-run-from-source)
+- [Build a standalone .exe](#build-a-standalone-exe)
+- [Command-line switches](#command-line-switches)
+- [Project layout](#project-layout)
+- [Reporting problems and contributing](#reporting-problems-and-contributing)
+- [Credits](#credits), [License](#license), [Trademarks](#trademarks)
+
+## Get started
+
+You need 64-bit Windows 10 or 11 and [VirtualBox](https://www.virtualbox.org). VirtualBox 7.x is what
+the app is developed on; 6.x and older are supported with some limits (see below).
+
+1. Open the [latest release](https://github.com/mavi-cyber/VBoxWorkbench/releases/latest).
+2. Download `VBoxWorkbench-<version>-win-x64.exe`. It is a single file with .NET included, about 65 MB.
+   If you already have the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0),
+   the `-needs-dotnet.exe` file does the same job in under 1 MB.
+3. Run it. There is no installer and nothing to set up.
+
+On first start the app spends a few seconds reading the command list from your VirtualBox. The
+executables are not code-signed, so Windows SmartScreen may show an "unknown publisher" warning; see
+[Checking a download](#checking-a-download) to verify the file first.
+
+## Using it
+
+1. Pick a machine on the left. It opens as a circuit board.
+2. Click a chip to change that setting, or a dashed socket to fill an empty slot. Or press Ctrl+K and
+   type what you want.
+3. Fill in the form. The exact `VBoxManage` command is shown as you type.
+4. Choose **Add to queue** to collect several changes, or **Run now** for one.
+5. Press **Run queue**. Commands run in order and stop at the first failure. Output appears next to
+   the queue.
+
+Some settings only apply to a powered-off machine; the form says so when the machine is running.
+Commands that delete something or cannot be undone ask for confirmation first.
+
+| Key | Does |
+| --- | --- |
+| Ctrl+K | Jump to the search bar |
+| Up, Down, Enter | Move through search results and open one |
+| Esc | Close the search results or the About box |
+| Alt+Left | Go back from a form |
+| F5 | Reload machines and parts |
 
 ## Screenshots
 
@@ -22,6 +77,8 @@ VBox Workbench is an independent project. It is not made, endorsed or supported 
 | Light theme | Rooms |
 | --- | --- |
 | ![The workbench in light theme](docs/img/workbench-light.png) | ![The network room listing every action](docs/img/rooms-light.png) |
+
+<p align="center"><img src="docs/img/about.png" alt="The About box" width="380"></p>
 
 The machines in these screenshots are made-up demo data.
 
@@ -41,7 +98,9 @@ The machines in these screenshots are made-up demo data.
 - **Queue** - add several commands and run them in order, copy them, or save them as a `.cmd`, `.ps1`
   or `.sh` script. Destructive commands ask first.
 - **Themes** - Light, Dark, or Follow Windows.
-- **About box** - version, commit, project link, copyright and license, from the About button.
+- **About box** - version, commit, website link, copyright and license, from the About button.
+- **Nothing hidden** - the app only runs `VBoxManage` on your computer. It makes no network
+  connections of its own.
 
 ## Works with your VirtualBox version
 
@@ -73,7 +132,20 @@ This path is tested against the usage text printed in the 6.1 manual, not agains
 `vboximg-mount` (manual section 8.55) is a separate program that only exists on Linux and macOS hosts.
 The app can build the command everywhere but can only run it there.
 
-## Build and run
+## Known limitations
+
+This is an early release, developed and tested on VirtualBox 7.2.20. Try it first on a virtual machine
+you do not mind changing.
+
+- Dragging a disk onto a drive bay and running the queue from the window have had little testing.
+- Cloud (Oracle Cloud Infrastructure) commands are untested.
+- Support for VirtualBox 6.x and older is tested against the 6.1 manual's usage text, not a 6.1
+  installation. A few `guestcontrol` actions there show up as one free-text field.
+- Options that can be repeated in one command (for example `--public-ssh-key`) can only be given once
+  per form.
+- Windows only. The core library is portable, but the interface is WPF.
+
+## Build and run from source
 
 Needs the .NET 10 SDK and VirtualBox. The app itself is Windows only (WPF).
 
@@ -130,21 +202,25 @@ or, on Linux and macOS, `sha256sum -c SHA256SUMS.txt`.
 The executables are not code-signed, so Windows SmartScreen may show an "unknown publisher" warning
 the first time one is run.
 
-## Deep links
+## Command-line switches
 
-For shortcuts and testing:
+Useful for shortcuts and for testing. Use the name of the file you have; a release download is called
+`VBoxWorkbench-<version>-win-x64.exe`, a build from source `VBoxWorkbench.App.exe`.
 
-```
-VBoxWorkbench.App.exe --show "snapshot take"
-VBoxWorkbench.App.exe --room Network
-VBoxWorkbench.App.exe --search "forward port"
-VBoxWorkbench.App.exe --theme Dark
-```
+| Switch | Does |
+| --- | --- |
+| `--show "snapshot take"` | Opens the form for that action |
+| `--room Network` | Opens a room: `Machines`, `Media`, `Network`, `Guest`, `Diagnostics`, `Cloud`, `Host`, `More` |
+| `--search "forward port"` | Starts with that text in the search bar |
+| `--theme Dark` | Sets and saves the theme: `Light`, `Dark` or `System` |
+| `--about` | Opens the About box |
 
 Set the `VBW_VBOXMANAGE` environment variable to the full path of a `VBoxManage` to make the app use
 that one instead of the installed VirtualBox.
 
-The theme choice is saved in `%LOCALAPPDATA%\VBoxWorkbench\settings.json`.
+The app keeps two things under `%LOCALAPPDATA%\VBoxWorkbench`: `settings.json` (the theme) and one
+`catalog-<version>.json` per VirtualBox version (the cached command list). Deleting the folder is
+safe; both are recreated. **Run options > Rebuild command list** does the same for the cache.
 
 ## Project layout
 
@@ -155,13 +231,24 @@ The theme choice is saved in `%LOCALAPPDATA%\VBoxWorkbench\settings.json`.
   draws the board; `Rooms.cs` lists every action of a room's commands; `Theme.cs` holds the palettes.
 - `tests/VBoxWorkbench.Tests` - parser tests against saved help from 7.2.20, the 7.0 manual synopses
   and the 6.1 usage text, catalog coverage of manual sections 8.5 to 8.55, and the live tests.
-
 - `docs` - the project website, served by GitHub Pages, and the screenshots used here.
 - `assets` - the logo (`logo.svg`), the app icon (`app.ico`, 16 to 256 px) and `make-icon.py`, which
   regenerates `logo.png` and `app.ico` (needs Pillow).
 
 To refresh the bundled descriptions from newer fixtures, run the tests with `VBW_WRITE_FALLBACK` set
 to the path of `src/VBoxWorkbench.Core/fallback-help.json`.
+
+## Reporting problems and contributing
+
+Found a bug, or a command that produces a wrong form? Please
+[open an issue](https://github.com/mavi-cyber/VBoxWorkbench/issues) and include:
+
+- your VirtualBox version (shown at the top right of the app and in the About box),
+- the command line the app built, copied from the queue,
+- what `VBoxManage` answered, copied from the output box.
+
+Pull requests are welcome. Run `dotnet test` before sending one. If you change how usage lines are
+parsed, add a test with the line that was misread.
 
 ## Credits
 
